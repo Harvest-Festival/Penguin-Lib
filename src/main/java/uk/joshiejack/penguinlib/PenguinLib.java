@@ -7,11 +7,13 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.forgespi.language.ModFileScanData;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
@@ -20,14 +22,12 @@ import uk.joshiejack.penguinlib.data.custom.CustomObject;
 import uk.joshiejack.penguinlib.events.CollectRegistryEvent;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.PenguinPacket;
+import uk.joshiejack.penguinlib.util.interfaces.IModPlugin;
 import uk.joshiejack.penguinlib.util.PenguinLoader;
 import uk.joshiejack.penguinlib.util.helpers.generic.ReflectionHelper;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 
@@ -39,6 +39,7 @@ public class PenguinLib {
     public static final Logger LOGGER = LogManager.getLogger();
     private static final Type LOADER = Type.getType(PenguinLoader.class);
     private static final Type PACKET = Type.getType(PenguinLoader.Packet.class);
+    private final List<Pair<String, Class<? extends IModPlugin>>> PLUGINS = new ArrayList<>();
 
     //public static final boolean IS_DEOBF = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
@@ -48,6 +49,7 @@ public class PenguinLib {
         PenguinLib.EVENT_BUS.register(this);
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::registerRegistries);
+        eventBus.addListener(this::loadPlugins);
         registerPenguinLoaderData(eventBus);
         directory = new File("config", MODID);
         MinecraftForge.EVENT_BUS.register(this);
@@ -55,6 +57,7 @@ public class PenguinLib {
 
     private void registerRegistries(CollectRegistryEvent.Loader event) {
         event.add(CustomObject.Data.class, (data, string) -> CustomObject.TYPE_REGISTRY.put(string, Objects.requireNonNull(ReflectionHelper.newInstance(data))));
+        event.add(IModPlugin.class, (data, string) -> PLUGINS.add(Pair.of(string, data)));
     }
 
     @SuppressWarnings("unchecked")
@@ -80,12 +83,19 @@ public class PenguinLib {
                 }));
     }
 
+    private void loadPlugins(FMLCommonSetupEvent event) {
+        PLUGINS.stream().filter(pair -> ModList.get().isLoaded(pair.getKey()))
+                .forEach(pair -> Objects.requireNonNull(ReflectionHelper.newInstance(pair.getValue())).setup());
+        PLUGINS.clear(); //Kill them off
+    }
+
     @SubscribeEvent
     public static void onDataGathering(final GatherDataEvent event) {
         final DataGenerator generator = event.getGenerator();
         if (event.includeServer())
             generator.addProvider(new PenguinLibDatabase(generator));
     }
+
     //NetworkRegistry.INSTANCE.registerGuiHandler(instance, this);
     //LootFunctionManager.registerFunction(new SetEnum.Serializer());
     //LootFunctionManager.registerFunction(new SetString.Serializer());
