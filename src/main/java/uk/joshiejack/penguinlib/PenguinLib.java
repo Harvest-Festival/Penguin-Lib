@@ -1,10 +1,13 @@
 package uk.joshiejack.penguinlib;
 
+import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.BusBuilder;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -12,6 +15,7 @@ import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
+import uk.joshiejack.penguinlib.data.PenguinLibDatabase;
 import uk.joshiejack.penguinlib.data.custom.CustomObject;
 import uk.joshiejack.penguinlib.events.CollectRegistryEvent;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
@@ -27,7 +31,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 
 
-@SuppressWarnings("unused")
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 @Mod(PenguinLib.MODID)
 public class PenguinLib {
     public static final String MODID = "penguinlib";
@@ -76,7 +80,12 @@ public class PenguinLib {
                 }));
     }
 
-
+    @SubscribeEvent
+    public static void onDataGathering(final GatherDataEvent event) {
+        final DataGenerator generator = event.getGenerator();
+        if (event.includeServer())
+            generator.addProvider(new PenguinLibDatabase(generator));
+    }
     //NetworkRegistry.INSTANCE.registerGuiHandler(instance, this);
     //LootFunctionManager.registerFunction(new SetEnum.Serializer());
     //LootFunctionManager.registerFunction(new SetString.Serializer());

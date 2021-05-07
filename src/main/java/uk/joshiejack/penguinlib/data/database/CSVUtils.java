@@ -1,6 +1,7 @@
 package uk.joshiejack.penguinlib.data.database;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,4 +131,18 @@ public class CSVUtils {
         return result;
     }
 
+    @SafeVarargs
+    public static <T> String join(final T... elements) {
+        List<String> list = Lists.newArrayList();
+        for (T t: elements) {
+            String append = t.toString();
+            if (append.contains("\""))
+                append = append.replace("\"", "\"\"");
+            if (append.contains(","))
+                append = "\"" + append + "\"";
+            list.add(append);
+        }
+
+        return StringUtils.join(list, ',');
+    }
 }
