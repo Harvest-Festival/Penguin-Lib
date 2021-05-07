@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+[[mods]]
+    modId="penguinlib"
+    version="${mod_version}"
+    displayName="Penguin Lib"
+    authors="joshiejack"
+    description='''Booya'''
+[[dependencies.penguinlib]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.penguinlib]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_range}"
+    ordering="NONE"
+    side="BOTH"
