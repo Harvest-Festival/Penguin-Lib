@@ -1,5 +1,6 @@
 package uk.joshiejack.penguinlib;
 
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.BusBuilder;
@@ -17,14 +18,16 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
-import uk.joshiejack.penguinlib.data.PenguinLibDatabase;
 import uk.joshiejack.penguinlib.data.custom.CustomObject;
+import uk.joshiejack.penguinlib.data.generators.PenguinBlockTags;
+import uk.joshiejack.penguinlib.data.generators.PenguinItemTags;
+import uk.joshiejack.penguinlib.data.generators.PenguinLibDatabase;
 import uk.joshiejack.penguinlib.events.CollectRegistryEvent;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.PenguinPacket;
-import uk.joshiejack.penguinlib.util.interfaces.IModPlugin;
 import uk.joshiejack.penguinlib.util.PenguinLoader;
 import uk.joshiejack.penguinlib.util.helpers.generic.ReflectionHelper;
+import uk.joshiejack.penguinlib.util.interfaces.IModPlugin;
 
 import java.io.File;
 import java.util.*;
@@ -92,8 +95,12 @@ public class PenguinLib {
     @SubscribeEvent
     public static void onDataGathering(final GatherDataEvent event) {
         final DataGenerator generator = event.getGenerator();
-        if (event.includeServer())
+        if (event.includeServer()) {
             generator.addProvider(new PenguinLibDatabase(generator));
+            BlockTagsProvider blockTags = new PenguinBlockTags(generator, event.getExistingFileHelper());
+            generator.addProvider(blockTags);
+            generator.addProvider(new PenguinItemTags(generator, blockTags, event.getExistingFileHelper()));
+        }
     }
 
     //NetworkRegistry.INSTANCE.registerGuiHandler(instance, this);

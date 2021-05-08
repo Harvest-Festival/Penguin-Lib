@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.data;
+package uk.joshiejack.penguinlib.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -13,13 +13,15 @@ import javax.annotation.Nonnull;
 public class PenguinTags {
     public static final ITag.INamedTag<Item> BREAD = forgeTag("bread");
     public static final ITag.INamedTag<Item> RAW_FISHES = forgeTag("raw_fishes");
+    public static final ITag.INamedTag<Item> APPLE = PenguinTags.forgeTag("crops/apple");
     public static final ITag.INamedTag<Block> SMASHABLE = penguinTag("smashable");
 
-    private static ITag.INamedTag<Block> penguinTag(@Nonnull String name) {
+    public static ITag.INamedTag<Block> penguinTag(@Nonnull String name) {
         return BlockTags.createOptional(new ResourceLocation(PenguinLib.MODID,  name));
     }
 
-    private static ITag.INamedTag<Item> forgeTag(@Nonnull String name) {
+    public static ITag.INamedTag<Item> forgeTag(@Nonnull String name) {
         return ItemTags.createOptional(new ResourceLocation("forge",  name));
     }
+
 }

@@ -10,15 +10,25 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.vector.Vector3f;
 import uk.joshiejack.penguinlib.client.PenguinClient;
 
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 public abstract class AbstractItemTileEntityRenderer<T extends TileEntity> extends TileEntityRenderer<T> {
+    private static final Supplier<ItemStack> STICK = () -> new ItemStack(Items.STICK);
+    private static ItemStack stack;
+
     public AbstractItemTileEntityRenderer(TileEntityRendererDispatcher dispatcher) {
         super(dispatcher);
+    }
+
+    @Nonnull
+    protected ItemStack getStick() {
+        return stack == null ? stack = STICK.get() : stack;
     }
 
     protected void renderSpeechBubble(@Nonnull ItemStack stack, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
@@ -40,7 +50,7 @@ public abstract class AbstractItemTileEntityRenderer<T extends TileEntity> exten
         matrix.scale(1.5F, 1.5F, 1.5F);
         matrix.translate(0F, -0.05F, -0.175F);
         IBakedModel model2 = Minecraft.getInstance().getModelManager().getModel(PenguinClient.SPEECH_BUBBLE);
-        renderer.render(stack, ItemCameraTransforms.TransformType.GUI, true, matrix, buffer, combinedLightIn, combinedOverlayIn, model2);
+        renderer.render(getStick(), ItemCameraTransforms.TransformType.GUI, true, matrix, buffer, combinedLightIn, combinedOverlayIn, model2);
         matrix.popPose();
         matrix.popPose();
         RenderHelper.turnBackOn();

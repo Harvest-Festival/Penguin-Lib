@@ -36,7 +36,7 @@ public class SetActiveStatePacket extends PenguinPacket {
     public void handle(PlayerEntity player) {
         TileEntity tile = player.level.getBlockEntity(pos);
         if (tile instanceof AbstractMachineTileEntity) {
-            ((AbstractMachineTileEntity)tile).setActive(active);
+            ((AbstractMachineTileEntity)tile).setState(active);
         }
     }
 }

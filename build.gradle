@@ -27,6 +27,12 @@ repositories {
         name 'DVS1 Maven FS'
         url 'https://dvs1.progwml6.com/files/maven'
     }
+    maven { // Rhino
+        url 'https://maven.saps.dev/minecraft'
+        content {
+            includeGroup "dev.latvian.mods"
+        }
+    }
 }
 
 version = "${minecraft_version}-${mod_version}"
@@ -89,6 +95,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.16'
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    compile fg.deobf("dev.latvian.mods:rhino:${rhino_version}")
 }
 
 // process mods.toml to inject variables

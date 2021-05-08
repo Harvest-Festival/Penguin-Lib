@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.data;
+package uk.joshiejack.penguinlib.data.generators;
 
 import net.minecraft.data.DataGenerator;
 import uk.joshiejack.penguinlib.PenguinLib;

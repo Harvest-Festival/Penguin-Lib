@@ -9,7 +9,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import uk.joshiejack.penguinlib.tile.inventory.AbstractInventoryTileEntity;
 import uk.joshiejack.penguinlib.util.PenguinLoader;
 
@@ -45,8 +45,8 @@ public class SetInventorySlotPacket extends BlockRenderUpdatePacket {
         if (tile instanceof AbstractInventoryTileEntity) {
             LazyOptional<IItemHandler> handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
             handler.ifPresent(itemHandler -> {
-                if (itemHandler instanceof ItemStackHandler) {
-                    ((ItemStackHandler) itemHandler).setStackInSlot(slot, stack);
+                if (itemHandler instanceof IItemHandlerModifiable) {
+                    ((IItemHandlerModifiable) itemHandler).setStackInSlot(slot, stack);
                 }
             });
         }

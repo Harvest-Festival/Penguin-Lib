@@ -1,10 +1,10 @@
 Name,Duration
-hour,1000
 day,24000
-three_minutes,50
-year,2880000
-quarter_hour,250
-half_hour,500
 five_minutes,100
 half_day,12000
+half_hour,500
+hour,1000
+quarter_hour,250
+three_minutes,50
 week,168000
+year,2880000

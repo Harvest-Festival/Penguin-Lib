@@ -43,4 +43,3 @@ public abstract class AbstractSimpleMachineTileEntity extends AbstractMachineTil
 
     protected void onMachineEmptied() {}
 }
-

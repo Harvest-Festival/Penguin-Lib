@@ -1,11 +1,14 @@
 package uk.joshiejack.penguinlib.tile.machine;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import uk.joshiejack.penguinlib.block.base.AbstractDoubleBlock;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.packet.SetActiveStatePacket;
 import uk.joshiejack.penguinlib.tile.inventory.AbstractInventoryTileEntity;
@@ -13,6 +16,8 @@ import uk.joshiejack.penguinlib.tile.inventory.AbstractInventoryTileEntity;
 import javax.annotation.Nonnull;
 
 public abstract class AbstractMachineTileEntity extends AbstractInventoryTileEntity implements ITickableTileEntity {
+    @OnlyIn(Dist.CLIENT)
+    private Boolean shouldRender;
     private boolean active;
     private long started;
     private long passed;
@@ -34,12 +39,25 @@ public abstract class AbstractMachineTileEntity extends AbstractInventoryTileEnt
             PenguinNetwork.sendToNearby(new SetActiveStatePacket(worldPosition, true), this);
         }
     }
+
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean shouldRender(ItemStack item) {
+        if (shouldRender == null) {
+            BlockState state = getBlockState();
+            boolean isDouble = state.getBlock() instanceof AbstractDoubleBlock;
+            shouldRender = !isDouble || state.getValue(AbstractDoubleBlock.HALF) == DoubleBlockHalf.LOWER;
+        }
+
+        return shouldRender && !item.isEmpty() && !isActive();
+    }
+
     public abstract void finishMachine();
 
     public abstract long getOperationalTime();
 
     @OnlyIn(Dist.CLIENT)
-    public void setActive(boolean active) {
+    public void setState(boolean active) {
         this.active = active;
         this.markUpdated();
     }
@@ -53,11 +71,11 @@ public abstract class AbstractMachineTileEntity extends AbstractInventoryTileEnt
     @Override
     public void tick() {
         assert level != null;
-        if (!level.isClientSide() && level.getDayTime() % 50 == 1) {
+        if (!level.isClientSide() && level.getGameTime() % 50 == 1) {
             if (!isActive() && canStart()) startMachine();
             if (active && started != 0L) {
-                passed += (level.getDayTime() - started);
-                started = level.getDayTime(); //Reset the time
+                passed += (level.getGameTime() - started);
+                started = level.getGameTime(); //Reset the time
                 if (passed >= getOperationalTime()) {
                     active = false;
                     passed = 0L;
