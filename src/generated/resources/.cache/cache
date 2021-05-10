@@ -2,4 +2,16 @@ a9c6ca6829cd484bbfa78c09806e381a4761eac8 data/forge/tags/items/bread.json
 aaabff20968e0b39e0a18b5dc64d039a1bf1dbcb data/forge/tags/items/crops.json
 aaabff20968e0b39e0a18b5dc64d039a1bf1dbcb data/forge/tags/items/crops/apple.json
 0365ee4d3a3d5d110baeb3a65a5ed84a4a9c7093 data/forge/tags/items/raw_fishes.json
+232f2bfaf3571d31eb609ae23f57ce5f62a9633c data/forge/tags/items/stick.json
+f41a98a6e4ca86a11c5e76c5af7375d38caa16ae data/forge/tags/items/tools/axe.json
+fade5f70747ea2a807c79e8fd4413b728c5b0b48 data/forge/tags/items/tools/fishing_rod.json
+74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/tools/hammer.json
+fc0d93992bbf905694782fb0987351c695ee9bc7 data/forge/tags/items/tools/hoe.json
+a210dbeb6f7fafddb351320d9db9942fee147464 data/forge/tags/items/tools/pickaxe.json
+74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/tools/scythe.json
+5a68548a9945ecd2fb42b7e6de02bcc917536c1c data/forge/tags/items/tools/shears.json
+ae1e651de9c0a68eead4cb134e61f1213f2a5b6e data/forge/tags/items/tools/shovel.json
+74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/tools/sickle.json
+2fc9e6cb04f7768c77835ca1ec038330c7c01b1f data/forge/tags/items/tools/sword.json
+74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/tools/watering_can.json
 8452ea140d4aeeeea6b5426fe8512988b3c64633 data/penguinlib/database/time_unit.csv
