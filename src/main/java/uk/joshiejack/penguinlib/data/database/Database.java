@@ -1,7 +1,6 @@
 package uk.joshiejack.penguinlib.data.database;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
@@ -22,16 +21,15 @@ import uk.joshiejack.penguinlib.events.DatabaseLoadedEvent;
 import javax.annotation.Nonnull;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = PenguinLib.MODID)
 public class Database extends ReloadListener<Map<String, Table>> {
-    private static final Database INSTANCE = new Database();
+    public static final Database INSTANCE = new Database();
     private final Logger LOGGER = LogManager.getLogger();
-    private final int pathSuffixLength = ".csv".length();
+    public static final int pathSuffixLength = ".csv".length();
+    private static final String directory = "database";
+    private static final int dirLength = directory.length() + 1;
 
     public void print(Map<String, Table> tables) {
         for (String table: tables.keySet()) {
@@ -93,33 +91,49 @@ public class Database extends ReloadListener<Map<String, Table>> {
         }
     }
 
+    private void loadData(Map<String, Table> tables, IResourceManager rm, ResourceLocation rl) {
+        String path = rl.getPath();
+        try {
+            IResource resource = rm.getResource(rl);
+            InputStream is = resource.getInputStream();
+            Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            parseCSV(tables, path.substring(dirLength, path.length() - pathSuffixLength), IOUtils.toString(reader));
+        } catch (IllegalArgumentException | IOException ex){
+            LOGGER.error("Couldn't parse data file from {}", rl, ex);
+        }
+    }
+
+    public Table loadTable(@Nonnull IResourceManager rm, String table) {
+        Map<String, Table> tables = new HashMap<>();
+        rm.listResources(directory, (fileName) -> fileName.endsWith(table + ".csv")).forEach(rl -> loadData(tables, rm, rl));
+        return tables.getOrDefault(table, Table.EMPTY);
+    }
+
     @Nonnull
     @Override
-    protected Map<String, Table> prepare(@Nonnull IResourceManager rm, @Nonnull IProfiler profiler) {
-        Map<String, Table> tables = Maps.newHashMap();
-        String directory = "database";
-        int i = directory.length() + 1;
+    public Map<String, Table> prepare(@Nonnull IResourceManager rm, @Nonnull IProfiler profiler) {
+        Map<String, Table> tables = new HashMap<>();
         for (ResourceLocation rl : rm.listResources(directory, (fileName) -> fileName.endsWith(".csv"))) {
-            String path = rl.getPath();
-            try {
-                IResource resource = rm.getResource(rl);
-                InputStream is = resource.getInputStream();
-                Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-                parseCSV(tables, path.substring(i, path.length() - pathSuffixLength), IOUtils.toString(reader));
-            } catch (IllegalArgumentException | IOException ex){
-                LOGGER.error("Couldn't parse data file from {}", rl, ex);
-            }
+            loadData(tables, rm, rl);
         }
 
-        //Tables have been filled with data, we can now process the sql
-        //Action key words
-        //DELETE or UPDATE
-        //FROM table_name or *
-        //@Optional WHERE clauses
-        // With AND OR NOT support
-
-        //DELETE
-        //UPDATE
+        //Allow for processing of JSONs?
+        //TODO
+        /*
+        {
+  "table": "time_unit",
+  "data": [
+    {
+      "name": "day",
+      "duration": 24000
+    },
+    {
+      "name": "five_minutes",
+      "duration": 100
+    }
+  ]
+}
+         */
 
         return tables;
     }
@@ -128,6 +142,6 @@ public class Database extends ReloadListener<Map<String, Table>> {
     protected void apply(@Nonnull Map<String, Table> tables, @Nonnull IResourceManager rm, @Nonnull IProfiler profiler) {
         if (PenguinConfig.enableDebuggingTools)
             print(tables);
-        MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
+        MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables, rm));
     }
 }

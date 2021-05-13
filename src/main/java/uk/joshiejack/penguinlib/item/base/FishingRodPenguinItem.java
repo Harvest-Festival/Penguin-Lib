@@ -3,10 +3,10 @@ package uk.joshiejack.penguinlib.item.base;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.Item;
 
-public class PenguinFishingRodItem extends FishingRodItem {
+public class FishingRodPenguinItem extends FishingRodItem {
     private final int quality;
 
-    public PenguinFishingRodItem(Item.Properties properties, int quality) {
+    public FishingRodPenguinItem(Item.Properties properties, int quality) {
         super(properties);
         this.quality = quality;
     }

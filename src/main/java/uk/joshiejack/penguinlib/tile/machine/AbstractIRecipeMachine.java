@@ -1,10 +1,10 @@
 package uk.joshiejack.penguinlib.tile.machine;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.SingleItemRecipe;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -19,10 +19,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public abstract class AbstractIRecipeMachine extends AbstractSimpleMachineTileEntity {
-    protected final IRecipeType<? extends SingleItemRecipe> recipeType;
+public abstract class AbstractIRecipeMachine<I extends IRecipe<IInventory>> extends AbstractSimpleMachineTileEntity {
+    protected final IRecipeType<I> recipeType;
 
-    public AbstractIRecipeMachine(TileEntityType<?> type, IRecipeType<? extends SingleItemRecipe> recipeType, String time) {
+    public AbstractIRecipeMachine(TileEntityType<?> type, IRecipeType<I> recipeType) {
+        this(type, recipeType, Objects.requireNonNull(type.getRegistryName()).toString());
+    }
+
+    public AbstractIRecipeMachine(TileEntityType<?> type, IRecipeType<I> recipeType, String time) {
         super(type, time);
         this.recipeType = recipeType;
     }
@@ -33,13 +37,20 @@ public abstract class AbstractIRecipeMachine extends AbstractSimpleMachineTileEn
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected ItemStack getResult(ItemStack stack) {
-        for (IRecipe<?> recipe : level.getRecipeManager().getAllRecipesFor(recipeType)) {
+    @Nullable
+    protected I getRecipeResult(ItemStack stack) {
+        for (I recipe : level.getRecipeManager().getAllRecipesFor(recipeType)) {
             if (recipe.getIngredients().stream().allMatch(ing -> ing.test(stack)))
-                return recipe.getResultItem();
+                return recipe;
         }
 
-        return ItemStack.EMPTY;
+        return null;
+    }
+
+    @Nonnull
+    protected ItemStack getResult(ItemStack stack) {
+        IRecipe<?> recipe = getRecipeResult(stack);
+        return recipe == null ? ItemStack.EMPTY : recipe.getResultItem();
     }
 
     @Override
@@ -54,7 +65,7 @@ public abstract class AbstractIRecipeMachine extends AbstractSimpleMachineTileEn
 
     @Override
     public void finishMachine() {
-        ItemStack result = getResult(items.get(0)).copy();
+        ItemStack result = Objects.requireNonNull(getRecipeResult(items.get(0))).assemble(this);
         items.set(0, result); //Hell yeah!
         PenguinNetwork.sendToNearby(new SetInventorySlotPacket(worldPosition, 0, result), this);
         setChanged();

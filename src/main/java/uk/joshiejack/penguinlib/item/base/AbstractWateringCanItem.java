@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import uk.joshiejack.penguinlib.events.UseWateringCanEvent;
 import uk.joshiejack.penguinlib.util.handlers.SingleFluidHandler;
 import uk.joshiejack.penguinlib.util.helpers.forge.FluidHelper;
@@ -59,7 +60,7 @@ public abstract class AbstractWateringCanItem extends Item {
     @Override
     public ActionResult<ItemStack> use(@Nonnull World world, PlayerEntity player, @Nonnull Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if(attemptToFill(world, player, stack)) return ActionResult.success(stack);
+        if (attemptToFill(world, player, stack)) return ActionResult.success(stack);
         else return ActionResult.pass(stack);
     }
 
@@ -76,7 +77,8 @@ public abstract class AbstractWateringCanItem extends Item {
         return false;
     }
 
-    protected void applyBonemealEffect(World world, BlockPos pos, PlayerEntity player, ItemStack itemstack, Hand hand) {}
+    protected void applyBonemealEffect(World world, BlockPos pos, PlayerEntity player, ItemStack itemstack, Hand hand) {
+    }
 
     private Event.Result onWateringCanUse(ItemStack stack, PlayerEntity player, World worldIn, BlockPos pos) {
         UseWateringCanEvent event = new UseWateringCanEvent(player, stack, worldIn, pos);
@@ -103,7 +105,7 @@ public abstract class AbstractWateringCanItem extends Item {
 
         BlockState state = world.getBlockState(pos);
         if (state.getProperties().contains(BlockStateProperties.MOISTURE) &&
-            state.getValue(BlockStateProperties.MOISTURE) != 7) {
+                state.getValue(BlockStateProperties.MOISTURE) != 7) {
             world.setBlock(pos, state.setValue(BlockStateProperties.MOISTURE, 7), 2);
             if (!player.isCreative() && !stack.isEmpty()) {
                 FluidHelper.drainContainer(stack, 1);
@@ -131,12 +133,12 @@ public abstract class AbstractWateringCanItem extends Item {
                 return ActionResultType.FAIL;
             } else {
                 boolean used = false;
-                for (BlockPos target: getPositions(player, world, pos)) {
+                for (BlockPos target : getPositions(player, world, pos)) {
                     if (FluidHelper.getFluidCapacityFromStack(itemstack) <= 0) break;
                     if (water(player, world, target, itemstack, hand)) {
                         world.playSound(null, target, SoundEvents.GENERIC_SWIM, SoundCategory.NEUTRAL,
                                 player.getRandom().nextFloat() * 0.25F + 0.7F, player.getRandom().nextFloat() + 0.5F);
-                        for (int i = 0 ; i < 60; i++) {
+                        for (int i = 0; i < 60; i++) {
                             double x = pos.getX() + player.getRandom().nextFloat();
                             double z = pos.getZ() + player.getRandom().nextFloat();
                             world.addAlwaysVisibleParticle(ParticleTypes.SPLASH, x, pos.getY() + 1D, z, 0, 0, 0);
@@ -147,7 +149,7 @@ public abstract class AbstractWateringCanItem extends Item {
                     }
                 }
 
-                return used ? ActionResultType.SUCCESS: ActionResultType.PASS;
+                return used ? ActionResultType.SUCCESS : ActionResultType.PASS;
             }
         } else return ActionResultType.FAIL;
     }
@@ -160,7 +162,10 @@ public abstract class AbstractWateringCanItem extends Item {
     @Override
     public void fillItemCategory(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> items) {
         if (allowdedIn(group)) {
-            items.add(createFilledWateringCan(new ItemStack(this)));
+            if (CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null)
+                items.add(createFilledWateringCan(new ItemStack(this)));
+            else
+                items.add(new ItemStack(this));
         }
     }
 }

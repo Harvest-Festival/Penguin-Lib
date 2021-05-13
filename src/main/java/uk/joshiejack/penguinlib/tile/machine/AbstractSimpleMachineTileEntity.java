@@ -3,7 +3,7 @@ package uk.joshiejack.penguinlib.tile.machine;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
-import uk.joshiejack.penguinlib.data.database.registries.TimeUnitRegistry;
+import uk.joshiejack.penguinlib.data.TimeUnitRegistry;
 
 import javax.annotation.Nonnull;
 

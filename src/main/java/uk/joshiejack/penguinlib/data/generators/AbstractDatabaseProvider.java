@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.data.database;
+package uk.joshiejack.penguinlib.data.generators;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
@@ -6,6 +6,10 @@ import com.google.common.collect.Multimap;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
+import uk.joshiejack.penguinlib.data.TimeUnitRegistry;
+import uk.joshiejack.penguinlib.data.database.CSVUtils;
 
 import javax.annotation.Nonnull;
 import java.io.BufferedWriter;
@@ -14,20 +18,36 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public abstract class DatabaseProvider implements IDataProvider {
+public abstract class AbstractDatabaseProvider implements IDataProvider {
     private final Multimap<String, String> data = HashMultimap.create();
     private final Map<String, String> headings = new HashMap<>();
     private final DataGenerator gen;
     private final String modid;
 
-    public DatabaseProvider(DataGenerator gen, String modid) {
+    public AbstractDatabaseProvider(DataGenerator gen, String modid) {
         this.gen = gen;
         this.modid = modid;
     }
 
-    protected void addEntry(String file, String headings, String line) {
+    public void addEntry(String file, String headings, String line) {
         this.headings.put(file, headings);
         this.data.get(file).add(line);
+    }
+
+    protected void addLootTableMerge(ResourceLocation target) {
+        addEntry("merge_loot_table", "Target,Loot Table", CSVUtils.join(target, new ResourceLocation(modid, target.getPath())));
+    }
+
+    protected void addTimeUnitForMachine(TileEntityType<?> type, TimeUnitRegistry.Defaults duration) {
+        addTimeUnit(Objects.requireNonNull(type.getRegistryName()).toString(), duration.getValue());
+    }
+
+    protected void addTimeUnitForMachine(TileEntityType<?> type, long duration) {
+        addTimeUnit(Objects.requireNonNull(type.getRegistryName()).toString(), duration);
+    }
+
+    protected void addTimeUnit(String name, long duration) {
+        addEntry("time_unit", "Name,Duration", CSVUtils.join(name, duration));
     }
 
     protected abstract void addDatabaseEntries();

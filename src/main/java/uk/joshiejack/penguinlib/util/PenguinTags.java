@@ -14,7 +14,6 @@ public class PenguinTags {
     public static final ITag.INamedTag<Item> BREAD = forgeTag("bread");
     public static final ITag.INamedTag<Item> RAW_FISHES = forgeTag("raw_fishes");
     public static final ITag.INamedTag<Item> APPLE = PenguinTags.forgeTag("crops/apple");
-    public static final ITag.INamedTag<Item> STICK = forgeTag("stick");
     //######################################### TOOLS ###########################################
     public static final ITag.INamedTag<Item> PICKAXES = forgeTag("tools/pickaxe");
     public static final ITag.INamedTag<Item> AXES = forgeTag("tools/axe");

@@ -26,7 +26,6 @@ public final class PenguinItemTags extends ItemTagsProvider {
         tag(PenguinTags.APPLE).add(Items.APPLE);
         tag(Tags.Items.CROPS).add(Items.APPLE);
 
-        tag(PenguinTags.STICK).add(Items.STICK);
         tag(PenguinTags.HAMMERS);
         tag(PenguinTags.SCYTHES);
         tag(PenguinTags.SICKLES);

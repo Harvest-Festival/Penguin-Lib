@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.data;
+package uk.joshiejack.penguinlib.data.custom;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import uk.joshiejack.penguinlib.data.adapters.CustomObjectAdapter;
 import uk.joshiejack.penguinlib.data.adapters.ResourceLocationAdapter;
-import uk.joshiejack.penguinlib.data.custom.CustomObject;
 
 public class PenguinGson {
     private static Gson gson; //Temporary

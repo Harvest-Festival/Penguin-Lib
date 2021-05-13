@@ -16,18 +16,9 @@ public class PenguinItem extends Item {
 
     public PenguinItem(Item.Properties properties) {
         super(properties);
-        if (!(properties instanceof Properties)) {
-            throw new ClassCastException("Penguin Item should not be used with vanilla properties!");
-        }
-
-        this.useAction = UseAction.NONE;
-        this.useDuration = 0;
-    }
-
-    public PenguinItem(Properties properties) {
-        super(properties);
-        this.useAction = properties.useAction;
-        this.useDuration = properties.useDuration;
+        Properties pp = properties instanceof Properties ? ((Properties)properties) : null;
+        this.useAction = pp == null ? UseAction.NONE : pp.useAction;
+        this.useDuration = pp == null ? 0 : pp.useDuration;
     }
 
     @Override

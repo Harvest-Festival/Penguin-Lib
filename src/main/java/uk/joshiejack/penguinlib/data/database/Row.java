@@ -86,6 +86,10 @@ public class Row {
         return ForgeRegistries.ENTITIES.getValue(new ResourceLocation(get(name).toString()));
     }
 
+    public ResourceLocation getRL(String name) {
+        return new ResourceLocation(get(name));
+    }
+
     public Item item() {
         return item("item");
     }
