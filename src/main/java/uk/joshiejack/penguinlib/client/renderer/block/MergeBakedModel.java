@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("Deprecation")
-public abstract class MergeBakedModel implements IBakedModel {
+public abstract class MergeBakedModel extends AbstractBakedPenguinModel {
     private final IBakedModel parent;
 
     public MergeBakedModel(IBakedModel parent) {
@@ -64,4 +64,6 @@ public abstract class MergeBakedModel implements IBakedModel {
     public ItemOverrideList getOverrides() {
         return parent.getOverrides();
     }
+
+
 }
