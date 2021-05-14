@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "penguinlib:unfired_mug"
+  },
+  "result": "penguinlib:mug",
+  "experience": 0.3,
+  "cookingtime": 200
+}

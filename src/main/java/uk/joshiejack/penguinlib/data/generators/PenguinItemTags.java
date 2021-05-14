@@ -1,5 +1,6 @@
 package uk.joshiejack.penguinlib.data.generators;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
@@ -25,6 +26,8 @@ public final class PenguinItemTags extends ItemTagsProvider {
         rawTag.add(Items.COD, Items.SALMON, Items.PUFFERFISH, Items.TROPICAL_FISH);
         tag(PenguinTags.APPLE).add(Items.APPLE);
         tag(Tags.Items.CROPS).add(Items.APPLE);
+        tag(PenguinTags.PUMPKIN).add(Blocks.PUMPKIN.asItem());
+        tag(PenguinTags.FUNGUS).add(Items.WARPED_FUNGUS, Items.CRIMSON_FUNGUS);
 
         tag(PenguinTags.HAMMERS);
         tag(PenguinTags.SCYTHES);

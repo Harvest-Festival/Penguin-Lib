@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay"
+    }
+  },
+  "result": {
+    "item": "penguinlib:unfired_plate"
+  }
+}

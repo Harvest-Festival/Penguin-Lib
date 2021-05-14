@@ -4,13 +4,15 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 public class PenguinItem extends Item {
+    private final Supplier<ItemStack> result;
     private final UseAction useAction;
     private final int useDuration;
 
@@ -19,6 +21,7 @@ public class PenguinItem extends Item {
         Properties pp = properties instanceof Properties ? ((Properties)properties) : null;
         this.useAction = pp == null ? UseAction.NONE : pp.useAction;
         this.useDuration = pp == null ? 0 : pp.useDuration;
+        this.result = pp == null  || pp.result == null ? null : pp.result;
     }
 
     @Override
@@ -35,11 +38,17 @@ public class PenguinItem extends Item {
     @Nonnull
     @Override
     public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull LivingEntity entity) {
-        ItemStack itemstack = super.finishUsingItem(stack, world, entity);
-        return entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.instabuild ? itemstack : new ItemStack(Items.BOWL);
+        if (result == null || (!(entity instanceof PlayerEntity))) return super.finishUsingItem(stack, world, entity);
+        super.finishUsingItem(stack, world, entity);
+        if (stack.isEmpty())
+            return result.get();
+        else
+            ItemHandlerHelper.giveItemToPlayer((PlayerEntity) entity, result.get());
+        return stack;
     }
 
     public static class Properties extends Item.Properties {
+        private Supplier<ItemStack> result;
         private UseAction useAction = UseAction.EAT;
         private int useDuration = 32;
 
@@ -50,6 +59,11 @@ public class PenguinItem extends Item {
 
         public Properties useDuration(int useDuration) {
             this.useDuration = useDuration;
+            return this;
+        }
+
+        public Properties withContainer(Supplier<ItemStack> result) {
+            this.result = result;
             return this;
         }
     }

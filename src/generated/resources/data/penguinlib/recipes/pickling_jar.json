@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "G"
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:glass/colorless"
+    },
+    "S": {
+      "tag": "forge:nuggets/iron"
+    }
+  },
+  "result": {
+    "item": "penguinlib:pickling_jar",
+    "count": 4
+  }
+}

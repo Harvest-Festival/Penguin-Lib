@@ -19,10 +19,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
 import uk.joshiejack.penguinlib.data.custom.CustomObject;
-import uk.joshiejack.penguinlib.data.generators.PenguinBlockTags;
-import uk.joshiejack.penguinlib.data.generators.PenguinItemTags;
-import uk.joshiejack.penguinlib.data.generators.PenguinLibDatabase;
+import uk.joshiejack.penguinlib.data.generators.*;
 import uk.joshiejack.penguinlib.events.CollectRegistryEvent;
+import uk.joshiejack.penguinlib.item.PenguinItems;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.PenguinPacket;
 import uk.joshiejack.penguinlib.util.PenguinLoader;
@@ -56,6 +55,7 @@ public class PenguinLib {
         registerPenguinLoaderData(eventBus);
         directory = new File("config", MODID);
         MinecraftForge.EVENT_BUS.register(this);
+        PenguinItems.ITEMS.register(eventBus);
     }
 
     private void registerRegistries(CollectRegistryEvent.Loader event) {
@@ -96,10 +96,16 @@ public class PenguinLib {
     public static void onDataGathering(final GatherDataEvent event) {
         final DataGenerator generator = event.getGenerator();
         if (event.includeServer()) {
-            generator.addProvider(new PenguinLibDatabase(generator));
+            generator.addProvider(new PenguinDatabase(generator));
             BlockTagsProvider blockTags = new PenguinBlockTags(generator, event.getExistingFileHelper());
             generator.addProvider(blockTags);
             generator.addProvider(new PenguinItemTags(generator, blockTags, event.getExistingFileHelper()));
+            generator.addProvider(new PenguinRecipes(generator));
+        }
+
+        if (event.includeClient()) {
+            generator.addProvider(new PenguinLanguage(generator));
+            generator.addProvider(new PenguinItemModels(generator, event.getExistingFileHelper()));
         }
     }
 

@@ -52,7 +52,7 @@ public class VillagerTrading {
     }
 
     @SubscribeEvent
-    public static void onLootTableLoad(DatabaseLoadedEvent event) {
+    public static void onDatabaseLoaded(DatabaseLoadedEvent event) {
         TRADES.clear();
         event.table("villager_trades").rows().forEach(row -> {
             VillagerProfession profession = ForgeRegistries.PROFESSIONS.getValue(row.getRL("profession"));

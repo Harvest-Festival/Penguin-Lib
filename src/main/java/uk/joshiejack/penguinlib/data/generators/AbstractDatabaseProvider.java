@@ -6,6 +6,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import uk.joshiejack.penguinlib.data.TimeUnitRegistry;
@@ -32,6 +33,10 @@ public abstract class AbstractDatabaseProvider implements IDataProvider {
     public void addEntry(String file, String headings, String line) {
         this.headings.put(file, headings);
         this.data.get(file).add(line);
+    }
+
+    protected void addFurnaceFuel(Item item, int burnTime) {
+        addEntry("furnace_fuels", "Item,Burn Time", CSVUtils.join(item.getRegistryName().toString(), burnTime));
     }
 
     protected void addLootTableMerge(ResourceLocation target) {

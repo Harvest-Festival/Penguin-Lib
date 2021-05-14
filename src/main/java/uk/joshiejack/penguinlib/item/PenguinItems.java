@@ -1,23 +1,20 @@
 package uk.joshiejack.penguinlib.item;
 
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import uk.joshiejack.penguinlib.PenguinLib;
 
-@Mod.EventBusSubscriber(modid = PenguinLib.MODID)
 public class PenguinItems {
-    public static final ItemEntity ENTITY = null;
-    //public static final ItemSpecial SPECIAL = null;
-    //public static final ItemDinnerware DINNERWARE = null;
-
-    //TODO?
-    /*
-    @SubscribeEvent
-    public static void registerItems(final RegistryEvent.Register<Item> event) {
-        event.getRegistry().registerAll(new ItemEntity(), new ItemSpecial());
-        if (PenguinConfig.forceDinnerwareItem || PenguinConfig.requireDishes) event.getRegistry().register(new ItemDinnerware());
-        if (PenguinConfig.enableDebuggingTools) {
-            event.getRegistry().register(new ItemTools());
-        }
-    }*/
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, PenguinLib.MODID);
+    public static final RegistryObject<Item> DEEP_BOWL = ITEMS.register("deep_bowl", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> GLASS = ITEMS.register("glass", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> JAM_JAR = ITEMS.register("jam_jar", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> PICKLING_JAR = ITEMS.register("pickling_jar", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> MUG = ITEMS.register("mug", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> PLATE = ITEMS.register("plate", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> UNFIRED_MUG = ITEMS.register("unfired_mug", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> UNFIRED_PLATE = ITEMS.register("unfired_plate", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
 }
