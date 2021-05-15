@@ -19,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
 import uk.joshiejack.penguinlib.data.custom.CustomObject;
+import uk.joshiejack.penguinlib.data.database.Database;
 import uk.joshiejack.penguinlib.data.generators.*;
 import uk.joshiejack.penguinlib.events.CollectRegistryEvent;
 import uk.joshiejack.penguinlib.item.PenguinItems;
@@ -56,6 +57,7 @@ public class PenguinLib {
         directory = new File("config", MODID);
         MinecraftForge.EVENT_BUS.register(this);
         PenguinItems.ITEMS.register(eventBus);
+        Database.REGISTRY.register(eventBus);
     }
 
     private void registerRegistries(CollectRegistryEvent.Loader event) {

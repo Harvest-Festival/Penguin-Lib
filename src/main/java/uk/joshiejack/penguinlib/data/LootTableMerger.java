@@ -48,7 +48,7 @@ public class LootTableMerger {
         //If we have not init the resource map then set it up
         if (resourceMap.size() == 0 && rm != null) {
             elementMap.clear();
-            Database.INSTANCE.loadTable(rm, "merge_loot_table").rows().forEach(row -> {
+            Database.loadTable(rm, "merge_loot_table").rows().forEach(row -> {
                 ResourceLocation target = row.getRL("target");
                 ResourceLocation lootTable = row.getRL("loot table");
                 JsonElement element = build(target, lootTable, rm);
