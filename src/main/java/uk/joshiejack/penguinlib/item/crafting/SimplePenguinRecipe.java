@@ -9,33 +9,16 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 
 @SuppressWarnings("NullableProblems")
-public class SimplePenguinRecipe implements IRecipe<IInventory> {
-    protected final ResourceLocation rl;
-    protected final Ingredient ingredient;
-    protected final ItemStack output;
-    protected final IRecipeType<?> type;
-    protected final IRecipeSerializer<?> serializer;
-
+public class SimplePenguinRecipe extends AbstractSimplePenguinRecipe<ItemStack> implements IRecipe<IInventory> {
     public SimplePenguinRecipe(IRecipeType<?> recipeType, IRecipeSerializer<?> recipeSerializer, ResourceLocation rl, Ingredient ingredient, ItemStack output) {
-        this.type = recipeType;
-        this.serializer = recipeSerializer;
-        this.rl = rl;
-        this.ingredient = ingredient;
-        this.output = output;
-    }
-
-    @Override
-    public boolean matches(IInventory inventory, @Nonnull World world) {
-        return ingredient.test(inventory.getItem(0));
+        super(recipeType, recipeSerializer, rl, ingredient, output);
     }
 
     @Override
@@ -44,35 +27,8 @@ public class SimplePenguinRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public boolean canCraftInDimensions(int w, int h) {
-        return true;
-    }
-
-    @Override
     public ItemStack getResultItem() {
         return output;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return rl;
-    }
-
-    @Override
-    public IRecipeSerializer<?> getSerializer() {
-        return serializer;
-    }
-
-    @Override
-    public IRecipeType<?> getType() {
-        return type;
-    }
-
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        NonNullList<Ingredient> nonnulllist = NonNullList.create();
-        nonnulllist.add(this.ingredient);
-        return nonnulllist;
     }
 
     public static class Serializer<T extends SimplePenguinRecipe> extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<T> {
@@ -100,14 +56,14 @@ public class SimplePenguinRecipe implements IRecipe<IInventory> {
 
         @Nonnull
         @Override
-        public T fromNetwork(@Nonnull ResourceLocation resource, PacketBuffer buffer) {
+        public T fromNetwork(@Nonnull ResourceLocation resource, @Nonnull PacketBuffer buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack itemstack = buffer.readItem();
             return factory.create(resource, ingredient, itemstack);
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, T recipe) {
+        public void toNetwork(@Nonnull PacketBuffer buffer, @Nonnull T recipe) {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.output);
         }
