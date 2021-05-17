@@ -5,12 +5,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import uk.joshiejack.penguinlib.client.gui.AbstractContainerScreen;
-import uk.joshiejack.penguinlib.inventory.BookContainer;
+import uk.joshiejack.penguinlib.client.gui.book.page.AbstractPage;
+import uk.joshiejack.penguinlib.inventory.AbstractBookContainer;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("ConstantConditions")
-public class Book extends AbstractContainerScreen<BookContainer> {
+public class Book extends AbstractContainerScreen<AbstractBookContainer> {
     private static final Object2ObjectMap<String, Book> BOOK_INSTANCES = new Object2ObjectOpenHashMap<>();
     private final List<Tab> tabs = new ArrayList<>();
     private final ResourceLocation backgroundL;
@@ -27,13 +29,13 @@ public class Book extends AbstractContainerScreen<BookContainer> {
     private Tab defaultTab = Tab.EMPTY;
     private Tab tab;
 
-    public Book(String modid, BookContainer container, PlayerInventory inv, ITextComponent name) {
+    public Book(String modid, AbstractBookContainer container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name, null, 360, 230);
         backgroundL = new ResourceLocation(modid, "textures/gui/book_left.png");
         backgroundR = new ResourceLocation(modid, "textures/gui/book_right.png");
     }
 
-    public static Book getInstance(String modid, BookContainer container, PlayerInventory inv, ITextComponent name, Consumer<Book> consumer) {
+    public static Book getInstance(String modid, AbstractBookContainer container, PlayerInventory inv, ITextComponent name, Consumer<Book> consumer) {
         if (!BOOK_INSTANCES.containsKey(modid)) {
             Book screen = new Book(modid, container, inv, name);
             consumer.accept(screen); //Apply extra data to this bookscreen
@@ -49,6 +51,12 @@ public class Book extends AbstractContainerScreen<BookContainer> {
         return super.addButton(button);
     }
 
+    @Nonnull
+    @Override
+    public <T extends IGuiEventListener> T addWidget(@Nonnull T widget) {
+        return super.addWidget(widget);
+    }
+
     public void setTab(Tab tab) {
         this.tab = tab;
         this.init(minecraft, width, height);
@@ -59,18 +67,13 @@ public class Book extends AbstractContainerScreen<BookContainer> {
     }
 
     /**
-     * Set the default page for this book
-     **/
-    public void withDefault(Tab tab) {
-        this.defaultTab = tab;
-    }
-
-    /**
      * Add a page to this book, automatically creates a tab for the page on the left side of the book
      **/
     public Tab withTab(Tab tab) {
         if (!tabs.contains(tab))
             tabs.add(tab);
+        if (defaultTab == Tab.EMPTY)
+            defaultTab = tab;
         return tab;
     }
 
@@ -78,7 +81,7 @@ public class Book extends AbstractContainerScreen<BookContainer> {
         return minecraft;
     }
 
-    public boolean isSelected(Page page) {
+    public boolean isSelected(AbstractPage page) {
         return this.tab.getPage() == page;
     }
 
@@ -95,12 +98,12 @@ public class Book extends AbstractContainerScreen<BookContainer> {
         titleLabelY = topPos - 30;
         if (tab == null)
             tab = defaultTab;
-        if (tabs.size() == 0)
-            tabs.add(tab);
         int y = 0;
         for (Tab tab : tabs)
             addButton(tab.create(this, centre - 180, 15 + topPos + (y++ * 36)));
         tab.addTabs(this, centre + 154, 15 + topPos);
+        tab.getPage().initLeft(this, bgLeftOffset, 15 + topPos);
+        tab.getPage().initRight(this, centre, 15 + topPos);
     }
 
     @Override

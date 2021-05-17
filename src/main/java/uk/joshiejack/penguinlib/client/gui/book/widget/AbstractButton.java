@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.client.gui.book.button;
+package uk.joshiejack.penguinlib.client.gui.book.widget;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.widget.button.Button;

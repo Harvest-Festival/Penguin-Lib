@@ -10,5 +10,5 @@ import uk.joshiejack.penguinlib.PenguinLib;
 public class PenguinContainers {
     //TODO: REMOVE
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, PenguinLib.MODID);
-    public static final RegistryObject<ContainerType<BookContainer>> BOOK = CONTAINERS.register("book", () -> IForgeContainerType.create((id, inv, data) -> new BookContainer(id)));
+    public static final RegistryObject<ContainerType<AbstractBookContainer>> BOOK = CONTAINERS.register("book", () -> IForgeContainerType.create((id, inv, data) -> new TestBookContainer(id)));
 }

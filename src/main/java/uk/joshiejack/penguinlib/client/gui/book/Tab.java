@@ -5,7 +5,8 @@ import net.minecraft.client.gui.widget.button.AbstractButton;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import uk.joshiejack.penguinlib.client.gui.book.button.TabButton;
+import uk.joshiejack.penguinlib.client.gui.book.widget.TabButton;
+import uk.joshiejack.penguinlib.client.gui.book.page.AbstractPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +14,30 @@ import java.util.List;
 public class Tab {
     public static final ITextComponent EMPTY_STRING = new StringTextComponent(Strings.EMPTY);
     public static final Tab EMPTY = new Tab(EMPTY_STRING);
-    private final List<Page> pages = new ArrayList<>();
+    private final List<AbstractPage> pages = new ArrayList<>();
     private final ITextComponent name;
-    private Page defaultPage = Page.EMPTY;
-    private Page page;
+    private AbstractPage defaultPage = AbstractPage.EMPTY;
+    private AbstractPage page;
 
     public Tab(ITextComponent name) {
         this.name = name;
     }
 
-    public Tab withDefault(Page page) {
-        this.defaultPage = page;
+    public Tab withPage(AbstractPage page) {
+        if (!pages.contains(page))
+            pages.add(page);
+        if (defaultPage == AbstractPage.EMPTY)
+            defaultPage = page;
         return this;
     }
 
-    public Page getPage() {
+    public AbstractPage getPage() {
+        if (page == null)
+            page = defaultPage;
         return page;
     }
 
-    public void setPage(Page page) {
+    public void setPage(AbstractPage page) {
         this.page = page;
     }
 
@@ -48,15 +54,10 @@ public class Tab {
         return new TabButton.Left(screen, x, y, name, action, tooltip, screen.isSelected(this));
     }
 
-    public Tab withPage(Page page) {
-        this.pages.add(page);
-        return this;
-    }
-
     public void addTabs(Book screen, int x, int y) {
         if (pages.size() > 1) {
             int i = 0;
-            for (Page page : pages)
+            for (AbstractPage page : pages)
                 screen.addButton(page.createTab(screen, this, x, y + (i++ * 36)));
         }
     }

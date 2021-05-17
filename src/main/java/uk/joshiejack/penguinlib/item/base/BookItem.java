@@ -11,17 +11,16 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
-import uk.joshiejack.penguinlib.inventory.PenguinContainers;
 
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
-public class AbstractBookItem extends Item {
-    public AbstractBookItem(Properties properties) {
+public class BookItem extends Item {
+    private final Supplier<ContainerType<?>> container;
+
+    public BookItem(Properties properties, Supplier<ContainerType<?>> container) {
         super(properties);
-    }
-
-    protected ContainerType<?> getContainerType() {
-        return PenguinContainers.BOOK.get();
+        this.container = container;
     }
 
     @Nonnull
@@ -29,7 +28,7 @@ public class AbstractBookItem extends Item {
     public ActionResult<ItemStack> use(@Nonnull World world, @Nonnull PlayerEntity player, @Nonnull Hand hand) {
         if (!world.isClientSide) {
             NetworkHooks.openGui((ServerPlayerEntity) player,
-                    new SimpleNamedContainerProvider((id, inv, p) -> getContainerType().create(id, inv),
+                    new SimpleNamedContainerProvider((id, inv, p) -> container.get().create(id, inv),
                     new TranslationTextComponent(getDescriptionId())));
         }
 

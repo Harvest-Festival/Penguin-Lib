@@ -6,7 +6,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import uk.joshiejack.penguinlib.PenguinLib;
-import uk.joshiejack.penguinlib.item.base.AbstractBookItem;
+import uk.joshiejack.penguinlib.inventory.PenguinContainers;
+import uk.joshiejack.penguinlib.item.base.BookItem;
 
 public class PenguinItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, PenguinLib.MODID);
@@ -18,5 +19,5 @@ public class PenguinItems {
     public static final RegistryObject<Item> PLATE = ITEMS.register("plate", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
     public static final RegistryObject<Item> UNFIRED_MUG = ITEMS.register("unfired_mug", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
     public static final RegistryObject<Item> UNFIRED_PLATE = ITEMS.register("unfired_plate", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
-    public static final RegistryObject<Item> TEST_BOOK = ITEMS.register("test_book", () -> new AbstractBookItem(new Item.Properties().tab(ItemGroup.TAB_MISC)));
+    public static final RegistryObject<Item> TEST_BOOK = ITEMS.register("test_book", () -> new BookItem(new Item.Properties().tab(ItemGroup.TAB_MISC), PenguinContainers.BOOK::get));
 }
