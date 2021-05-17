@@ -58,7 +58,8 @@ public class VillagerTrading {
             VillagerProfession profession = ForgeRegistries.PROFESSIONS.getValue(row.getRL("profession"));
             Item input = row.item("input item");
             Item output = row.item("output item");
-            if (profession != null && input != null && output != null) {
+            int tier = row.getAsInt("tier");
+            if (profession != null && input != null && output != null && tier >= 1 && tier <= 5) {
                 get(profession).put(row.getAsInt("tier"),
                         new MerchantOffer(
                                 new ItemStack(input, row.getAsInt("input amount")),

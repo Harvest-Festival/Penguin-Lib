@@ -20,6 +20,7 @@ public class PenguinItemModels extends ItemModelProvider {
     protected void registerModels() {
         PenguinItems.ITEMS.getEntries().stream()
                 .map(RegistryObject::get)
+                .filter(item -> !item.getRegistryName().getPath().contains("book"))
                 .forEach(item -> {
                     String path = Objects.requireNonNull(item.getRegistryName()).getPath();
                     if (item instanceof BlockItem)
