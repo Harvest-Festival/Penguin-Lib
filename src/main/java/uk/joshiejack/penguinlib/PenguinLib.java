@@ -22,6 +22,7 @@ import uk.joshiejack.penguinlib.data.custom.CustomObject;
 import uk.joshiejack.penguinlib.data.database.Database;
 import uk.joshiejack.penguinlib.data.generators.*;
 import uk.joshiejack.penguinlib.events.CollectRegistryEvent;
+import uk.joshiejack.penguinlib.inventory.PenguinContainers;
 import uk.joshiejack.penguinlib.item.PenguinItems;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.PenguinPacket;
@@ -57,6 +58,7 @@ public class PenguinLib {
         directory = new File("config", MODID);
         MinecraftForge.EVENT_BUS.register(this);
         PenguinItems.ITEMS.register(eventBus);
+        PenguinContainers.CONTAINERS.register(eventBus);
         Database.REGISTRY.register(eventBus);
     }
 
