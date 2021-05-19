@@ -40,7 +40,7 @@ public class VillagerTrading {
 
         @Nullable
         @Override
-        public MerchantOffer getOffer(@Nonnull Entity player, @Nonnull Random rando) {
+        public MerchantOffer getOffer(@Nonnull Entity player, @Nonnull Random random) {
             return new MerchantOffer(offer.getBaseCostA(), offer.getResult(), offer.getMaxUses(), offer.getXp(), offer.getPriceMultiplier());
         }
     }

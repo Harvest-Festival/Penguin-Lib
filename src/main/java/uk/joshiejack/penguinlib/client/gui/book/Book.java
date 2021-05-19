@@ -98,9 +98,12 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
         titleLabelY = topPos - 30;
         if (tab == null)
             tab = defaultTab;
-        int y = 0;
-        for (Tab tab : tabs)
-            addButton(tab.create(this, centre - 180, 15 + topPos + (y++ * 36)));
+        if (tabs.size() > 1) {
+            int y = 0;
+            for (Tab tab : tabs)
+                addButton(tab.create(this, centre - 180, 15 + topPos + (y++ * 36)));
+        }
+
         tab.addTabs(this, centre + 154, 15 + topPos);
         tab.getPage().initLeft(this, bgLeftOffset, 15 + topPos);
         tab.getPage().initRight(this, centre, 15 + topPos);

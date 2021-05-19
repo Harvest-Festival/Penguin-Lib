@@ -27,7 +27,7 @@ public final class PenguinItemTags extends ItemTagsProvider {
         tag(PenguinTags.APPLE).add(Items.APPLE);
         tag(Tags.Items.CROPS).add(Items.APPLE);
         tag(PenguinTags.PUMPKIN).add(Blocks.PUMPKIN.asItem());
-        tag(PenguinTags.MELON).add(Items.MELON);
+        tag(PenguinTags.MELON).add(Items.MELON_SLICE);
         tag(PenguinTags.FUNGUS).add(Items.WARPED_FUNGUS, Items.CRIMSON_FUNGUS);
 
         tag(PenguinTags.HAMMERS);

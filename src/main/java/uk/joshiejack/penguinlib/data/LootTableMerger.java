@@ -15,14 +15,19 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.data.database.Database;
+import uk.joshiejack.penguinlib.data.loot.AddLootGlobalModifier;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -31,6 +36,8 @@ import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = PenguinLib.MODID)
 public class LootTableMerger {
+    public static final DeferredRegister<GlobalLootModifierSerializer<?>> LOOT_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.LOOT_MODIFIER_SERIALIZERS, PenguinLib.MODID);
+    public static final RegistryObject<GlobalLootModifierSerializer<?>> ADD_ITEMS = LOOT_MODIFIER_SERIALIZERS.register("add_drop", AddLootGlobalModifier.Serializer::new);
     private static final Multimap<ResourceLocation, LootTable> resourceMap = HashMultimap.create();
     private static final Multimap<ResourceLocation, Pair<ResourceLocation, JsonElement>> elementMap = HashMultimap.create();
     private static final Gson GSON = LootSerializers.createLootTableSerializer().create();

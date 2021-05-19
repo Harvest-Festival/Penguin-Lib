@@ -1,13 +1,13 @@
 package uk.joshiejack.penguinlib.item;
 
+import net.minecraft.item.BannerPatternItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import uk.joshiejack.penguinlib.PenguinLib;
-import uk.joshiejack.penguinlib.inventory.PenguinContainers;
-import uk.joshiejack.penguinlib.item.base.BookItem;
 
 public class PenguinItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, PenguinLib.MODID);
@@ -19,5 +19,5 @@ public class PenguinItems {
     public static final RegistryObject<Item> PLATE = ITEMS.register("plate", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
     public static final RegistryObject<Item> UNFIRED_MUG = ITEMS.register("unfired_mug", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
     public static final RegistryObject<Item> UNFIRED_PLATE = ITEMS.register("unfired_plate", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
-    public static final RegistryObject<Item> TEST_BOOK = ITEMS.register("test_book", () -> new BookItem(new Item.Properties().tab(ItemGroup.TAB_MISC), PenguinContainers.BOOK::get));
+    public static final RegistryObject<Item> PENGUIN_BANNER_PATTERN = ITEMS.register("penguin_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("PENGUIN", "penguin", "pgn", true), (new Item.Properties()).stacksTo(1).tab(ItemGroup.TAB_MISC)));
 }
