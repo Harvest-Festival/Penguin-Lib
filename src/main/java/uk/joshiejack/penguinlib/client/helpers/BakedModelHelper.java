@@ -1,8 +1,7 @@
-package uk.joshiejack.penguinlib.client.renderer.block;
+package uk.joshiejack.penguinlib.client.helpers;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
@@ -13,9 +12,8 @@ import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractBakedPenguinModel implements IBakedModel {
-    //########################### HELPER FUNCTIONS #############################################/////////
-    protected void buildCube(Direction side, TextureAtlasSprite sprite, List<BakedQuad> quads) {
+public abstract class BakedModelHelper {
+    public static void buildCube(Direction side, TextureAtlasSprite sprite, List<BakedQuad> quads) {
         switch (side) {
             case DOWN:
                 quads.add(buildQuad(Direction.DOWN, sprite,
@@ -68,7 +66,7 @@ public abstract class AbstractBakedPenguinModel implements IBakedModel {
         }
     }
 
-    protected BakedQuad retexture(BakedQuad original, TextureAtlasSprite sprite) {
+    public static BakedQuad retexture(BakedQuad original, TextureAtlasSprite sprite) {
         int[] vertexData = original.getVertices();
         int[] newVertexData = new int[vertexData.length];
         System.arraycopy(vertexData, 0, newVertexData, 0, newVertexData.length);
@@ -84,15 +82,15 @@ public abstract class AbstractBakedPenguinModel implements IBakedModel {
         return new BakedQuad(newVertexData, 0, original.getDirection(), sprite, false);
     }
 
-    private float unU(TextureAtlasSprite sprite, float u) {
+    private static float unU(TextureAtlasSprite sprite, float u) {
         return (u - sprite.getU0()) / (sprite.getU1() - sprite.getU0()) * 16.0F;
     }
 
-    private float unV(TextureAtlasSprite sprite, float v) {
+    private static float unV(TextureAtlasSprite sprite, float v) {
         return (v - sprite.getV0()) / (sprite.getV1() - sprite.getV0()) * 16.0F;
     }
 
-    protected BakedQuad buildQuad(Direction side, TextureAtlasSprite sprite,
+    public static BakedQuad buildQuad(Direction side, TextureAtlasSprite sprite,
                                   float x0, float y0, float z0, float u0, float v0,
                                   float x1, float y1, float z1, float u1, float v1,
                                   float x2, float y2, float z2, float u2, float v2,
@@ -108,7 +106,7 @@ public abstract class AbstractBakedPenguinModel implements IBakedModel {
         return builder.build();
     }
 
-    private void putVertex(IVertexConsumer consumer, Direction side, float x, float y, float z, float u, float v) {
+    private static void putVertex(IVertexConsumer consumer, Direction side, float x, float y, float z, float u, float v) {
         ImmutableList<VertexFormatElement> elements = consumer.getVertexFormat().getElements();
         for (int e = 0; e <= elements.size() - 1; e++) {
             VertexFormatElement element = elements.get(e);
