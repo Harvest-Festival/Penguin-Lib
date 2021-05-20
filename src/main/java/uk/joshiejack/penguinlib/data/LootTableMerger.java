@@ -69,12 +69,12 @@ public class LootTableMerger {
         }
 
         //Merge the pools over and under!
-        List<LootPool> oldPools = ObfuscationReflectionHelper.getPrivateValue(LootTable.class, event.getTable(), "pools");
+        List<LootPool> oldPools = ObfuscationReflectionHelper.getPrivateValue(LootTable.class, event.getTable(), "field_186466_c");
         resourceMap.get(event.getName()).forEach(lt -> {
-            List<LootPool> newPools = ObfuscationReflectionHelper.getPrivateValue(LootTable.class, lt, "pools");
+            List<LootPool> newPools = ObfuscationReflectionHelper.getPrivateValue(LootTable.class, lt, "field_186466_c");
             assert oldPools != null;
             oldPools.forEach(lpO -> {
-                List<LootEntry> oldEntries = ObfuscationReflectionHelper.getPrivateValue(LootPool.class, lpO, "entries");
+                List<LootEntry> oldEntries = ObfuscationReflectionHelper.getPrivateValue(LootPool.class, lpO, "field_186453_a");
                 Objects.requireNonNull(newPools).forEach(lpN -> {
                     if (lpN.getName().equals(lpO.getName()) || (lpN.getName().startsWith("custom") && lpO.getName().equals("main"))) {
                         Objects.requireNonNull(oldEntries).addAll(Objects.requireNonNull(ObfuscationReflectionHelper.getPrivateValue(LootPool.class, lpN, "entries")));
