@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:shears",
+    "#forge:tools/pickaxe",
+    "#forge:tools/axe",
+    "#forge:tools/sword",
+    "#forge:tools/hammer",
+    "#forge:tools/shovel",
+    "#forge:tools/hoe",
+    "#forge:tools/shovel",
+    "#forge:tools/scythe",
+    "#forge:tools/fishing_rod",
+    "#forge:tools/watering_can"
+  ]
+}

@@ -21,20 +21,19 @@ public final class PenguinItemTags extends ItemTagsProvider {
 
     @Override
     public void addTags() {
-        tag(PenguinTags.BREAD).add(Items.BREAD);
+        tag(PenguinTags.BREADS).add(Items.BREAD);
         Builder<Item> rawTag = tag(PenguinTags.RAW_FISHES);
         rawTag.add(Items.COD, Items.SALMON, Items.PUFFERFISH, Items.TROPICAL_FISH);
-        tag(PenguinTags.APPLE).add(Items.APPLE);
+        tag(PenguinTags.CROPS_APPLE).add(Items.APPLE);
         tag(Tags.Items.CROPS).add(Items.APPLE);
-        tag(PenguinTags.PUMPKIN).add(Blocks.PUMPKIN.asItem());
-        tag(PenguinTags.MELON).add(Items.MELON_SLICE);
-        tag(PenguinTags.FUNGUS).add(Items.WARPED_FUNGUS, Items.CRIMSON_FUNGUS);
+        tag(PenguinTags.CROPS_PUMPKIN).add(Blocks.PUMPKIN.asItem());
+        tag(PenguinTags.CROPS_MELON).add(Items.MELON_SLICE);
+        tag(PenguinTags.FUNGI).add(Items.WARPED_FUNGUS, Items.CRIMSON_FUNGUS);
 
         tag(PenguinTags.HAMMERS);
         tag(PenguinTags.SCYTHES);
         tag(PenguinTags.SICKLES);
         tag(PenguinTags.WATERING_CANS);
-        tag(PenguinTags.SHEARS).add(Items.SHEARS);
         Builder<Item> swords = tag(PenguinTags.SWORDS);
         ForgeRegistries.ITEMS.getValues().stream()
                 .filter(item -> item instanceof SwordItem)
@@ -59,5 +58,8 @@ public final class PenguinItemTags extends ItemTagsProvider {
         ForgeRegistries.ITEMS.getValues().stream()
                 .filter(item -> item instanceof FishingRodItem)
                 .forEach(fishing_rods::add);
+
+        tag(PenguinTags.TOOLS).addTags(Tags.Items.SHEARS, PenguinTags.PICKAXES, PenguinTags.AXES, PenguinTags.SWORDS, PenguinTags.HAMMERS,
+                PenguinTags.SHOVELS, PenguinTags.HOES, PenguinTags.SHOVELS, PenguinTags.SCYTHES, PenguinTags.FISHING_RODS, PenguinTags.WATERING_CANS);
     }
 }
