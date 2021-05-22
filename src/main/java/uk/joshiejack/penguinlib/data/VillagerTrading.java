@@ -17,18 +17,16 @@ import uk.joshiejack.penguinlib.events.DatabaseLoadedEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = PenguinLib.MODID)
 public class VillagerTrading {
-    private static final Map<VillagerProfession, Int2ObjectMap<MerchantOffer>> TRADES = new HashMap<>();
+    private static final Map<VillagerProfession, Int2ObjectMap<List<MerchantOffer>>> TRADES = new HashMap<>();
 
     @SubscribeEvent
     public static void onReload(VillagerTradesEvent event) {
         if (TRADES.containsKey(event.getType()))
-            TRADES.get(event.getType()).forEach((tier, offer) -> event.getTrades().get(tier).add(new Trade(offer)));
+            TRADES.get(event.getType()).forEach((tier, offers) -> offers.forEach(offer -> event.getTrades().get(tier).add(new Trade(offer))));
     }
 
     static class Trade implements VillagerTrades.ITrade {
@@ -45,10 +43,16 @@ public class VillagerTrading {
         }
     }
 
-    private static Int2ObjectMap<MerchantOffer> get(VillagerProfession profession) {
+    private static Int2ObjectMap<List<MerchantOffer>> get(VillagerProfession profession) {
         if (!TRADES.containsKey(profession))
             TRADES.put(profession, new Int2ObjectOpenHashMap<>());
         return TRADES.get(profession);
+    }
+
+    private static List<MerchantOffer> getList(Int2ObjectMap<List<MerchantOffer>> map, int tier) {
+        if (!map.containsKey(tier))
+            map.put(tier, new ArrayList<>());
+        return map.get(tier);
     }
 
     @SubscribeEvent
@@ -60,14 +64,14 @@ public class VillagerTrading {
             Item output = row.item("output item");
             int tier = row.getAsInt("tier");
             if (profession != null && input != null && output != null && tier >= 1 && tier <= 5) {
-                get(profession).put(row.getAsInt("tier"),
-                        new MerchantOffer(
-                                new ItemStack(input, row.getAsInt("input amount")),
-                                new ItemStack(output, row.getAsInt("output amount")),
-                                row.getAsInt("max trades"),
-                                row.getAsInt("experience"),
-                                row.getAsFloat("price multiplier")
-                        ));
+                getList(get(profession), row.getAsInt("tier")).add(
+                                new MerchantOffer(
+                                        new ItemStack(input, row.getAsInt("input amount")),
+                                        new ItemStack(output, row.getAsInt("output amount")),
+                                        row.getAsInt("max trades"),
+                                        row.getAsInt("experience"),
+                                        row.getAsFloat("price multiplier")
+                                ));
             }
         });
     }

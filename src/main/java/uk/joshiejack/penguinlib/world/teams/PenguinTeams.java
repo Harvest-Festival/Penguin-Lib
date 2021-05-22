@@ -37,14 +37,6 @@ public class PenguinTeams extends WorldSavedData {
 
     public static PenguinTeams get(ServerWorld world) {
         return world.getDataStorage().computeIfAbsent(PenguinTeams::new, DATA_NAME);
-        /*
-        if (instance == null) {
-            instance = new PenguinTeams(DATA_NAME);
-            world.setData(DATA_NAME, instance);
-            instance.markDirty(); //Save the file
-        }
-
-        return instance; */
     }
 
     @SubscribeEvent
