@@ -131,6 +131,22 @@ public abstract class AbstractWateringCanItem extends Item {
         if (FluidHelper.getFluidCapacityFromStack(itemstack) > 0) {
             if (!player.mayUseItemAt(pos.offset(direction.getNormal()), direction, itemstack)) {
                 return ActionResultType.FAIL;
+            } else if (world.dimensionType().ultraWarm()){
+                int x = pos.getX();
+                int y = pos.getY();
+                int z = pos.getZ();
+                world.playSound(player, pos, SoundEvents.FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
+
+                for(int l = 0; l < 8; ++l) {
+                    world.addParticle(ParticleTypes.LARGE_SMOKE, (double)x + Math.random(), (double)y + Math.random(), (double)z + Math.random(), 0.0D, 0.0D, 0.0D);
+                }
+
+                ItemStack stack = player.getItemInHand(hand);
+                if (!player.isCreative() && !stack.isEmpty()) {
+                    FluidHelper.drainContainer(stack, 1);
+                }
+
+                return ActionResultType.SUCCESS;
             } else {
                 boolean used = false;
                 for (BlockPos target : getPositions(player, world, pos)) {
