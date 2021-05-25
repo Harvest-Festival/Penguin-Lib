@@ -3,19 +3,19 @@ loaderVersion="[36,)"
 license="MIT"
 [[mods]]
     modId="penguinlib"
-    version="${mod_version}"
+    version="${file.jarVersion}"
     displayName="Penguin Lib"
     authors="joshiejack"
     description='''Booya'''
 [[dependencies.penguinlib]]
     modId="forge"
     mandatory=true
-    versionRange="${forge_range}"
+    versionRange="[36,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.penguinlib]]
     modId="minecraft"
     mandatory=true
-    versionRange="${minecraft_range}"
+    versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
