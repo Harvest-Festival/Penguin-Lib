@@ -77,7 +77,7 @@ public class LootTableMerger {
                 List<LootEntry> oldEntries = ObfuscationReflectionHelper.getPrivateValue(LootPool.class, lpO, "field_186453_a");
                 Objects.requireNonNull(newPools).forEach(lpN -> {
                     if (lpN.getName().equals(lpO.getName()) || (lpN.getName().startsWith("custom") && lpO.getName().equals("main"))) {
-                        Objects.requireNonNull(oldEntries).addAll(Objects.requireNonNull(ObfuscationReflectionHelper.getPrivateValue(LootPool.class, lpN, "entries")));
+                        Objects.requireNonNull(oldEntries).addAll(Objects.requireNonNull(ObfuscationReflectionHelper.getPrivateValue(LootPool.class, lpN, "field_186453_a")));
                     }
                 });
             });

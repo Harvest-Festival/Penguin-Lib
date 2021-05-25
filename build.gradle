@@ -35,7 +35,12 @@ repositories {
     }
 }
 
-version = "${minecraft_version}-${mod_version}"
+ext.build_number=""
+if (System.getenv().BUILD_NUMBER) {
+    ext.build_number="-" + System.getenv().BUILD_NUMBER
+}
+
+version = "${minecraft_version}-${mod_version}${build_number}"
 group = 'uk.joshiejack.penguinlib' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Penguin-Lib'
 
