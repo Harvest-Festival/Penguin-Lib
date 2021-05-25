@@ -172,8 +172,10 @@ publishing {
         }
     }
     repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
+      if (project.hasProperty('mavenRepository')) {
+          maven { url mavenRepository }
+      } else {
+          mavenLocal()
+      }
     }
 }
