@@ -10,15 +10,13 @@ Add to your build.gradle:
 ```gradle
 repositories {
   maven {
-    // url of the maven that hosts piscary files
-    url //TODO
+    url 'https://maven.joshiejack.uk/'
   }
 }
 
 dependencies {
-  // Penguin-Lib
-  deobfCompile "uk.joshiejack.piscary:Penguin-Lib:${minecraft_version}-${piscary_version}"
+    compile fg.deobf("uk.joshiejack.penguinlib:Penguin-Lib:${minecraft_version}-${penguinlib_version}")
 }
 ```
 
-`${minecraft_version}` & `${penguinlib_version}` can be found //TODO, check the file name of the version you want.
+`${$penguinlib_version}` can be found [here](https://maven.joshiejack.uk/uk/joshiejack/penguinlib/PenguinLib/)
