@@ -22,5 +22,7 @@ public class PenguinLanguage extends LanguageProvider {
         addItem(PenguinItems.UNFIRED_PLATE, "Unfired Plate");
         addItem(PenguinItems.PENGUIN_BANNER_PATTERN, "Banner Pattern");
         add("item.penguinlib.penguin_banner_pattern.desc", "Penguin");
+        add("button.penguinlib.next", "Next");
+        add("button.penguinlib.previous", "Previous");
     }
 }

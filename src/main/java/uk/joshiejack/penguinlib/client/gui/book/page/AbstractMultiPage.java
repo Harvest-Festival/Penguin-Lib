@@ -43,7 +43,7 @@ public abstract class AbstractMultiPage<P> extends AbstractPage {
             if (page != 0)
                 book.addButton(new ArrowButton.Left(book, left + 20, top + 154, (button) -> back(book)));
             //IF PAGE != MAX_PAGE, Display Right Button
-            int maxPage = (int) Math.ceil(((double) entries.size())/16D);
+            int maxPage = (int) Math.ceil(((double) entries.size())/perPage);
             if (page != maxPage)
                 book.addButton(new ArrowButton.Right(book, left + 130, top + 154, (button) -> forward(book)));
             entries = getEntries();
@@ -73,7 +73,7 @@ public abstract class AbstractMultiPage<P> extends AbstractPage {
             if (page != 0)
                 book.addButton(new ArrowButton.Left(book, left, top + 100, (button) -> back(book)));
             //IF PAGE != MAX_PAGE, Display Right Button
-            int maxPage = (int) Math.ceil(((double) entries.size())/16D);
+            int maxPage = (int) Math.ceil(((double) entries.size())/perPage);
             if (page != maxPage)
                 book.addButton(new ArrowButton.Right(book, left + 100, top + 100, (button) -> forward(book)));
             entries = getEntries();
@@ -107,7 +107,7 @@ public abstract class AbstractMultiPage<P> extends AbstractPage {
         @Override
         public void initRight(Book book, int left, int top) {
             //IF PAGE != MAX_PAGE, Display Right Button
-            int maxPage = (int) Math.ceil(((double) entries.size())/16D);
+            int maxPage = (int) Math.ceil(((double) entries.size())/perPage);
             if (page != maxPage)
                 book.addButton(new ArrowButton.Right(book, left + 119, top + 154, (button) -> forward(book)));
             for (int i = perPage/2; i < perPage; i++) {
