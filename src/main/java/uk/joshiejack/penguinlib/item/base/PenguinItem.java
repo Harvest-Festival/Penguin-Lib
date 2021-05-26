@@ -9,12 +9,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class PenguinItem extends Item {
     private final Supplier<ItemStack> result;
     private final UseAction useAction;
     private final int useDuration;
+    private final BiConsumer<ItemStack, LivingEntity> finisher;
 
     public PenguinItem(Item.Properties properties) {
         super(properties);
@@ -22,6 +24,7 @@ public class PenguinItem extends Item {
         this.useAction = pp == null ? UseAction.NONE : pp.useAction;
         this.useDuration = pp == null ? 0 : pp.useDuration;
         this.result = pp == null  || pp.result == null ? null : pp.result;
+        this.finisher = pp == null ? null : pp.consumer;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class PenguinItem extends Item {
     @Nonnull
     @Override
     public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull LivingEntity entity) {
+        if (finisher != null) finisher.accept(stack, entity); //Do special stuff
         if (result == null || (!(entity instanceof PlayerEntity))) return super.finishUsingItem(stack, world, entity);
         super.finishUsingItem(stack, world, entity);
         if (stack.isEmpty())
@@ -48,6 +52,7 @@ public class PenguinItem extends Item {
     }
 
     public static class Properties extends Item.Properties {
+        public BiConsumer<ItemStack, LivingEntity> consumer;
         private Supplier<ItemStack> result;
         private UseAction useAction = UseAction.EAT;
         private int useDuration = 32;
@@ -64,6 +69,11 @@ public class PenguinItem extends Item {
 
         public Properties withContainer(Supplier<ItemStack> result) {
             this.result = result;
+            return this;
+        }
+
+        public Properties finishUsing(BiConsumer<ItemStack, LivingEntity> consumer) {
+            this.consumer = consumer;
             return this;
         }
     }
