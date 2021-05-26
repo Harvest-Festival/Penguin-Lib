@@ -6,10 +6,14 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nonnull;
@@ -33,5 +37,16 @@ public abstract class AbstractSickleItem extends ToolItem {
     public float getDestroySpeed(@Nonnull ItemStack stack, @Nonnull BlockState state) {
         float ret = super.getDestroySpeed(stack, state);
         return ret > 1 ? ret : EFFECTIVE_MATERIALS.contains(state.getMaterial()) ? speed : 1F;
+    }
+
+    @Override
+    public boolean mineBlock(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull BlockState state,
+                             @Nonnull BlockPos pos, @Nonnull LivingEntity entity) {
+        if (!world.isClientSide && (state.getDestroySpeed(world, pos) != 0.0F)
+                || EFFECTIVE_BLOCKS.contains(state.getBlock()) || EFFECTIVE_MATERIALS.contains(state.getMaterial())) {
+            stack.hurtAndBreak(1, entity, (level) -> level.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+        }
+
+        return true;
     }
 }
