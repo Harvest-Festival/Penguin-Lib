@@ -18,15 +18,18 @@ import java.util.List;
 
 public class AddLootGlobalModifier extends LootModifier {
     private final List<Item> items = new ArrayList<>();
+    private final boolean clearItems;
 
-    public AddLootGlobalModifier(ILootCondition[] conditions, List<Item> items) {
+    public AddLootGlobalModifier(ILootCondition[] conditions, List<Item> items, boolean clearItems) {
         super(conditions);
         this.items.addAll(items);
+        this.clearItems = clearItems;
     }
 
     @Nonnull
     @Override
     protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+        if (clearItems) generatedLoot.clear();
         generatedLoot.add(new ItemStack(items.get(context.getRandom().nextInt(items.size()))));
         return generatedLoot;
     }
@@ -42,7 +45,10 @@ public class AddLootGlobalModifier extends LootModifier {
                     items.add(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item)));
             }
 
-            return new AddLootGlobalModifier(conditions, items);
+            boolean clear = false;
+            if (object.has("clear_items"))
+                clear = JSONUtils.getAsBoolean(object, "clear_items");
+            return new AddLootGlobalModifier(conditions, items, clear);
         }
 
         @Override
@@ -52,6 +58,8 @@ public class AddLootGlobalModifier extends LootModifier {
                 array.add(item.getRegistryName().toString());
             JsonObject object = new JsonObject();
             object.add("items", array);
+            if (instance.clearItems)
+                object.addProperty("clear_items", true);
             return object;
         }
     }
