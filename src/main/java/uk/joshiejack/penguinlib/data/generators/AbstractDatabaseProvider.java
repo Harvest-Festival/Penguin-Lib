@@ -1,7 +1,6 @@
 package uk.joshiejack.penguinlib.data.generators;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -17,7 +16,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public abstract class AbstractDatabaseProvider implements IDataProvider {
     private final Multimap<String, String> data = HashMultimap.create();
@@ -65,10 +67,8 @@ public abstract class AbstractDatabaseProvider implements IDataProvider {
                 save(cache, headings.get(file), data.get(file), gen.getOutputFolder().resolve("data/" + modid + "/database/" + file + ".csv"));
     }
 
-    private void save(DirectoryCache cache, String headings, Collection<String> orig, Path target) throws IOException {
+    private void save(DirectoryCache cache, String headings, Collection<String> strings, Path target) throws IOException {
         StringBuilder builder = new StringBuilder(headings);
-        List<String> strings = Lists.newArrayList(orig);
-        Collections.sort(strings);
         strings.forEach(s -> { builder.append("\n"); builder.append(s); });
         String data = builder.toString();
         String hash = IDataProvider.SHA1.hashUnencodedChars(data).toString();
