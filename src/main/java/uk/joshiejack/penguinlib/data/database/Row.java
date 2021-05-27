@@ -1,6 +1,7 @@
 package uk.joshiejack.penguinlib.data.database;
 
 import com.google.common.collect.Maps;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -88,6 +89,14 @@ public class Row {
 
     public ResourceLocation getRL(String name) {
         return new ResourceLocation(get(name));
+    }
+
+    public Block block() {
+        return block("block");
+    }
+
+    public Block block(String name) {
+        return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(get(name).toString()));
     }
 
     public Item item() {
