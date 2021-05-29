@@ -1,6 +1,6 @@
 package uk.joshiejack.penguinlib.data.generators;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public abstract class AbstractDatabaseProvider implements IDataProvider {
-    private final Multimap<String, String> data = HashMultimap.create();
+    private final Multimap<String, String> data = LinkedHashMultimap.create();
     private final Map<String, String> headings = new HashMap<>();
     private final DataGenerator gen;
     private final String modid;
