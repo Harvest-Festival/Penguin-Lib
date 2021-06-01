@@ -7,7 +7,9 @@ import net.minecraftforge.eventbus.api.BusBuilder;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -18,6 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
+import uk.joshiejack.penguinlib.client.PenguinConfig;
 import uk.joshiejack.penguinlib.data.LootTableMerger;
 import uk.joshiejack.penguinlib.data.custom.CustomObject;
 import uk.joshiejack.penguinlib.data.database.Database;
@@ -57,6 +60,7 @@ public class PenguinLib {
         PenguinItems.ITEMS.register(eventBus);
         LootTableMerger.LOOT_MODIFIER_SERIALIZERS.register(eventBus);
         Database.REGISTRY.register(eventBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PenguinConfig.create());
     }
 
     @SuppressWarnings("unchecked")

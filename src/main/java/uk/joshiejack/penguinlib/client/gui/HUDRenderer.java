@@ -15,15 +15,16 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import uk.joshiejack.penguinlib.PenguinLib;
+import uk.joshiejack.penguinlib.client.PenguinConfig;
 import uk.joshiejack.penguinlib.util.helpers.minecraft.TimeHelper;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = PenguinLib.MODID)
 public class HUDRenderer {
     public static Object2ObjectMap<RegistryKey<World>, HUDRenderData> RENDERERS = new Object2ObjectOpenHashMap<>();
-    public static boolean CLOCK_24H = true;
 
     public abstract static class HUDRenderData {
+        public abstract boolean isEnabled();
         public abstract ResourceLocation getTexture(Minecraft mc);
         public abstract ITextComponent getHeader(Minecraft mc);
         public String getFooter(Minecraft mc) {
@@ -35,7 +36,7 @@ public class HUDRenderer {
     private static String formatTime(int time) {
         int hour = time / 1000;
         int minute = (int) ((double) (time % 1000) / 20 * 1.2);
-        if (CLOCK_24H) {
+        if (PenguinConfig.clockType.get() == PenguinConfig.ClockType.TWENTY_FOUR_HOUR) {
             return (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute);
         } else {
             boolean pm = false;
@@ -57,25 +58,25 @@ public class HUDRenderer {
         if (RENDERERS.size() == 0) return;
         Minecraft mc = Minecraft.getInstance();
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            HUDRenderData data = RENDERERS.get(mc.level.dimension());
-            if (data != null) {
+            HUDRenderData hud = RENDERERS.get(mc.level.dimension());
+            if (hud != null && hud.isEnabled()) {
                 MatrixStack matrix = event.getMatrixStack();
                 RenderSystem.enableBlend();
                 int x = 0;
                 int y = 0;
                 RenderSystem.color4f(1F, 1F, 1F, 1F);
-                mc.getTextureManager().bind(data.getTexture(mc));//inMine ? MINE_HUD : season.HUD);
+                mc.getTextureManager().bind(hud.getTexture(mc));//inMine ? MINE_HUD : season.HUD);
                 mc.gui.blit(matrix, x - 44, y - 35, 0, 0, 256, 110);
 
                 //Enlarge the Day
                 matrix.pushPose();
                 matrix.scale(1.4F, 1.4F, 1.4F);
-                ITextComponent header = data.getHeader(mc);
+                ITextComponent header = hud.getHeader(mc);
                 mc.font.drawShadow(matrix, header, (x / 1.4F) + 30, (y / 1.4F) + 7, 0xFFFFFFFF);
                 matrix.popPose();
 
                 //Draw the time
-                mc.font.drawShadow(matrix, data.getFooter(mc), x + 42, y + 23, 0xFFFFFFFF);
+                mc.font.drawShadow(matrix, hud.getFooter(mc), x + 42, y + 23, 0xFFFFFFFF);
                 RenderSystem.disableBlend();
             }
         }

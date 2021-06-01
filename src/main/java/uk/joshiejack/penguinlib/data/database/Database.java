@@ -24,7 +24,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.joshiejack.penguinlib.PenguinConfig;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.events.DatabaseLoadedEvent;
 import uk.joshiejack.penguinlib.item.crafting.SimplePenguinRecipe;
@@ -45,6 +44,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
     public static final int pathSuffixLength = ".csv".length();
     private static final String directory = "database";
     private static final int dirLength = directory.length() + 1;
+    public static boolean enableDebuggingTools = true;
     private final Map<String, String> tableData = new HashMap<>();
 
     public static class Dummy extends SimplePenguinRecipe {
@@ -77,7 +77,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
                 parseCSV(tables, INSTANCE.tableData, name, builder.toString());
             }
 
-            if (PenguinConfig.enableDebuggingTools)
+            if (enableDebuggingTools)
                 print(tables);
             MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
             return new Dummy();
@@ -190,7 +190,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
 
     @Override
     protected void apply(@Nonnull Map<String, Table> tables, @Nonnull IResourceManager rm, @Nonnull IProfiler profiler) {
-        if (PenguinConfig.enableDebuggingTools)
+        if (enableDebuggingTools)
             print(tables);
         MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
     }
