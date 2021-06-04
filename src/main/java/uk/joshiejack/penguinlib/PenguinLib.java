@@ -95,7 +95,7 @@ public class PenguinLib {
 
     @SuppressWarnings("unchecked")
     private void registerPenguinLoaderData(Map<Class<?>, BiConsumer<Class<?>, String>> processors) {
-        ModList.get().getAllScanData().stream()
+         ModList.get().getAllScanData().stream()
                 .map(ModFileScanData::getAnnotations)
                 .flatMap(Collection::stream) //Either of the penguin annotation or the packet annotation is ok
                 .filter(a -> LOADER.equals(a.getAnnotationType()) || PACKET.equals(a.getAnnotationType()))//, i trust that i will use the packet one only on packets ;)

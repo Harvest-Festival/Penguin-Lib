@@ -31,9 +31,6 @@ public class PenguinTeams extends WorldSavedData {
     private final Map<UUID, PenguinTeam> teams = new HashMap<>(); // Team ID > Data
 
     public PenguinTeams() { super(DATA_NAME); }
-    public PenguinTeams(String name) {
-        super(name);
-    }
 
     public static PenguinTeams get(ServerWorld world) {
         return world.getDataStorage().computeIfAbsent(PenguinTeams::new, DATA_NAME);
