@@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.events.DatabaseLoadedEvent;
+import uk.joshiejack.penguinlib.events.DatabasePopulateEvent;
 import uk.joshiejack.penguinlib.item.crafting.SimplePenguinRecipe;
 
 import javax.annotation.Nonnull;
@@ -79,6 +80,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
 
             if (enableDebuggingTools)
                 print(tables);
+            MinecraftForge.EVENT_BUS.post(new DatabasePopulateEvent(tables));
             MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
             return new Dummy();
         }
@@ -192,6 +194,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
     protected void apply(@Nonnull Map<String, Table> tables, @Nonnull IResourceManager rm, @Nonnull IProfiler profiler) {
         if (enableDebuggingTools)
             print(tables);
+        MinecraftForge.EVENT_BUS.post(new DatabasePopulateEvent(tables));
         MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
     }
 }
