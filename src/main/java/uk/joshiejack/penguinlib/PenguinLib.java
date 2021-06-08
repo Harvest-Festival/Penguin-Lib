@@ -20,7 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
-import uk.joshiejack.penguinlib.client.PenguinConfig;
+import uk.joshiejack.penguinlib.client.PenguinClientConfig;
 import uk.joshiejack.penguinlib.data.LootTableMerger;
 import uk.joshiejack.penguinlib.data.custom.CustomObject;
 import uk.joshiejack.penguinlib.data.database.Database;
@@ -60,7 +60,7 @@ public class PenguinLib {
         PenguinItems.ITEMS.register(eventBus);
         LootTableMerger.LOOT_MODIFIER_SERIALIZERS.register(eventBus);
         Database.REGISTRY.register(eventBus);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PenguinConfig.create());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PenguinClientConfig.create());
     }
 
     @SuppressWarnings("unchecked")
@@ -71,7 +71,8 @@ public class PenguinLib {
         FMLJavaModLoadingContext.get().getModEventBus().post(new CollectRegistryEvent.Loader(processors));
         //Grab any other things that need to be automagically registered ^
         registerPenguinLoaderData(processors); //Process them and load them
-        plugins.stream().filter(pair -> ModList.get().isLoaded(pair.getKey()))
+        plugins.stream()
+                .filter(pair -> ModList.get().isLoaded(pair.getKey()))
                 .forEach(pair -> Objects.requireNonNull(ReflectionHelper.newInstance(pair.getValue())).setup());
         plugins.clear(); //Kill them off
     }

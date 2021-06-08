@@ -15,7 +15,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import uk.joshiejack.penguinlib.PenguinLib;
-import uk.joshiejack.penguinlib.client.PenguinConfig;
+import uk.joshiejack.penguinlib.client.PenguinClientConfig;
 import uk.joshiejack.penguinlib.util.helpers.minecraft.TimeHelper;
 
 @OnlyIn(Dist.CLIENT)
@@ -36,7 +36,7 @@ public class HUDRenderer {
     private static String formatTime(int time) {
         int hour = time / 1000;
         int minute = (int) ((double) (time % 1000) / 20 * 1.2);
-        if (PenguinConfig.clockType.get() == PenguinConfig.ClockType.TWENTY_FOUR_HOUR) {
+        if (PenguinClientConfig.clockType.get() == PenguinClientConfig.ClockType.TWENTY_FOUR_HOUR) {
             return (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute);
         } else {
             boolean pm = false;

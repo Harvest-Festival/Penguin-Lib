@@ -32,12 +32,21 @@ public abstract class AbstractPenguinBlock extends Block {
         return hasInventory;
     }
 
+    protected void setHasInventory() {
+        hasInventory = true;
+    }
+
+    protected int getInsertAmount(IItemHandler handler, ItemStack held) {
+        return held.getCount();
+    }
+
     protected ActionResultType insert(PlayerEntity player, Hand hand, IItemHandler handler) {
         ItemStack held = player.getItemInHand(hand).copy();
+        held.setCount(getInsertAmount(handler, held));
         ItemStack ret = ItemHandlerHelper.insertItem(handler, held, false);
         if (ret.getCount() != held.getCount() || ret.isEmpty()) {
             if (!player.isCreative())
-                player.setItemInHand(hand, ret);
+                player.getItemInHand(hand).shrink(held.getCount() - ret.getCount());
             return ActionResultType.SUCCESS;
         }
 
