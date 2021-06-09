@@ -22,8 +22,8 @@ import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
 import uk.joshiejack.penguinlib.client.PenguinClientConfig;
 import uk.joshiejack.penguinlib.data.LootTableMerger;
+import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.data.custom.CustomObject;
-import uk.joshiejack.penguinlib.data.database.Database;
 import uk.joshiejack.penguinlib.data.generators.*;
 import uk.joshiejack.penguinlib.events.CollectRegistryEvent;
 import uk.joshiejack.penguinlib.item.PenguinItems;
@@ -59,7 +59,7 @@ public class PenguinLib {
         MinecraftForge.EVENT_BUS.register(this);
         PenguinItems.ITEMS.register(eventBus);
         LootTableMerger.LOOT_MODIFIER_SERIALIZERS.register(eventBus);
-        Database.REGISTRY.register(eventBus);
+        PenguinRegistries.SERIALIZERS.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PenguinClientConfig.create());
     }
 

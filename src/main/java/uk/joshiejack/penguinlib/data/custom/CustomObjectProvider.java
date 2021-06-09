@@ -3,7 +3,6 @@ package uk.joshiejack.penguinlib.data.custom;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
-import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.io.BufferedWriter;
@@ -24,7 +23,7 @@ public abstract class CustomObjectProvider implements IDataProvider {
         this.modid = modid;
     }
 
-    protected void addEntry(String file, String subdir, String type, ResourceLocation name, CustomObject.Data<?, ?> data) {
+    protected void addEntry(String file, String subdir, String type, String name, CustomObject.Data<?> data) {
         Map<String, CustomObject> map = this.data.containsKey(subdir) ? this.data.get(subdir) : new HashMap<>();
         map.put(file, new CustomObject(type, name, data));
         this.data.put(subdir, map);
@@ -57,6 +56,6 @@ public abstract class CustomObjectProvider implements IDataProvider {
     @Nonnull
     @Override
     public String getName() {
-        return "CSV Database";
+        return "Custom Objects";
     }
 }

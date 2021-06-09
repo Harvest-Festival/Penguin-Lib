@@ -5,26 +5,18 @@ import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 @SuppressWarnings("NullableProblems")
-public class SimplePenguinRegistryBuilder <T extends IRecipe<IInventory>> implements IFinishedRecipe {
-    private final Ingredient ingredient;
+public abstract class SimplePenguinBuilder<T extends IRecipe<IInventory>> implements IFinishedRecipe {
     private final IRecipeSerializer<T> type;
     private ResourceLocation id;
 
-    public SimplePenguinRegistryBuilder(IRecipeSerializer<T> serializer, Ingredient ingredient) {
+    public SimplePenguinBuilder(IRecipeSerializer<T> serializer) {
         this.type = serializer;
-        this.ingredient = ingredient;
-    }
-
-    @Override
-    public void serializeRecipeData(JsonObject json) {
-        json.add("ingredient", this.ingredient.toJson());
     }
 
     @Override

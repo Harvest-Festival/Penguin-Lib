@@ -23,7 +23,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import uk.joshiejack.penguinlib.events.UseWateringCanEvent;
 import uk.joshiejack.penguinlib.util.handlers.SingleFluidHandler;
-import uk.joshiejack.penguinlib.util.helpers.forge.FluidHelper;
+import uk.joshiejack.penguinlib.util.helpers.minecraft.FluidHelper;
 
 import javax.annotation.Nonnull;
 import java.util.Set;

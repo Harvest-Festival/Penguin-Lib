@@ -3,6 +3,7 @@ package uk.joshiejack.penguinlib.data.custom;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.io.IOUtils;
 import uk.joshiejack.penguinlib.PenguinLib;
 
@@ -11,13 +12,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Mod.EventBusSubscriber(modid = PenguinLib.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CustomLoader {
     private static final int PATH_SUFFIX_LENGTH = ".json".length();
 
     @SuppressWarnings("unchecked")
-    private static <T> T build(CustomObject co) {
-        return (T) CustomObject.TYPE_REGISTRY.get(co.type).build(co.name, co.data);
+    private static void register(CustomObject co) {
+        CustomObject.TYPE_REGISTRY.get(co.type).register(co.name, co.data);
     }
 
     @SuppressWarnings("unchecked")
@@ -39,5 +40,4 @@ public class CustomLoader {
 
         return list;
     }
-
 }

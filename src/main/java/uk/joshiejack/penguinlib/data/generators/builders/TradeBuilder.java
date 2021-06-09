@@ -6,8 +6,7 @@ import net.minecraft.util.IItemProvider;
 import uk.joshiejack.penguinlib.data.database.CSVUtils;
 import uk.joshiejack.penguinlib.data.generators.AbstractDatabaseProvider;
 
-@Deprecated//TODO: Remove when I have switched everything over
-public class Trade {
+public class TradeBuilder {
     private final VillagerProfession profession;
     private IItemProvider input = Items.EMERALD;
     private final int tier;
@@ -18,38 +17,38 @@ public class Trade {
     private int xp = 16;
     private float priceMultiplier = 2F;
 
-    public Trade(VillagerProfession profession, int tier, IItemProvider output) {
+    public TradeBuilder(VillagerProfession profession, int tier, IItemProvider output) {
         this.profession = profession;
         this.tier = tier;
         this.output = output;
     }
 
-    public Trade setInput(IItemProvider item) {
+    public TradeBuilder setInput(IItemProvider item) {
         this.input = item;
         return this;
     }
 
-    public Trade setInputAmount(int i) {
+    public TradeBuilder setInputAmount(int i) {
         this.inputAmount = i;
         return this;
     }
 
-    public Trade setOutputAmount(int i) {
+    public TradeBuilder setOutputAmount(int i) {
         this.outputAmount = i;
         return this;
     }
 
-    public Trade setMaxTrades(int i) {
+    public TradeBuilder setMaxTrades(int i) {
         this.maxTrades = i;
         return this;
     }
 
-    public Trade setXP(int i) {
+    public TradeBuilder setXP(int i) {
         this.xp = i;
         return this;
     }
 
-    public Trade setPriceMultiplier(float mp) {
+    public TradeBuilder setPriceMultiplier(float mp) {
         this.priceMultiplier = mp;
         return this;
     }

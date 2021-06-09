@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.util.helpers.forge;
+package uk.joshiejack.penguinlib.util.helpers.minecraft;
 
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;

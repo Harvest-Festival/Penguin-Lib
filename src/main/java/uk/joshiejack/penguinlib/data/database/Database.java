@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.profiler.IProfiler;
@@ -15,16 +14,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.joshiejack.penguinlib.PenguinLib;
+import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.events.DatabaseLoadedEvent;
 import uk.joshiejack.penguinlib.events.DatabasePopulateEvent;
 import uk.joshiejack.penguinlib.item.crafting.SimplePenguinRecipe;
@@ -37,9 +34,6 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = PenguinLib.MODID)
 public class Database extends ReloadListener<Map<String, Table>> {
-    public static final DeferredRegister<IRecipeSerializer<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, PenguinLib.MODID);
-    private static final IRecipeType<Dummy> DATABASE = IRecipeType.register(PenguinLib.MODID + ":database");
-    public static final RegistryObject<Serializer> SERIALIZER = REGISTRY.register("database", Serializer::new);
     public static final Database INSTANCE = new Database();
     private static final Logger LOGGER = LogManager.getLogger();
     public static final int pathSuffixLength = ".csv".length();
@@ -52,7 +46,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
         public static final ResourceLocation ALL = new ResourceLocation(PenguinLib.MODID, "all");
 
         public Dummy() {
-            super(DATABASE, SERIALIZER.get(), ALL, Ingredient.EMPTY, ItemStack.EMPTY);
+            super(PenguinRegistries.DATABASE, PenguinRegistries.DATABASE_SERIALIZER.get(), ALL, Ingredient.EMPTY, ItemStack.EMPTY);
         }
     }
 
