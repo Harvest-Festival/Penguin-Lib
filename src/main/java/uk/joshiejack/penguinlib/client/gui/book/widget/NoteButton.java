@@ -33,7 +33,7 @@ public class NoteButton extends AbstractButton {
 
         mc.gui.setBlitOffset(100);
         (unlocked ? note.getIcon() : note.getIcon().shadowed()).render(Minecraft.getInstance(), matrix, x, y);
-        if (unlocked && note.isRead(player)) {
+        if (unlocked && !note.isRead(player)) {
             StringHelper.enableUnicode();
             matrix.pushPose();
             matrix.translate(0D, 0D, 110D);

@@ -152,7 +152,7 @@ public abstract class Icon {
         public void render(Minecraft mc, MatrixStack matrix, int x, int y) {
             if (entity == null) entity = (LivingEntity) entityType.create(mc.level);
             assert entity != null;
-            InventoryScreen.renderEntityInInventory(x, y, 10, 0F, 0F, entity);
+            InventoryScreen.renderEntityInInventory(x, y, 10, 45F, 0F, entity);
         }
     }
 }
