@@ -1,6 +1,7 @@
 package uk.joshiejack.penguinlib.data.generators.builders;
 
 import com.google.gson.JsonObject;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -14,7 +15,7 @@ import javax.annotation.Nonnull;
 public class NoteBuilder extends SimplePenguinBuilder<Note> {
     private ResourceLocation category;
     private boolean isHidden;
-    private boolean isDefault;
+    private boolean locked;
     private Icon icon = new Icon.ItemIcon(ItemStack.EMPTY);
     private CategoryBuilder categoryBuilder;
     public NoteBuilder() {
@@ -45,8 +46,8 @@ public class NoteBuilder extends SimplePenguinBuilder<Note> {
         return this;
     }
 
-    public NoteBuilder setDefault() {
-        isDefault = true;
+    public NoteBuilder setLockedByDefault() {
+        locked = true;
         return this;
     }
 
@@ -65,10 +66,20 @@ public class NoteBuilder extends SimplePenguinBuilder<Note> {
         return this;
     }
 
+    public NoteBuilder withEntityIcon(EntityType<?> type) {
+        icon = new Icon.EntityIcon(type);
+        return this;
+    }
+
+    public NoteBuilder withNoteIcon() {
+        icon = new Icon.TextureIcon(Icon.DEFAULT_LOCATION, 0, 0);
+        return this;
+    }
+
     @Override
     public void serializeRecipeData(@Nonnull JsonObject json) {
         if (isHidden) json.addProperty("hidden", true);
-        if (isDefault) json.addProperty("default", true);
+        if (locked) json.addProperty("locked", true);
         json.addProperty("category", category.toString());
         json.add("icon", icon.toJson(new JsonObject()));
     }

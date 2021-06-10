@@ -2,6 +2,7 @@ package uk.joshiejack.penguinlib.data.generators.builders;
 
 import com.google.gson.JsonObject;
 import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -39,6 +40,16 @@ public class CategoryBuilder extends SimplePenguinBuilder<Category> {
 
     public CategoryBuilder withPenguinIcon(int x, int y) {
         icon = new Icon.TextureIcon(Icon.DEFAULT_LOCATION, x, y);
+        return this;
+    }
+
+    public CategoryBuilder withEntityIcon(EntityType<?> type) {
+        icon = new Icon.EntityIcon(type);
+        return this;
+    }
+
+    public CategoryBuilder withNoteIcon() {
+        icon = new Icon.TextureIcon(Icon.DEFAULT_LOCATION, 0, 0);
         return this;
     }
 

@@ -31,8 +31,8 @@ public abstract class Icon {
         return json.has("item") ? new ItemIcon(new ItemStack(JSONUtils.getAsItem(json, "item")))
                 : json.has("entity") ? new EntityIcon(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(JSONUtils.getAsString(json, "entity"))))
                 : new TextureIcon(json.has("texture") ? new ResourceLocation(JSONUtils.getAsString(json, "texture")) : DEFAULT_LOCATION,
-                JSONUtils.getAsInt(json, "x"),
-                JSONUtils.getAsInt(json, "y"));
+                json.has("x") ? JSONUtils.getAsInt(json, "x") : 0,
+                json.has("y") ? JSONUtils.getAsInt(json, "y") : 0);
     }
 
     public abstract JsonElement toJson(JsonObject json);
@@ -96,8 +96,10 @@ public abstract class Icon {
         public JsonElement toJson(JsonObject json) {
             if (!texture.equals(DEFAULT_LOCATION))
                 json.addProperty("texture", texture.toString());
-            json.addProperty("x", xPos);
-            json.addProperty("y", yPos);
+            if (xPos != 0)
+                json.addProperty("x", xPos);
+            if (yPos != 0)
+                json.addProperty("y", yPos);
             return json;
         }
 
@@ -150,7 +152,7 @@ public abstract class Icon {
         public void render(Minecraft mc, MatrixStack matrix, int x, int y) {
             if (entity == null) entity = (LivingEntity) entityType.create(mc.level);
             assert entity != null;
-            InventoryScreen.renderEntityInInventory(x, y, 1, 0F, 0F, entity);
+            InventoryScreen.renderEntityInInventory(x, y, 10, 0F, 0F, entity);
         }
     }
 }

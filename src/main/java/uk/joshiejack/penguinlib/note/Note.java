@@ -30,7 +30,7 @@ public class Note extends SimplePenguinRecipe {
     private final ResourceLocation category;
     private boolean isHidden;
     private Icon icon;
-    private boolean isDefault;
+    private boolean isLocked;
 
     public Note(ResourceLocation rl, ResourceLocation category) {
         super(PenguinRegistries.NOTE, PenguinRegistries.NOTE_SERIALIZER.get(), rl, Ingredient.EMPTY, ItemStack.EMPTY);
@@ -54,7 +54,7 @@ public class Note extends SimplePenguinRecipe {
     public void setHidden() {
         this.isHidden = true;
     }
-    public void setDefault() { this.isDefault = true; }
+    public void setLocked() { this.isLocked = true; }
 
     public Note setIcon(Icon icon) {
         this.icon = icon;
@@ -90,7 +90,7 @@ public class Note extends SimplePenguinRecipe {
     }
 
     public boolean isDefault() {
-        return isDefault;
+        return !isLocked;
     }
 
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<Note> {
@@ -100,8 +100,8 @@ public class Note extends SimplePenguinRecipe {
             Note note = new Note(rl, new ResourceLocation(JSONUtils.getAsString(json, "category")));
             if (json.has("hidden") && JSONUtils.getAsBoolean(json, "hidden"))
                 note.setHidden();
-            if (json.has("default") && JSONUtils.getAsBoolean(json, "default"))
-                note.setDefault();
+            if (json.has("locked") && JSONUtils.getAsBoolean(json, "locked"))
+                note.setLocked();
             note.setIcon(Icon.fromJson(JSONUtils.getAsJsonObject(json, "icon")));
             return note;
         }
@@ -113,7 +113,7 @@ public class Note extends SimplePenguinRecipe {
             if (pb.readBoolean())
                 note.setHidden();
             if (pb.readBoolean())
-                note.setDefault();
+                note.setLocked();
             note.icon = Icon.fromNetwork(pb);
             return note;
         }
@@ -122,7 +122,7 @@ public class Note extends SimplePenguinRecipe {
         public void toNetwork(@Nonnull PacketBuffer pb, @Nonnull Note note) {
             pb.writeResourceLocation(note.category);
             pb.writeBoolean(note.isHidden);
-            pb.writeBoolean(note.isDefault);
+            pb.writeBoolean(note.isLocked);
             note.getIcon().toNetwork(pb);
         }
     }

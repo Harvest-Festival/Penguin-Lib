@@ -33,7 +33,7 @@ public abstract class TabButton extends AbstractButton {
             book.bindLeftTexture();
             int yPos = 32 * (isSelected ? 1 : hovered ? 2: 0);
             blit(matrix, x, y, 26, yPos, width, height);
-            icon.render(Minecraft.getInstance(), matrix, x, y);
+            icon.render(Minecraft.getInstance(), matrix, x + 6, y + 8);
         }
     }
 
