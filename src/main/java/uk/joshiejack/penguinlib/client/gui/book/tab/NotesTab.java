@@ -30,7 +30,7 @@ public class NotesTab extends Tab {
     //Use the list to get the default page instead
     @Override
     public AbstractPage getPage() {
-        if (this.page == null)
+        if (this.page == null || page == AbstractPage.EMPTY)
             this.page = getPages().get(0);
         return this.page;
     }

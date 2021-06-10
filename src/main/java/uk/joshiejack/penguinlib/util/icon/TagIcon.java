@@ -12,7 +12,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.renderer.ShadowRenderer;
 
+import java.util.Random;
+
 public class TagIcon extends Icon {
+    private static final Random random = new Random(System.currentTimeMillis());
     public static final Icon EMPTY = new ItemIcon(ItemStack.EMPTY);
     private final ITag.INamedTag<Item> tag;
     private ItemStack stack;
@@ -21,7 +24,8 @@ public class TagIcon extends Icon {
 
     public TagIcon(ITag.INamedTag<Item> tag) {
         this.tag = tag;
-        this.stack = new ItemStack(tag.getValues().get(0));
+        this.id = random.nextInt(tag.getValues().size());
+        this.stack = new ItemStack(tag.getValues().get(id));
         this.timer = System.currentTimeMillis();
     }
 
