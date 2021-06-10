@@ -1,8 +1,0 @@
-{
-  "type": "penguinlib:note",
-  "default": true,
-  "category": "penguinlib:cats",
-  "icon": {
-    "item": "minecraft:acacia_boat"
-  }
-}

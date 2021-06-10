@@ -44,8 +44,7 @@ public class PenguinTeams extends WorldSavedData {
             PenguinTeams.getTeamForPlayer(player).syncToPlayer(player); //Sync the info about this players team to them
             PenguinNetwork.sendToClient(new SyncPlayerStatusesPacket(player.getPersistentData().getCompound("PenguinStatuses")), player);
             PenguinNetwork.sendToClient(new SyncTeamMembersPacket(PenguinTeams.get((ServerWorld) player.level).memberOf), player);
-            if (player.getPersistentData().contains("Notes"))
-                PenguinNetwork.sendToClient(new SyncNotesPacket(), player);
+            PenguinNetwork.sendToClient(new SyncNotesPacket(player.getPersistentData().getCompound("Notes")), player);
         }
     }
 

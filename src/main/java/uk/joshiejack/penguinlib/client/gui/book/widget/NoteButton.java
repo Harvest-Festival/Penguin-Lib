@@ -27,16 +27,13 @@ public class NoteButton extends AbstractButton {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
         boolean unlocked = note.isDefault() || note.isUnlocked(player);
-        matrix.pushPose();
-        matrix.translate(0D, 0D, 10D);
         if (note.equals(selected)) fill(matrix, x, y, x + width, y + height, 0x559C8C63);
         else if (!hovered || !unlocked) fill(matrix, x, y, x + width, y + height, 0x55B0A483);
         else fill(matrix, x, y, x + width, y + height, 0x55C4B9A2);
-        matrix.popPose();
 
-        setBlitOffset(0); //100 + 0
+        mc.gui.setBlitOffset(100);
         (unlocked ? note.getIcon() : note.getIcon().shadowed()).render(Minecraft.getInstance(), matrix, x, y);
-        if (unlocked && !note.isRead(player)) {
+        if (unlocked && note.isRead(player)) {
             StringHelper.enableUnicode();
             matrix.pushPose();
             matrix.translate(0D, 0D, 110D);
@@ -44,8 +41,6 @@ public class NoteButton extends AbstractButton {
             matrix.popPose();
             StringHelper.disableUnicode();
         }
-
-        setBlitOffset(0); //100 + 0
     }
 
     @Override

@@ -73,8 +73,6 @@ public class PenguinLib {
         LootTableMerger.LOOT_MODIFIER_SERIALIZERS.register(eventBus);
         PenguinRegistries.SERIALIZERS.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PenguinClientConfig.create());
-        //TODO: REMOVE
-        TestBook.CONTAINERS.register(eventBus);
     }
 
     @SuppressWarnings("unchecked")

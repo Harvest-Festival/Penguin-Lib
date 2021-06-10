@@ -39,7 +39,7 @@ public class NoteWidget extends Widget {
         //this.it = note.getRenderScript() == null ? null : Scripting.get(note.getRenderScript());
         boolean unicode = mc.options.forceUnicodeFont;
         mc.options.forceUnicodeFont = true;
-        this.chatter = new Chatter(new StringTextComponent("dsd sds dsddd3wer ere dfsf fsdf gsrert dfg fgdgdfg fsfg gsdfg gsdfgd gdfgdf gdf yt y ghg hgf fdf df sf sdfs df sdf sdg fgfdgdfgdf g fdg dfg fdgd sdfsd fsd fsd fsdf yhfbhfg nghjfg hfg hfgjg jfghfg gfj fgd ffghfgdhjdfg hjgj gj dfg jdfg jdfg jdfg hjgj dfg ujfgjghj yjtyjghjhh")).withWidth(180).withLines(20).withHeight(8).withFormatting(null).setInstant();
+        this.chatter = new Chatter(note.getText()).withWidth(180).withLines(20).withHeight(8).withFormatting(null).setInstant();
         this.chatter.update(mc.font);
         mc.options.forceUnicodeFont = unicode;
         //if (!note.init() && it != null) {
