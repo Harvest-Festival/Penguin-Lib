@@ -55,7 +55,7 @@ public class PenguinLib {
         @Nonnull
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
-            return new ItemStack(PenguinItems.PLATE.get());
+            return new ItemStack(PenguinItems.JAM_JAR.get());
         }
     };
 

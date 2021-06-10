@@ -10,5 +10,6 @@
   "item.penguinlib.pickling_jar": "Pickling Jar",
   "item.penguinlib.plate": "Plate",
   "item.penguinlib.unfired_mug": "Unfired Mug",
-  "item.penguinlib.unfired_plate": "Unfired Plate"
+  "item.penguinlib.unfired_plate": "Unfired Plate",
+  "itemGroup.penguinlib": "Penguin-Lib"
 }

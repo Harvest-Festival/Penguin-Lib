@@ -12,6 +12,7 @@ public class PenguinLanguage extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("itemGroup.penguinlib", "Penguin-Lib");
         addItem(PenguinItems.DEEP_BOWL, "Deep Bowl");
         addItem(PenguinItems.GLASS, "Glass");
         addItem(PenguinItems.JAM_JAR, "Jam Jar");
