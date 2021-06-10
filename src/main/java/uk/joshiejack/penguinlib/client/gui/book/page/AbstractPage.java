@@ -1,6 +1,5 @@
 package uk.joshiejack.penguinlib.client.gui.book.page;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import joptsimple.internal.Strings;
 import net.minecraft.client.gui.widget.button.AbstractButton;
 import net.minecraft.client.gui.widget.button.Button;
@@ -11,7 +10,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.Book;
 import uk.joshiejack.penguinlib.client.gui.book.tab.Tab;
 import uk.joshiejack.penguinlib.client.gui.book.widget.TabButton;
-import uk.joshiejack.penguinlib.util.Icon;
+import uk.joshiejack.penguinlib.util.icon.Icon;
+import uk.joshiejack.penguinlib.util.icon.ItemIcon;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractPage {
@@ -38,12 +38,8 @@ public abstract class AbstractPage {
     public abstract void initRight(Book book, int left, int top);
 
     protected Button.ITooltip createTooltip(Book book, ITextComponent tooltip) {
-        return (btn, mtx, mX, mY) -> {
-            RenderSystem.disableDepthTest();
-            book.renderTooltip(mtx,
-                    book.minecraft().font.split(tooltip, Math.max(book.width / 2 - 43, 170)), mX, mY);
-            RenderSystem.enableDepthTest();
-        };
+        return (btn, mtx, mX, mY) ->
+                book.renderTooltip(mtx, book.minecraft().font.split(tooltip, Math.max(book.width / 2 - 43, 170)), mX, mY);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -54,7 +50,7 @@ public abstract class AbstractPage {
 
         @Override
         protected Icon getIcon() {
-            return Icon.ItemIcon.EMPTY;
+            return ItemIcon.EMPTY;
         }
 
         @Override

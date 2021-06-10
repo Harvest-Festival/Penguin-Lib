@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -26,6 +27,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("ConstantConditions")
 public class Book extends AbstractContainerScreen<AbstractBookContainer> {
     private static final Object2ObjectMap<String, Book> BOOK_INSTANCES = new Object2ObjectOpenHashMap<>();
+    private final List<Runnable> futures = new ArrayList<>();
     private final List<Tab> tabs = new ArrayList<>();
     private final ResourceLocation backgroundL;
     private final ResourceLocation backgroundR;
@@ -70,6 +72,17 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
         minecraft.getTextureManager().bind(backgroundL);
     }
 
+    public void addFuture(Runnable r) {
+        futures.add(r);
+    }
+
+    @Override
+    public void render(@Nonnull MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrix, mouseX, mouseY, partialTicks);
+        this.futures.forEach(Runnable::run);
+        this.futures.clear();
+    }
+
     /**
      * Add a page to this book, automatically creates a tab for the page on the left side of the book
      **/
@@ -106,15 +119,15 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
         titleLabelY = topPos - 30;
         if (tab == null)
             tab = defaultTab;
+
+        tab.getPage().initLeft(this, bgLeftOffset, 15 + topPos);
+        tab.getPage().initRight(this, centre, 15 + topPos);
+        tab.addTabs(this, centre + 154, 15 + topPos);
         if (tabs.size() > 1) {
             int y = 0;
             for (Tab tab : tabs)
                 addButton(tab.create(this, centre - 180, 15 + topPos + (y++ * 36)));
         }
-
-        tab.addTabs(this, centre + 154, 15 + topPos);
-        tab.getPage().initLeft(this, bgLeftOffset, 15 + topPos);
-        tab.getPage().initRight(this, centre, 15 + topPos);
     }
 
     @Override

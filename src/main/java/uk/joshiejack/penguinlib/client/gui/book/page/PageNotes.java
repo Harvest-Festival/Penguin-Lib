@@ -10,7 +10,7 @@ import uk.joshiejack.penguinlib.client.gui.book.widget.NoteWidget;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.note.Category;
 import uk.joshiejack.penguinlib.note.Note;
-import uk.joshiejack.penguinlib.util.Icon;
+import uk.joshiejack.penguinlib.util.icon.Icon;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -40,7 +40,7 @@ public class PageNotes extends AbstractMultiPage.Right<Note> {
 
     @Override
     protected void initEntry(Book book, int left, int top, int id, Note note) {
-        book.addButton(new NoteButton(this.note.get(), note, left + 8 + ((id % 7) * 18), top + 8 + ((id / 7) * 18),
+        book.addButton(new NoteButton(book, this.note.get(), note, left + 8 + ((id % 7) * 18), top + 8 + ((id / 7) * 18),
                 (button) -> {
                     if (note.isDefault() || note.isUnlocked(Minecraft.getInstance().player)) {
                         this.note.set(note); //Set the page to this and mark as read

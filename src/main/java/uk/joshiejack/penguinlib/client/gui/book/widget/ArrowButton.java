@@ -15,7 +15,7 @@ public abstract class ArrowButton extends AbstractButton {
     protected final Book book;
 
     public ArrowButton(Book book, int x, int y, ITextComponent name, IPressable action) {
-        super(x, y, 15, 10, name, action, (btn, mtx, mX, mY) -> {
+        super(book, x, y, 15, 10, name, action, (btn, mtx, mX, mY) -> {
             book.renderTooltip(mtx,
                     book.minecraft().font.split(name, Math.max(book.width / 2 - 43, 170)), mX, mY);
         });

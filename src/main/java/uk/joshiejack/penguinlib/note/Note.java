@@ -18,7 +18,7 @@ import uk.joshiejack.penguinlib.item.crafting.SimplePenguinRecipe;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.packet.ReadNotePacket;
 import uk.joshiejack.penguinlib.network.packet.UnlockNotePacket;
-import uk.joshiejack.penguinlib.util.Icon;
+import uk.joshiejack.penguinlib.util.icon.Icon;
 import uk.joshiejack.penguinlib.util.helpers.minecraft.PlayerHelper;
 
 import javax.annotation.Nonnull;

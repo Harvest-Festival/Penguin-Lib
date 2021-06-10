@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.page.AbstractPage;
 import uk.joshiejack.penguinlib.client.gui.book.page.PageNotes;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
-import uk.joshiejack.penguinlib.util.Icon;
+import uk.joshiejack.penguinlib.util.icon.Icon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,14 @@ public class NotesTab extends Tab {
     public NotesTab withCategory(ResourceLocation resource) {
         valid.add(resource);
         return this;
+    }
+
+    //Use the list to get the default page instead
+    @Override
+    public AbstractPage getPage() {
+        if (this.page == null)
+            this.page = getPages().get(0);
+        return this.page;
     }
 
     @Override

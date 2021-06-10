@@ -6,20 +6,18 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.Book;
-import uk.joshiejack.penguinlib.util.Icon;
+import uk.joshiejack.penguinlib.util.icon.Icon;
 
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class TabButton extends AbstractButton {
-    protected final Book book;
     protected final boolean isSelected;
     protected final Icon icon;
 
     public TabButton(Book book, Icon icon, int x, int y, ITextComponent name, IPressable action, ITooltip tooltip, boolean isSelected) {
-        super(x, y, 26, 32, name, action, tooltip);
+        super(book, x, y, 26, 32, name, action, tooltip);
         this.isSelected = isSelected;
-        this.book = book;
         this.icon = icon;
     }
 

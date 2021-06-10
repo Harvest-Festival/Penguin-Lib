@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import uk.joshiejack.penguinlib.client.gui.book.Book;
 import uk.joshiejack.penguinlib.note.Note;
 import uk.joshiejack.penguinlib.util.helpers.generic.StringHelper;
 
@@ -16,8 +17,8 @@ public class NoteButton extends AbstractButton {
     private final Note note;
     private final Note selected;
 
-    public NoteButton(Note selected, Note note, int x, int y, IPressable pressable, ITooltip tooltip) {
-        super(x, y, 16, 16, note.getTitle(), pressable, tooltip);
+    public NoteButton(Book book, Note selected, Note note, int x, int y, IPressable pressable, ITooltip tooltip) {
+        super(book, x, y, 16, 16, note.getTitle(), pressable, tooltip);
         this.note = note;
         this.selected = selected;
     }

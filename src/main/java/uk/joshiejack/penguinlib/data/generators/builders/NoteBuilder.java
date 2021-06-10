@@ -8,7 +8,7 @@ import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.note.Note;
-import uk.joshiejack.penguinlib.util.Icon;
+import uk.joshiejack.penguinlib.util.icon.*;
 
 import javax.annotation.Nonnull;
 
@@ -17,7 +17,7 @@ public class NoteBuilder extends SimplePenguinBuilder<Note> {
     private ResourceLocation category;
     private boolean isHidden;
     private boolean locked;
-    private Icon icon = new Icon.ItemIcon(ItemStack.EMPTY);
+    private Icon icon = new ItemIcon(ItemStack.EMPTY);
     private CategoryBuilder categoryBuilder;
     public NoteBuilder() {
         super(PenguinRegistries.NOTE_SERIALIZER.get());
@@ -53,32 +53,32 @@ public class NoteBuilder extends SimplePenguinBuilder<Note> {
     }
 
     public NoteBuilder withItemIcon(Item item) {
-        icon = new Icon.ItemIcon(new ItemStack(item));
+        icon = new ItemIcon(new ItemStack(item));
         return this;
     }
 
     public NoteBuilder withTextureIcon(ResourceLocation texture, int x, int y) {
-        icon = new Icon.TextureIcon(texture, x, y);
+        icon = new TextureIcon(texture, x, y);
         return this;
     }
 
     public NoteBuilder withPenguinIcon(int x, int y) {
-        icon = new Icon.TextureIcon(Icon.DEFAULT_LOCATION, x, y);
+        icon = new TextureIcon(Icon.DEFAULT_LOCATION, x, y);
         return this;
     }
 
-    public NoteBuilder withEntityIcon(EntityType<?> type) {
-        icon = new Icon.EntityIcon(type);
+    public NoteBuilder withEntityIcon(EntityType<?> type, int scale) {
+        icon = new EntityIcon(type, scale);
         return this;
     }
 
     public NoteBuilder withNoteIcon() {
-        icon = new Icon.TextureIcon(Icon.DEFAULT_LOCATION, 0, 0);
+        icon = new TextureIcon(Icon.DEFAULT_LOCATION, 0, 0);
         return this;
     }
 
     public NoteBuilder withTagIcon(ITag.INamedTag<Item> tag) {
-        icon = new Icon.TagIcon(tag);
+        icon = new TagIcon(tag);
         return this;
     }
 
