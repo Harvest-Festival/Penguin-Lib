@@ -1,13 +1,16 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
@@ -27,8 +30,17 @@ repositories {
         name 'DVS1 Maven FS'
         url 'https://dvs1.progwml6.com/files/maven'
     }
-    maven { // Rhino
-        url 'https://maven.saps.dev/minecraft'
+    maven {
+        // Shedaniel's maven (Architectury API)
+        url = "https://maven.architectury.dev"
+        content {
+            includeGroup "me.shedaniel"
+        }
+    }
+    maven {
+        // saps.dev Maven (KubeJS and Rhino)
+        // you can also use Lat's Maven @ https://maven.latvian.dev/
+        url = "https://maven.saps.dev/minecraft"
         content {
             includeGroup "dev.latvian.mods"
         }
@@ -46,6 +58,10 @@ archivesBaseName = 'Penguin-Lib'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
+mixin {
+    add sourceSets.main, "penguinlib.refmap.json"
+}
+
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     mappings channel: 'official', version: '1.16.5'
@@ -55,8 +71,11 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg "-mixin.config=penguinlib.mixins.json"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 penguinlib {
@@ -67,8 +86,11 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg "-mixin.config=penguinlib.mixins.json"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 penguinlib {
@@ -79,8 +101,11 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+            arg "-mixin.config=penguinlib.mixins.json"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'penguinlib', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
@@ -97,10 +122,13 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
+    annotationProcessor 'org.spongepowered:mixin:0.8:processor'
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.16'
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
-    compile fg.deobf("dev.latvian.mods:rhino:${rhino_version}")
+    compileOnly fg.deobf("me.shedaniel:architectury-forge:${architectury_version}")
+    compileOnly fg.deobf("dev.latvian.mods:rhino:${rhino_version}")
+    compileOnly fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}")
 }
 
 jar {
@@ -112,7 +140,8 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"joshiejack",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "penguinlib.mixins.json"
         ])
     }
 }

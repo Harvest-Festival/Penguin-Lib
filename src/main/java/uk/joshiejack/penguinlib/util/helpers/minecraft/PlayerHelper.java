@@ -4,15 +4,25 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
 public class PlayerHelper {
+    private static CompoundNBT getOrCreateTag(CompoundNBT base, String name) {
+        if (!base.contains(name))
+            base.put(name, new CompoundNBT());
+        return base.getCompound(name);
+    }
+
     public static boolean hasTag(PlayerEntity player, String compoundTag, String tag) {
-        return player.getPersistentData().getCompound(compoundTag).contains(tag);
+        return getOrCreateTag(player.getPersistentData(), compoundTag).contains(tag);
     }
 
     public static void setTag(PlayerEntity player, String compoundTag, String tag) {
-        if (!player.getPersistentData().contains(compoundTag)) {
-            player.getPersistentData().put(compoundTag, new CompoundNBT());
-        }
+        getOrCreateTag(player.getPersistentData(), compoundTag).putBoolean(tag, true);
+    }
 
-        player.getPersistentData().getCompound(compoundTag).putBoolean(tag, true);
+    public static void setSubTag(PlayerEntity player, String main, String sub, String tag) {
+        getOrCreateTag(getOrCreateTag(player.getPersistentData(), main), sub).putBoolean(tag, true);
+    }
+
+    public static boolean hasSubTag(PlayerEntity player, String main, String sub, String tag) {
+        return getOrCreateTag(getOrCreateTag(player.getPersistentData(), main), sub).contains(tag);
     }
 }

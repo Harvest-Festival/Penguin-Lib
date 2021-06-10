@@ -1,5 +1,7 @@
 package uk.joshiejack.penguinlib.util.helpers.generic;
 
+import net.minecraft.client.AbstractOption;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class StringHelper {
@@ -30,5 +32,17 @@ public class StringHelper {
         int decimal = remainder == 0 ? 0 : shortform || remainder % 100 == 0 ? 1: remainder %10 == 0 ? 2: 3;
         int exp = (int) (Math.log(number) / Math.log(1000));
         return String.format("%." + decimal + "f%c", number / Math.pow(1000, exp), "kMGTPE".charAt(exp-1));
+    }
+
+    private static boolean unicode;
+
+    public static void enableUnicode() {
+        Minecraft mc = Minecraft.getInstance();
+        unicode = mc.options.forceUnicodeFont;
+        AbstractOption.FORCE_UNICODE_FONT.set(mc.options, "true");
+    }
+
+    public static void disableUnicode() {
+        AbstractOption.FORCE_UNICODE_FONT.set(Minecraft.getInstance().options, String.valueOf(unicode));
     }
 }

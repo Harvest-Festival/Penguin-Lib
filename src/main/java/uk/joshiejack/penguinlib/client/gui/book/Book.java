@@ -10,8 +10,11 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.AbstractContainerScreen;
 import uk.joshiejack.penguinlib.client.gui.book.page.AbstractPage;
+import uk.joshiejack.penguinlib.client.gui.book.tab.Tab;
 import uk.joshiejack.penguinlib.inventory.AbstractBookContainer;
 
 import javax.annotation.Nonnull;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@OnlyIn(Dist.CLIENT)
 @SuppressWarnings("ConstantConditions")
 public class Book extends AbstractContainerScreen<AbstractBookContainer> {
     private static final Object2ObjectMap<String, Book> BOOK_INSTANCES = new Object2ObjectOpenHashMap<>();
@@ -77,6 +81,10 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
         return tab;
     }
 
+    public Tab getTab() {
+        return tab;
+    }
+
     public Minecraft minecraft() {
         return minecraft;
     }
@@ -112,10 +120,7 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
     @Override
     protected void renderBg(@Nonnull MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1F, 1F, 1F, 1F);
-//        minecraft.getTextureManager().bind(backgroundL);
-//        for (int j = 0; j <= imageHeight; j += 5)
-//            for (int i = 0; i <= imageWidth; i += 5)
-//                blit(matrix, leftPos + i, topPos + j, 0, 4, 1, 1);
+        renderBackground(matrix);
         minecraft.getTextureManager().bind(backgroundL);
         blit(matrix, bgLeftOffset, topPos, 102, 0, 154, 202);
         minecraft.getTextureManager().bind(backgroundR);

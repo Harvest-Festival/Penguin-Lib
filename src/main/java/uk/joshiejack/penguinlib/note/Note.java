@@ -1,7 +1,5 @@
 package uk.joshiejack.penguinlib.note;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -18,38 +16,48 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.item.crafting.SimplePenguinRecipe;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
+import uk.joshiejack.penguinlib.network.packet.ReadNotePacket;
 import uk.joshiejack.penguinlib.network.packet.UnlockNotePacket;
+import uk.joshiejack.penguinlib.util.Icon;
 import uk.joshiejack.penguinlib.util.helpers.minecraft.PlayerHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class Note extends SimplePenguinRecipe {
-    public static final Multimap<String, Note> BY_CATEGORY = LinkedHashMultimap.create();
-    private String unlocalized = null;
-    private final String category;
+    private final String text;
+    private final String title;
+    private final ResourceLocation category;
     private boolean isHidden;
+    private Icon icon;
+    private boolean isDefault;
 
-    public Note(ResourceLocation rl, String category) {
+    public Note(ResourceLocation rl, ResourceLocation category) {
         super(PenguinRegistries.NOTE, PenguinRegistries.NOTE_SERIALIZER.get(), rl, Ingredient.EMPTY, ItemStack.EMPTY);
         this.category = category;
-        Note.BY_CATEGORY.get(category).add(this);
+        this.text = Util.makeDescriptionId("note.text", rl);
+        this.title = Util.makeDescriptionId("note.title", rl);
     }
 
-    protected String getOrCreateUnlocalizedText() {
-        if (this.unlocalized == null) {
-            this.unlocalized = Util.makeDescriptionId("note", rl);
-        }
-
-        return this.unlocalized;
+    public ITextComponent getTitle() {
+        return new TranslationTextComponent(title);
     }
 
     public ITextComponent getText() {
-        return new TranslationTextComponent(getOrCreateUnlocalizedText());
+        return new TranslationTextComponent(text);
     }
 
-    public Note setHidden() {
+    public ResourceLocation getCategory() {
+        return category;
+    }
+
+    public void setHidden() {
         this.isHidden = true;
+    }
+    public void setDefault() { this.isDefault = true; }
+
+    public Note setIcon(Icon icon) {
+        this.icon = icon;
         return this;
     }
 
@@ -58,46 +66,64 @@ public class Note extends SimplePenguinRecipe {
     }
 
     public boolean isUnlocked(PlayerEntity player) {
-        return PlayerHelper.hasTag(player, "Notes", rl.toString());
+        return PlayerHelper.hasSubTag(player, "Notes", "Unlocked", rl.toString());
     }
 
     public void unlock(PlayerEntity player) {
-        PlayerHelper.setTag(player, "Notes", rl.toString());
+        PlayerHelper.setSubTag(player, "Notes", "Unlocked", rl.toString());
         if (!player.level.isClientSide)
             PenguinNetwork.sendToClient(new UnlockNotePacket(this), (ServerPlayerEntity) player);
     }
 
     public boolean isRead(PlayerEntity player) {
-        return PlayerHelper.hasTag(player, "ReadNotes", rl.toString());
+        return PlayerHelper.hasSubTag(player, "Notes", "Read", rl.toString());
     }
 
     public void read(PlayerEntity player) {
-        PlayerHelper.setTag(player, "ReadNotes", rl.toString());
+        PlayerHelper.setSubTag(player, "Notes", "Read", rl.toString());
+        if (player.level.isClientSide)
+            PenguinNetwork.sendToServer(new ReadNotePacket(this));
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
     }
 
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<Note> {
         @Nonnull
         @Override
         public Note fromJson(@Nonnull ResourceLocation rl, @Nonnull JsonObject json) {
-            Note note = new Note(rl, JSONUtils.getAsString(json, "category"));
-            if (JSONUtils.getAsBoolean(json, "hidden"))
+            Note note = new Note(rl, new ResourceLocation(JSONUtils.getAsString(json, "category")));
+            if (json.has("hidden") && JSONUtils.getAsBoolean(json, "hidden"))
                 note.setHidden();
+            if (json.has("default") && JSONUtils.getAsBoolean(json, "default"))
+                note.setDefault();
+            note.setIcon(Icon.fromJson(JSONUtils.getAsJsonObject(json, "icon")));
             return note;
         }
 
         @Nullable
         @Override
         public Note fromNetwork(@Nonnull ResourceLocation rl, @Nonnull PacketBuffer pb) {
-            Note note = new Note(rl, pb.readUtf());
+            Note note = new Note(rl, pb.readResourceLocation());
             if (pb.readBoolean())
                 note.setHidden();
+            if (pb.readBoolean())
+                note.setDefault();
+            note.icon = Icon.fromNetwork(pb);
             return note;
         }
 
         @Override
         public void toNetwork(@Nonnull PacketBuffer pb, @Nonnull Note note) {
-            pb.writeUtf(note.category);
+            pb.writeResourceLocation(note.category);
             pb.writeBoolean(note.isHidden);
+            pb.writeBoolean(note.isDefault);
+            note.getIcon().toNetwork(pb);
         }
     }
 }

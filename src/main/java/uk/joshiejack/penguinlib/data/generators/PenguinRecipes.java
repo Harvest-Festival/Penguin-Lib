@@ -8,6 +8,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import uk.joshiejack.penguinlib.PenguinLib;
+import uk.joshiejack.penguinlib.data.generators.builders.CategoryBuilder;
 import uk.joshiejack.penguinlib.item.PenguinItems;
 
 import javax.annotation.Nonnull;
@@ -32,5 +33,14 @@ public class PenguinRecipes extends RecipeProvider {
         ShapedRecipeBuilder.shaped(PenguinItems.GLASS.get(), 4).define('G', Tags.Items.GLASS_COLORLESS).pattern("G G").pattern(" G ").unlockedBy("has_glass", has(Blocks.GLASS)).save(consumer, rl("glass"));
         ShapedRecipeBuilder.shaped(PenguinItems.JAM_JAR.get(), 6).define('G', Tags.Items.GLASS_COLORLESS).define('S', ItemTags.WOODEN_SLABS).pattern("S").pattern("G").unlockedBy("has_glass", has(Blocks.GLASS)).save(consumer, rl("jam_jar"));
         ShapedRecipeBuilder.shaped(PenguinItems.PICKLING_JAR.get(), 4).define('G', Tags.Items.GLASS_COLORLESS).define('S', Tags.Items.NUGGETS_IRON).pattern("S").pattern("G").unlockedBy("has_glass", has(Blocks.GLASS)).save(consumer, rl("pickling_jar"));
+        //Note tests
+        CategoryBuilder.category().withItemIcon(Items.EGG)
+                .withNote("cats_page").withItemIcon(Items.COD).end()
+                .withNote("tigers").withItemIcon(Items.JUNGLE_BUTTON).end()
+                .withNote("lions").withItemIcon(Items.ACACIA_BOAT).setDefault().end()
+                .withNote("jaguars").withItemIcon(Items.BAMBOO).end()
+                .withNote("horse_radish").withPenguinIcon(0, 0).end()
+                .withNote("banana_pickle").withPenguinIcon(0, 0).end()
+                .save(consumer, rl("cats"));
     }
 }

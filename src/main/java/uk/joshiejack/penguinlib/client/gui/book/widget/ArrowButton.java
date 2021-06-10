@@ -3,11 +3,14 @@ package uk.joshiejack.penguinlib.client.gui.book.widget;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.client.gui.book.Book;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public abstract class ArrowButton extends AbstractButton {
     protected final Book book;
 

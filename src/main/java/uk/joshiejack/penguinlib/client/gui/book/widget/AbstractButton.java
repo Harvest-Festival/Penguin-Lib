@@ -3,9 +3,12 @@ package uk.joshiejack.penguinlib.client.gui.book.widget;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public abstract class AbstractButton extends Button {
     public AbstractButton(int x, int y, int w, int h, ITextComponent name, IPressable action, ITooltip tooltip) {
         super(x, y, w, h, name, action, tooltip);

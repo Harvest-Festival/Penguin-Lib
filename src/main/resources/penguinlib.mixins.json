@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "uk.joshiejack.penguinlib.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "penguinlib.refmap.json",
+  "mixins": [],
+  "client": [
+    "client.PenguinWorldRenderer",
+    "client.PenguinItemRenderer",
+    "client.PenguinRenderTypeBuffers"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

@@ -2,6 +2,10 @@ package uk.joshiejack.penguinlib;
 
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.BusBuilder;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -33,6 +37,7 @@ import uk.joshiejack.penguinlib.util.PenguinLoader;
 import uk.joshiejack.penguinlib.util.helpers.generic.ReflectionHelper;
 import uk.joshiejack.penguinlib.util.interfaces.IModPlugin;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.BiConsumer;
 
@@ -46,6 +51,13 @@ public class PenguinLib {
     public static final Logger LOGGER = LogManager.getLogger();
     private static final Type LOADER = Type.getType(PenguinLoader.class);
     private static final Type PACKET = Type.getType(PenguinLoader.Packet.class);
+    public static final ItemGroup TAB = new ItemGroup(MODID) {
+        @Nonnull
+        @OnlyIn(Dist.CLIENT)
+        public ItemStack makeIcon() {
+            return new ItemStack(PenguinItems.PLATE.get());
+        }
+    };
 
     public PenguinLib() {
         PenguinLib.EVENT_BUS.register(this);
@@ -61,6 +73,8 @@ public class PenguinLib {
         LootTableMerger.LOOT_MODIFIER_SERIALIZERS.register(eventBus);
         PenguinRegistries.SERIALIZERS.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PenguinClientConfig.create());
+        //TODO: REMOVE
+        TestBook.CONTAINERS.register(eventBus);
     }
 
     @SuppressWarnings("unchecked")
