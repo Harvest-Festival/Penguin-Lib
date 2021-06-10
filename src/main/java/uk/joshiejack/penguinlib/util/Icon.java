@@ -10,10 +10,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ForgeRegistries;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.client.renderer.ShadowRenderer;
@@ -29,6 +32,7 @@ public abstract class Icon {
 
     public static Icon fromJson(JsonObject json) {
         return json.has("item") ? new ItemIcon(new ItemStack(JSONUtils.getAsItem(json, "item")))
+                : json.has("tag") ? new TagIcon(ItemTags.createOptional(new ResourceLocation(JSONUtils.getAsString(json, "tag"))))
                 : json.has("entity") ? new EntityIcon(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(JSONUtils.getAsString(json, "entity"))))
                 : new TextureIcon(json.has("texture") ? new ResourceLocation(JSONUtils.getAsString(json, "texture")) : DEFAULT_LOCATION,
                 json.has("x") ? JSONUtils.getAsInt(json, "x") : 0,
@@ -41,6 +45,7 @@ public abstract class Icon {
         int type = pb.readByte();
         return type == 1 ? new ItemIcon(new ItemStack(pb.readRegistryIdSafe(Item.class)))
                 : type == 3 ? new EntityIcon(pb.readRegistryIdSafe(EntityType.class))
+                : type == 4 ? new TagIcon(ItemTags.createOptional(pb.readResourceLocation()))
                 : new TextureIcon(pb.readBoolean() ? pb.readResourceLocation() : DEFAULT_LOCATION, pb.readInt(), pb.readInt());
     }
 
@@ -52,6 +57,10 @@ public abstract class Icon {
     public static class ItemIcon extends Icon {
         public static final Icon EMPTY = new Icon.ItemIcon(ItemStack.EMPTY);
         private final ItemStack stack;
+
+        public ItemIcon(Item item) {
+            this(new ItemStack(item));
+        }
 
         public ItemIcon(ItemStack stack) {
             this.stack = stack;
@@ -121,6 +130,7 @@ public abstract class Icon {
         @Override
         public void render(Minecraft mc, MatrixStack matrix, int x, int y) {
             mc.getTextureManager().bind(texture);
+            mc.gui.setBlitOffset(0);
             mc.gui.blit(matrix, x, y, xPos, shadowed ? yPos + 16 : yPos, 16, 16);
             shadowed = false;
         }
@@ -152,7 +162,52 @@ public abstract class Icon {
         public void render(Minecraft mc, MatrixStack matrix, int x, int y) {
             if (entity == null) entity = (LivingEntity) entityType.create(mc.level);
             assert entity != null;
-            InventoryScreen.renderEntityInInventory(x, y, 10, 45F, 0F, entity);
+            InventoryScreen.renderEntityInInventory(x, y, 10, -90F, 0F, entity);
+        }
+    }
+
+    public static class TagIcon extends Icon {
+        public static final Icon EMPTY = new Icon.ItemIcon(ItemStack.EMPTY);
+        private final ITag.INamedTag<Item> tag;
+        private ItemStack stack;
+        private long timer;
+        private int id;
+
+        public TagIcon(ITag.INamedTag<Item> tag) {
+            this.tag = tag;
+            this.stack = new ItemStack(tag.getValues().get(0));
+        }
+
+        @Override
+        public JsonElement toJson(JsonObject json) {
+            json.addProperty("tag", tag.getName().toString());
+            return json;
+        }
+
+        @Override
+        public void toNetwork(PacketBuffer pb) {
+            pb.writeByte(4);
+            pb.writeResourceLocation(tag.getName());
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public void render(Minecraft mc, MatrixStack matrix, int x, int y) {
+            if (System.currentTimeMillis() - timer > 1000) {
+                id++;
+
+                if (id >= tag.getValues().size())
+                    id = 0;
+                stack = new ItemStack(tag.getValues().get(id));
+            }
+
+            timer = System.currentTimeMillis();
+            if (shadowed) ShadowRenderer.enable();
+            mc.getItemRenderer().renderGuiItem(stack, x, y);
+            if (shadowed) {
+                ShadowRenderer.disable();
+                shadowed = false;
+            }
         }
     }
 }
