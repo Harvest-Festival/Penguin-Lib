@@ -51,7 +51,7 @@ public class NoteWidget extends Widget {
         this.note = note; //Update the stuff
         boolean unicode = mc.options.forceUnicodeFont;
         mc.options.forceUnicodeFont = true;
-        this.chatter = new Chatter(note.getText()).withWidth(note.getNoteType().getTextWidth()).withLines(note.getNoteType().getLineCount()).withHeight(8).withFormatting(note.getNoteType().getTextFormatting()).setInstant();
+        this.chatter = new Chatter(note.getNoteType().getText(note)).withWidth(note.getNoteType().getTextWidth()).withLines(note.getNoteType().getLineCount()).withHeight(8).withFormatting(note.getNoteType().getTextFormatting()).setInstant();
         this.chatter.update(mc.font);
         mc.options.forceUnicodeFont = unicode;
     }

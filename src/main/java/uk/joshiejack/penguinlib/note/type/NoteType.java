@@ -7,12 +7,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.widget.NoteWidget;
+import uk.joshiejack.penguinlib.note.Note;
 import uk.joshiejack.penguinlib.util.helpers.generic.StringHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class NoteType {
@@ -55,5 +58,10 @@ public class NoteType {
     @OnlyIn(Dist.CLIENT)
     public TextFormatting getTextFormatting() {
         return null;
+    }
+    
+    @Nonnull
+    public ITextComponent getText(Note note) {
+        return note.getText();
     }
 }
