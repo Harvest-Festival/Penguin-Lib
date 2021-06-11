@@ -1,6 +1,8 @@
 package uk.joshiejack.penguinlib.note;
 
 import com.google.gson.JsonObject;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,6 +20,7 @@ import uk.joshiejack.penguinlib.item.crafting.SimplePenguinRecipe;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.packet.ReadNotePacket;
 import uk.joshiejack.penguinlib.network.packet.UnlockNotePacket;
+import uk.joshiejack.penguinlib.note.type.NoteType;
 import uk.joshiejack.penguinlib.util.icon.Icon;
 import uk.joshiejack.penguinlib.util.helpers.minecraft.PlayerHelper;
 
@@ -28,13 +31,15 @@ public class Note extends SimplePenguinRecipe {
     private final String text;
     private final String title;
     private final ResourceLocation category;
+    private NoteType type;
     private boolean isHidden;
     private Icon icon;
     private boolean isLocked;
 
-    public Note(ResourceLocation rl, ResourceLocation category) {
+    public Note(ResourceLocation rl, ResourceLocation category, NoteType type) {
         super(PenguinRegistries.NOTE, PenguinRegistries.NOTE_SERIALIZER.get(), rl, Ingredient.EMPTY, ItemStack.EMPTY);
         this.category = category;
+        this.type = type;
         this.text = Util.makeDescriptionId("note.text", rl);
         this.title = Util.makeDescriptionId("note.title", rl);
     }
@@ -93,11 +98,16 @@ public class Note extends SimplePenguinRecipe {
         return !isLocked;
     }
 
+    public NoteType getNoteType() {
+        return type;
+    }
+
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<Note> {
         @Nonnull
         @Override
         public Note fromJson(@Nonnull ResourceLocation rl, @Nonnull JsonObject json) {
-            Note note = new Note(rl, new ResourceLocation(JSONUtils.getAsString(json, "category")));
+            NoteType type = json.has("note type") ? NoteType.TYPES.getOrDefault(JSONUtils.getAsString(json, "note type"), NoteType.TEXT) : NoteType.TEXT;
+            Note note = new Note(rl, new ResourceLocation(JSONUtils.getAsString(json, "category")), type);
             if (json.has("hidden") && JSONUtils.getAsBoolean(json, "hidden"))
                 note.setHidden();
             if (json.has("locked") && JSONUtils.getAsBoolean(json, "locked"))
@@ -109,7 +119,7 @@ public class Note extends SimplePenguinRecipe {
         @Nullable
         @Override
         public Note fromNetwork(@Nonnull ResourceLocation rl, @Nonnull PacketBuffer pb) {
-            Note note = new Note(rl, pb.readResourceLocation());
+            Note note = new Note(rl, pb.readResourceLocation(), NoteType.TYPES.getOrDefault(pb.readUtf(), NoteType.TEXT));
             if (pb.readBoolean())
                 note.setHidden();
             if (pb.readBoolean())
@@ -121,6 +131,7 @@ public class Note extends SimplePenguinRecipe {
         @Override
         public void toNetwork(@Nonnull PacketBuffer pb, @Nonnull Note note) {
             pb.writeResourceLocation(note.category);
+            pb.writeUtf(note.getNoteType().toString());
             pb.writeBoolean(note.isHidden);
             pb.writeBoolean(note.isLocked);
             note.getIcon().toNetwork(pb);

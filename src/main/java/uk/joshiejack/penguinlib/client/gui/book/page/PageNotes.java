@@ -40,7 +40,7 @@ public class PageNotes extends AbstractMultiPage.Right<Note> {
 
     @Override
     protected void initEntry(Book book, int left, int top, int id, Note note) {
-        book.addButton(new NoteButton(book, this.note.get(), note, left + 8 + ((id % 7) * 18), top + 8 + ((id / 7) * 18),
+        book.addButton(new NoteButton(book, this.note.getNote(), note, left + 8 + ((id % 7) * 18), top + 8 + ((id / 7) * 18),
                 (button) -> {
                     if (note.isDefault() || note.isUnlocked(Minecraft.getInstance().player)) {
                         this.note.set(note); //Set the page to this and mark as read

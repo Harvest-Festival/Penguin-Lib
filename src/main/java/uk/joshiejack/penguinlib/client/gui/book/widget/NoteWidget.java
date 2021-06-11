@@ -14,6 +14,7 @@ import uk.joshiejack.penguinlib.note.Note;
 import uk.joshiejack.penguinlib.util.helpers.generic.StringHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class NoteWidget extends Widget {
@@ -33,33 +34,31 @@ public class NoteWidget extends Widget {
         return note.getTitle();
     }
 
-    public void set(Note note) {
+    public Note getNote() {
+        return note;
+    }
+
+    public Chatter getChatter() {
+        return chatter;
+    }
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void set(@Nonnull Note note) {
         Minecraft mc = Minecraft.getInstance();
         this.note = note; //Update the stuff
-        //this.it = note.getRenderScript() == null ? null : Scripting.get(note.getRenderScript());
         boolean unicode = mc.options.forceUnicodeFont;
         mc.options.forceUnicodeFont = true;
-        this.chatter = new Chatter(note.getText()).withWidth(180).withLines(20).withHeight(8).withFormatting(null).setInstant();
+        this.chatter = new Chatter(note.getText()).withWidth(note.getNoteType().getTextWidth()).withLines(note.getNoteType().getLineCount()).withHeight(8).withFormatting(note.getNoteType().getTextFormatting()).setInstant();
         this.chatter.update(mc.font);
         mc.options.forceUnicodeFont = unicode;
-        //if (!note.init() && it != null) {
-        //  it.callFunction("init", this);
-        //}
     }
 
     @Override
     public void renderButton(@Nonnull MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-        if (note == null) return;
-        Minecraft minecraft = Minecraft.getInstance();
-        FontRenderer fontrenderer = minecraft.font;
-        int j = getFGColor();
-        drawCenteredString(matrix, fontrenderer, getMessage(), x + width / 2, y, j | MathHelper.ceil(alpha * 255.0F) << 24);
-        StringHelper.enableUnicode();
-        chatter.draw(matrix, fontrenderer, x + 2, y + 8, 4210752);
-        StringHelper.disableUnicode();
-    }
-
-    public Note get() {
-        return note;
+        if (note != null)
+            note.getNoteType().render(matrix, this, mouseX, mouseY);
     }
 }

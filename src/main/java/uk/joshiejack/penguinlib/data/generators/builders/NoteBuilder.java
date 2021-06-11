@@ -1,6 +1,7 @@
 package uk.joshiejack.penguinlib.data.generators.builders;
 
 import com.google.gson.JsonObject;
+import joptsimple.internal.Strings;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -8,6 +9,7 @@ import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.note.Note;
+import uk.joshiejack.penguinlib.note.type.NoteType;
 import uk.joshiejack.penguinlib.util.icon.*;
 
 import javax.annotation.Nonnull;
@@ -17,6 +19,7 @@ public class NoteBuilder extends SimplePenguinBuilder<Note> {
     private ResourceLocation category;
     private boolean isHidden;
     private boolean locked;
+    private String type;
     private Icon icon = new ItemIcon(ItemStack.EMPTY);
     private CategoryBuilder categoryBuilder;
     public NoteBuilder() {
@@ -40,6 +43,15 @@ public class NoteBuilder extends SimplePenguinBuilder<Note> {
     public NoteBuilder withCategory(CategoryBuilder builder) {
         category = builder.getId();
         return this;
+    }
+
+    public NoteBuilder setNoteType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public NoteBuilder setNoteType(NoteType type) {
+        return setNoteType(type.toString());
     }
 
     public NoteBuilder setHidden() {
@@ -86,6 +98,7 @@ public class NoteBuilder extends SimplePenguinBuilder<Note> {
     public void serializeRecipeData(@Nonnull JsonObject json) {
         if (isHidden) json.addProperty("hidden", true);
         if (locked) json.addProperty("locked", true);
+        if (!Strings.isNullOrEmpty(type)) json.addProperty("note type", type);
         json.addProperty("category", category.toString());
         json.add("icon", icon.toJson(new JsonObject()));
     }
