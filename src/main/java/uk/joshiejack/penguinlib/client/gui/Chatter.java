@@ -144,7 +144,7 @@ public class Chatter {
         }
 
         //If the page we are trying to parse, has a string for the line we're trying to display
-        if (line < maxLines) {//If the current line, is less than the length of the lines, And we have less pages than max
+        if (line < maxLines && fordisplay != null) {//If the current line, is less than the length of the lines, And we have less pages than max
             if (script[page][line] != null) {
                 //Draw the characters as we go.
                 if (this.formatting == null) fontRenderer.draw(matrix, new String(fordisplay), x, y + (line * height), color);
@@ -176,6 +176,10 @@ public class Chatter {
 
     public int getPage() {
         return page;
+    }
+
+    public int getMaxPage() {
+        return script.length - 1;
     }
 
     private boolean previousChat() {

@@ -9,6 +9,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import uk.joshiejack.penguinlib.client.gui.Chatter;
 import uk.joshiejack.penguinlib.note.Note;
 import uk.joshiejack.penguinlib.util.helpers.generic.StringHelper;
@@ -25,7 +26,7 @@ public class NoteWidget extends Widget {
     public NoteWidget(int x, int y, int w, int h, NoteWidget previous) {
         super(x, y, w, h, EMPTY);
         if (previous != null && previous.note != null)
-            set(previous.note);
+            set(previous.note, previous.chatter);
     }
 
     @Nonnull
@@ -46,13 +47,20 @@ public class NoteWidget extends Widget {
         return alpha;
     }
 
-    public void set(@Nonnull Note note) {
+    public void set(@Nonnull Note note, @Nullable Chatter chatter) {
         Minecraft mc = Minecraft.getInstance();
         this.note = note; //Update the stuff
         boolean unicode = mc.options.forceUnicodeFont;
         mc.options.forceUnicodeFont = true;
-        this.chatter = new Chatter(note.getNoteType().getText(note)).withWidth(note.getNoteType().getTextWidth()).withLines(note.getNoteType().getLineCount()).withHeight(8).withFormatting(note.getNoteType().getTextFormatting()).setInstant();
-        this.chatter.update(mc.font);
+        if (chatter == null) {
+            this.chatter = new Chatter(note.getNoteType().getText(note))
+                    .withWidth(note.getNoteType().getTextWidth())
+                    .withLines(note.getNoteType().getLineCount())
+                    .withHeight(8).withFormatting(note.getNoteType().getTextFormatting())
+                    .setInstant();
+            this.chatter.update(mc.font);
+        } else this.chatter = chatter;
+
         mc.options.forceUnicodeFont = unicode;
     }
 

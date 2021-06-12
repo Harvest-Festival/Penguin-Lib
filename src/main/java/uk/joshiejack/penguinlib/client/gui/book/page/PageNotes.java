@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.Book;
+import uk.joshiejack.penguinlib.client.gui.book.widget.ArrowButton;
 import uk.joshiejack.penguinlib.client.gui.book.widget.NoteButton;
 import uk.joshiejack.penguinlib.client.gui.book.widget.NoteWidget;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
@@ -36,6 +37,21 @@ public class PageNotes extends AbstractMultiPage.Right<Note> {
     public void initLeft(Book book, int left, int top) {
         note = new NoteWidget(left + 18, top, 130, 20, note);
         book.addButton(note);
+        if (note.getNote() != null) {
+            if (note.getChatter().getPage() < note.getChatter().getMaxPage())
+                book.addButton(new ArrowButton.Right(book, left + 130, top + 154, (button) -> {
+                    note.getChatter().mouseClicked(0);
+                    note.getChatter().update(book.minecraft().font);
+                    book.init(book.minecraft(), book.width, book.height);
+                }));
+
+            if (note.getChatter().getPage() > 0)
+                book.addButton(new ArrowButton.Left(book, left + 20, top + 154, (button) -> {
+                    note.getChatter().mouseClicked(1);
+                    note.getChatter().update(book.minecraft().font);
+                    book.init(book.minecraft(), book.width, book.height);
+                }));
+        }
     }
 
     @Override
@@ -43,7 +59,8 @@ public class PageNotes extends AbstractMultiPage.Right<Note> {
         book.addButton(new NoteButton(book, this.note.getNote(), note, left + 8 + ((id % 7) * 18), top + 8 + ((id / 7) * 18),
                 (button) -> {
                     if (note.isDefault() || note.isUnlocked(Minecraft.getInstance().player)) {
-                        this.note.set(note); //Set the page to this and mark as read
+                        this.note.set(note, null); //Set the page to this and mark as read
+                        book.init(book.minecraft(), book.width, book.height); //Reinit the book
                         note.read(Minecraft.getInstance().player);
                     }
                 },

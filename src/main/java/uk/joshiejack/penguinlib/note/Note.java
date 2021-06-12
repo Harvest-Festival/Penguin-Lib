@@ -28,8 +28,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class Note extends SimplePenguinRecipe {
-    private final String text;
-    private final String title;
+    private final ITextComponent text;
+    private final ITextComponent title;
     private final ResourceLocation category;
     private NoteType type;
     private boolean isHidden;
@@ -40,16 +40,16 @@ public class Note extends SimplePenguinRecipe {
         super(PenguinRegistries.NOTE, PenguinRegistries.NOTE_SERIALIZER.get(), rl, Ingredient.EMPTY, ItemStack.EMPTY);
         this.category = category;
         this.type = type;
-        this.text = Util.makeDescriptionId("note.text", rl);
-        this.title = Util.makeDescriptionId("note.title", rl);
+        this.text = new TranslationTextComponent(Util.makeDescriptionId("note.text", rl));
+        this.title = new TranslationTextComponent(Util.makeDescriptionId("note.title", rl));
     }
 
     public ITextComponent getTitle() {
-        return new TranslationTextComponent(title);
+        return title;
     }
 
     public ITextComponent getText() {
-        return new TranslationTextComponent(text);
+        return text;
     }
 
     public ResourceLocation getCategory() {

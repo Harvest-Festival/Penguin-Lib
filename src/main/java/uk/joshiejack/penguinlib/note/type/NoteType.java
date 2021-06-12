@@ -46,12 +46,12 @@ public class NoteType {
 
     @OnlyIn(Dist.CLIENT)
     public int getTextWidth() {
-        return 180;
+        return 165;
     }
 
     @OnlyIn(Dist.CLIENT)
     public int getLineCount() {
-        return 20;
+        return 18;
     }
 
     @Nullable
@@ -59,7 +59,7 @@ public class NoteType {
     public TextFormatting getTextFormatting() {
         return null;
     }
-    
+
     @Nonnull
     public ITextComponent getText(Note note) {
         return note.getText();
