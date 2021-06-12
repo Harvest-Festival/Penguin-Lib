@@ -7,7 +7,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;

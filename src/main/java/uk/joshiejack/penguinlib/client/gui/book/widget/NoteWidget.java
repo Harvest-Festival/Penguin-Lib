@@ -2,17 +2,13 @@ package uk.joshiejack.penguinlib.client.gui.book.widget;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import uk.joshiejack.penguinlib.client.gui.Chatter;
 import uk.joshiejack.penguinlib.note.Note;
-import uk.joshiejack.penguinlib.util.helpers.generic.StringHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

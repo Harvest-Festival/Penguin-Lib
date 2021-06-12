@@ -1,8 +1,6 @@
 package uk.joshiejack.penguinlib.note;
 
 import com.google.gson.JsonObject;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,8 +19,8 @@ import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.packet.ReadNotePacket;
 import uk.joshiejack.penguinlib.network.packet.UnlockNotePacket;
 import uk.joshiejack.penguinlib.note.type.NoteType;
-import uk.joshiejack.penguinlib.util.icon.Icon;
 import uk.joshiejack.penguinlib.util.helpers.minecraft.PlayerHelper;
+import uk.joshiejack.penguinlib.util.icon.Icon;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

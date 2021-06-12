@@ -1,5 +1,6 @@
 package uk.joshiejack.penguinlib.data.generators.builders;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.entity.EntityType;
@@ -16,6 +17,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 
 public class CategoryBuilder extends SimplePenguinBuilder<Category> {
@@ -56,6 +58,11 @@ public class CategoryBuilder extends SimplePenguinBuilder<Category> {
 
     public CategoryBuilder withTagIcon(ITag.INamedTag<Item> tag) {
         icon = new TagIcon(tag);
+        return this;
+    }
+
+    public CategoryBuilder withListIcon(Item... items) {
+        icon = new ItemListIcon(Lists.newArrayList(items).stream().map(ItemStack::new).collect(Collectors.toList()));
         return this;
     }
 

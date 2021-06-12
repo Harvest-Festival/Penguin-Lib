@@ -32,7 +32,7 @@ public class ItemIcon extends Icon {
     @Override
     public void toNetwork(PacketBuffer pb) {
         pb.writeByte(Icon.Type.ITEM.ordinal());
-        pb.writeRegistryId(stack.getItem());
+        pb.writeItem(stack);
     }
 
     @OnlyIn(Dist.CLIENT)
