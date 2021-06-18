@@ -11,16 +11,19 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.joshiejack.penguinlib.PenguinLib;
+import uk.joshiejack.penguinlib.client.PenguinClientConfig;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.events.DatabaseLoadedEvent;
 import uk.joshiejack.penguinlib.events.DatabasePopulateEvent;
@@ -39,7 +42,6 @@ public class Database extends ReloadListener<Map<String, Table>> {
     public static final int pathSuffixLength = ".csv".length();
     private static final String directory = "database";
     private static final int dirLength = directory.length() + 1;
-    public static boolean enableDebuggingTools = true;
     private final Map<String, String> tableData = new HashMap<>();
 
     public static class Dummy extends SimplePenguinRecipe {
@@ -72,7 +74,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
                 parseCSV(tables, INSTANCE.tableData, name, builder.toString());
             }
 
-            if (enableDebuggingTools)
+            if (PenguinClientConfig.enableDatabaseDebugger.get())
                 print(tables);
             MinecraftForge.EVENT_BUS.post(new DatabasePopulateEvent(tables));
             MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
@@ -186,7 +188,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
 
     @Override
     protected void apply(@Nonnull Map<String, Table> tables, @Nonnull IResourceManager rm, @Nonnull IProfiler profiler) {
-        if (enableDebuggingTools)
+        if (FMLEnvironment.dist == Dist.CLIENT && PenguinClientConfig.enableDatabaseDebugger.get())
             print(tables);
         MinecraftForge.EVENT_BUS.post(new DatabasePopulateEvent(tables));
         MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
