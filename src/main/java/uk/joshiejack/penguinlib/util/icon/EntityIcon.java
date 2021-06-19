@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketBuffer;
@@ -37,10 +38,13 @@ public class EntityIcon extends Icon {
     @OnlyIn(Dist.CLIENT)
     public void render(Minecraft mc, MatrixStack matrix, int x, int y) {
         if (this.entity == null) {
-            this.entity = (LivingEntity) this.entityType.create(mc.level);
+            assert mc.level != null;
+            Entity test = this.entityType.create(mc.level);
+            if (test instanceof LivingEntity)
+                this.entity = (LivingEntity) test;
+            else
+                return;
         }
-
-        assert this.entity != null;
 
         InventoryScreen.renderEntityInInventory(x + 8, y + 15, scale, -65F, 0.0F, this.entity);
     }
