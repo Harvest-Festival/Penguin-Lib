@@ -115,7 +115,7 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
         centre = leftPos + (imageWidth / 2);
         bgLeftOffset = centre - 154;
         titleLabelX = (imageWidth / 2) - font.width(title) / 2;
-        titleLabelY = topPos - 30;
+        titleLabelY = -10;
         if (tab == null)
             tab = defaultTab;
 
