@@ -1,8 +1,13 @@
-![](src/main/resources/assets/penguinlib/logo.png)
+<div align="left" style="position:relative"><img style="float: left" width=64px src="https://harvestfestivalwiki.com/images/f/fd/Penguin-Lib.png">
 
+
+
+ [![Discord](https://img.shields.io/discord/227497118498029569?style=plastic&colorB=7289DA&logo=discord&logoColor=white)](http://discord.gg/0vVjLvWg5kyQwnHG) &nbsp; ![GitHub](https://img.shields.io/github/license/joshiejack/Penguin-Lib?color=%23990000&style=plastic) &nbsp; ![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fjenkins.joshiejack.uk%2Fjob%2FPenguin-Lib%2F&style=plastic) &nbsp; ![Maven metadata URL](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fmaven.joshiejack.uk%2Fuk%2Fjoshiejack%2Fpenguinlib%2FPenguin-Lib%2Fmaven-metadata.xml&style=plastic) &nbsp; [![Curseforge](https://cf.way2muchnoise.eu/full_penguin-lib_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/penguin-lib)
+
+</div>
+
+<br><br><br>
 Penguin-Lib is the library mod for all of my mods. It's not too exciting!
-
-If you have any questions, feel free to join the [Harvest Festival Discord](https://discord.gg/MRZAyze)
 
 Adding Penguin-Lib to your buildscript
 ---
