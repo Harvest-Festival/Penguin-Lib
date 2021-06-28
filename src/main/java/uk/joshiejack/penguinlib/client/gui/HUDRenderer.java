@@ -24,7 +24,9 @@ public class HUDRenderer {
     public static Object2ObjectMap<RegistryKey<World>, HUDRenderData> RENDERERS = new Object2ObjectOpenHashMap<>();
 
     public abstract static class HUDRenderData {
+        @Deprecated
         public abstract boolean isEnabled();
+        public boolean isEnabled(Minecraft mc) { return isEnabled(); }
         public abstract ResourceLocation getTexture(Minecraft mc);
         public abstract ITextComponent getHeader(Minecraft mc);
         public String getFooter(Minecraft mc) {
@@ -59,13 +61,15 @@ public class HUDRenderer {
         Minecraft mc = Minecraft.getInstance();
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             HUDRenderData hud = RENDERERS.get(mc.level.dimension());
-            if (hud != null && hud.isEnabled()) {
+            if (hud != null && hud.isEnabled(mc)) {
+                ResourceLocation texture = hud.getTexture(mc);
+                if (texture == null) return; //Self protection
                 MatrixStack matrix = event.getMatrixStack();
                 RenderSystem.enableBlend();
                 int x = 0;
                 int y = 0;
                 RenderSystem.color4f(1F, 1F, 1F, 1F);
-                mc.getTextureManager().bind(hud.getTexture(mc));//inMine ? MINE_HUD : season.HUD);
+                mc.getTextureManager().bind(texture);//inMine ? MINE_HUD : season.HUD);
                 mc.gui.blit(matrix, x - 44, y - 35, 0, 0, 256, 110);
 
                 //Enlarge the Day
