@@ -16,7 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.client.PenguinClientConfig;
-import uk.joshiejack.penguinlib.util.helpers.minecraft.TimeHelper;
+import uk.joshiejack.penguinlib.util.helpers.TimeHelper;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = PenguinLib.MODID)

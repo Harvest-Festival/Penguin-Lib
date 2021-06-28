@@ -1,10 +1,9 @@
-package uk.joshiejack.penguinlib.util.helpers.generic;
+package uk.joshiejack.penguinlib.util.helpers;
 
 import net.minecraft.client.AbstractOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TranslationTextComponent;
 
-@Deprecated //TODO: Remove later
 public class StringHelper {
     public static String[] getListFromDatabase(String data) {
         return data.replace("\"", "").replace(", ", ",").split(",");
@@ -45,5 +44,18 @@ public class StringHelper {
 
     public static void disableUnicode() {
         AbstractOption.FORCE_UNICODE_FONT.set(Minecraft.getInstance().options, String.valueOf(unicode));
+    }
+
+    public static String[] decompose(String namespace, char character) {
+        String[] astring = new String[]{"minecraft", namespace};
+        int i = namespace.indexOf(character);
+        if (i >= 0) {
+            astring[1] = namespace.substring(i + 1);
+            if (i >= 1) {
+                astring[0] = namespace.substring(0, i);
+            }
+        }
+
+        return astring;
     }
 }

@@ -19,7 +19,7 @@ import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.packet.ReadNotePacket;
 import uk.joshiejack.penguinlib.network.packet.UnlockNotePacket;
 import uk.joshiejack.penguinlib.note.type.NoteType;
-import uk.joshiejack.penguinlib.util.helpers.minecraft.PlayerHelper;
+import uk.joshiejack.penguinlib.util.helpers.PlayerHelper;
 import uk.joshiejack.penguinlib.util.icon.Icon;
 
 import javax.annotation.Nonnull;
@@ -29,7 +29,7 @@ public class Note extends SimplePenguinRecipe {
     private final ITextComponent text;
     private final ITextComponent title;
     private final ResourceLocation category;
-    private NoteType type;
+    private final NoteType type;
     private boolean isHidden;
     private Icon icon;
     private boolean isLocked;

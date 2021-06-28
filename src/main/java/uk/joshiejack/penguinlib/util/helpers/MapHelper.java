@@ -1,8 +1,7 @@
-package uk.joshiejack.penguinlib.util.helpers.generic;
+package uk.joshiejack.penguinlib.util.helpers;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 
-@Deprecated //TODO: Remove later
 public class MapHelper {
     public static <T> int adjustOrPut(Object2IntMap<T> map, T key, int adjust, int put) {
         if (!map.containsKey(key)) {

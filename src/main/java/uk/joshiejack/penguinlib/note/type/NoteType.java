@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.widget.NoteWidget;
 import uk.joshiejack.penguinlib.note.Note;
-import uk.joshiejack.penguinlib.util.helpers.generic.StringHelper;
+import uk.joshiejack.penguinlib.util.helpers.StringHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -34,7 +34,7 @@ import uk.joshiejack.penguinlib.item.PenguinItems;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
 import uk.joshiejack.penguinlib.network.PenguinPacket;
 import uk.joshiejack.penguinlib.util.PenguinLoader;
-import uk.joshiejack.penguinlib.util.helpers.generic.ReflectionHelper;
+import uk.joshiejack.penguinlib.util.helpers.ReflectionHelper;
 import uk.joshiejack.penguinlib.util.interfaces.IModPlugin;
 
 import javax.annotation.Nonnull;

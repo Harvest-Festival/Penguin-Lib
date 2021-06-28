@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.util.helpers.minecraft;
+package uk.joshiejack.penguinlib.util.helpers;
 
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
@@ -6,7 +6,7 @@ import uk.joshiejack.penguinlib.PenguinLib;
 
 import java.time.DayOfWeek;
 
-@Deprecated //TODO: Remove later
+@Mod.EventBusSubscriber(modid = PenguinLib.MODID)
 public class TimeHelper {
     public static long TICKS_PER_DAY = 24000L;
     public static double SCALE = TICKS_PER_DAY / 24000D;

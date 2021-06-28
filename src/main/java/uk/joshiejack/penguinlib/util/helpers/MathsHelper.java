@@ -1,6 +1,5 @@
-package uk.joshiejack.penguinlib.util.helpers.generic;
+package uk.joshiejack.penguinlib.util.helpers;
 
-@Deprecated //TODO: Remove later
 public class MathsHelper {
     public static int constrainToRangeInt(int value, int min, int max) {
         return Math.min(Math.max(value, min), max);

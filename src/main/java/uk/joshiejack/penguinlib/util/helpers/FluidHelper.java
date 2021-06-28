@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.util.helpers.minecraft;
+package uk.joshiejack.penguinlib.util.helpers;
 
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-@Deprecated //TODO: Remove later
 public class FluidHelper {
     public static int getFluidCapacityFromStack(ItemStack stack) {
         LazyOptional<IFluidHandlerItem> handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);

@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.util.helpers.generic;
+package uk.joshiejack.penguinlib.util.helpers;
 
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
-@Deprecated //TODO: Remove later
 public class ReflectionHelper {
     public static <T, E> void setPrivateFinalValue(Class<? super T> classToAccess, T instance, E value, String fieldName) {
         try {

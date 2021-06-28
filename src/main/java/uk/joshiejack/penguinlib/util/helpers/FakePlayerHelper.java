@@ -1,4 +1,4 @@
-package uk.joshiejack.penguinlib.util.helpers.minecraft;
+package uk.joshiejack.penguinlib.util.helpers;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.util.math.BlockPos;
@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import java.lang.ref.WeakReference;
 import java.util.UUID;
 
-@Deprecated //TODO: Remove later
 public class FakePlayerHelper {
     private static final GameProfile PENGUIN_PLAYER = new GameProfile(UUID.fromString("41C82C87-7AfB-4024-CA57-13C2C99CAE63"), "[PenguinLib]");
     private static WeakReference<FakePlayer> PLAYER = null;

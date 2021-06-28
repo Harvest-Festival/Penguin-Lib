@@ -1,9 +1,8 @@
-package uk.joshiejack.penguinlib.util.helpers.minecraft;
+package uk.joshiejack.penguinlib.util.helpers;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
-@Deprecated //TODO: Remove later
 public class PlayerHelper {
     private static CompoundNBT getOrCreateTag(CompoundNBT base, String name) {
         if (!base.contains(name))
