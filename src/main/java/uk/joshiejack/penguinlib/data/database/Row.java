@@ -6,11 +6,17 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.Potion;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.util.Patterns;
+import uk.joshiejack.penguinlib.util.PenguinTags;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -29,8 +35,8 @@ public class Row {
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             PenguinLib.LOGGER.log(Level.ERROR, "Failed to set the values for the label set: " + Arrays.toString(labelset) +
-                                                " with the data " + Arrays.toString(dataset));
-            throw(ex);
+                    " with the data " + Arrays.toString(dataset));
+            throw (ex);
         }
 
         this.table = table;
@@ -133,6 +139,30 @@ public class Row {
         return name.isEmpty() || name.equals("none") || name.equals("default");
     }
 
+    public Effect effect() {
+        return effect("effect");
+    }
+
+    public Effect effect(String name) {
+        return ForgeRegistries.POTIONS.getValue(getRL(name));
+    }
+
+    public ITag.INamedTag<Item> itemTag() {
+        return itemTag("tag");
+    }
+
+    public ITag.INamedTag<Item> itemTag(String name) {
+        return ItemTags.createOptional(getRL(name));
+    }
+
+    public ITag.INamedTag<Block> blockTag() {
+        return blockTag("tag");
+    }
+
+    public ITag.INamedTag<Block> blockTag(String name) {
+        return BlockTags.createOptional(getRL(name));
+    }
+
     @Override
     public String toString() {
         return Arrays.toString(data.values().toArray());
@@ -140,9 +170,9 @@ public class Row {
 
     //Search the objects for a match
     public boolean contains(String match) {
-        for (Object object: data.values()) {
+        for (Object object : data.values()) {
             if (object instanceof String) {
-                if(match.equals(object)) return true;
+                if (match.equals(object)) return true;
             }
         }
 

@@ -3,13 +3,10 @@ package uk.joshiejack.penguinlib.util.icon;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
 import net.minecraft.network.PacketBuffer;
 
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ItemListIcon extends AbstractCyclicIcon.ItemStack {
     public static final Icon EMPTY = new ItemListIcon(new ArrayList<>());
@@ -31,7 +28,7 @@ public class ItemListIcon extends AbstractCyclicIcon.ItemStack {
 
     @Override
     public void toNetwork(PacketBuffer pb) {
-        pb.writeByte(Type.LIST.ordinal());
+        pb.writeByte(Type.ITEM_LIST.ordinal());
         pb.writeShort(list.size());
         list.forEach(pb::writeItem);
     }

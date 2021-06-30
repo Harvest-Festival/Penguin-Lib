@@ -1,8 +1,12 @@
 package uk.joshiejack.penguinlib.util.helpers;
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.AbstractOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.stream.Collectors;
 
 public class StringHelper {
     public static String[] getListFromDatabase(String data) {
@@ -57,5 +61,9 @@ public class StringHelper {
         }
 
         return astring;
+    }
+
+    public static String join(char character, Object... vars) {
+        return StringUtils.join(Lists.newArrayList(vars).stream().map(Object::toString).collect(Collectors.toList()), character);
     }
 }

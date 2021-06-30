@@ -25,7 +25,7 @@ public abstract class Icon {
     protected boolean shadowed;
 
     public enum Type {
-        ITEM, TEXTURE, ENTITY, TAG, LIST
+        ITEM, TEXTURE, ENTITY, TAG, ITEM_LIST, ICON_LIST
     }
 
     public Icon shadowed() {
@@ -34,6 +34,17 @@ public abstract class Icon {
     }
 
     public static Icon fromJson(JsonObject json) {
+        //Icon List
+        if (json.has("icon_list")) {
+            JsonArray array = json.getAsJsonArray("icon_list");
+            List<Icon> icons = new ArrayList<>();
+            for (int i = 0; i < array.size(); i++) {
+                icons.add(fromJson(array.get(i).getAsJsonObject()));
+            }
+
+            return new ListIcon(icons);
+        }
+
         //List
         if (json.has("list")) {
             JsonArray array = json.getAsJsonArray("list");
@@ -69,8 +80,7 @@ public abstract class Icon {
                 return new EntityIcon(pb.readRegistryIdSafe(EntityType.class), pb.readByte());
             case TAG:
                 return new TagIcon(ItemTags.createOptional(pb.readResourceLocation()));
-            case LIST:
-            {
+            case ITEM_LIST: {
                 List<ItemStack> items = new ArrayList<>();
                 int size = pb.readInt();
                 for (int i = 0; i < size; i++) {
@@ -78,6 +88,15 @@ public abstract class Icon {
                 }
 
                 return new ItemListIcon(items);
+            }
+            case ICON_LIST: {
+                List<Icon> icons = new ArrayList<>();
+                int size = pb.readInt();
+                for (int i = 0; i < size; i++) {
+                    icons.add(fromNetwork(pb)); //Hmm
+                }
+
+                return new ListIcon(icons);
             }
         }
 
