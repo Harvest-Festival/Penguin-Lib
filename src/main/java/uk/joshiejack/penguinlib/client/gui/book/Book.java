@@ -33,6 +33,10 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
     private int centre, bgLeftOffset;
     private Tab defaultTab = Tab.EMPTY;
     private Tab tab;
+    public int fontColor1 = 0x857754;
+    public int fontColor2 = 4210752;
+    public int lineColor1 = 0xFFB0A483;
+    public int lineColor2 = 0xFF9C8C63;
 
     public Book(String modid, AbstractBookContainer container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name, null, 360, 230);
