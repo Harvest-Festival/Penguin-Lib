@@ -116,6 +116,8 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
     @Override
     public void init() {
         super.init();
+        leftPos = (this.width - this.imageWidth) / 2;
+        topPos = ((this.height - this.imageHeight) / 2) + 10;
         centre = leftPos + (imageWidth / 2);
         bgLeftOffset = centre - 154;
         titleLabelX = (imageWidth / 2) - font.width(title) / 2;
