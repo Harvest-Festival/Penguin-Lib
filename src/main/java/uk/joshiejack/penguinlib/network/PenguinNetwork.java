@@ -64,7 +64,7 @@ public class PenguinNetwork {
         PenguinTeam team = PenguinTeams.getTeamFromID(world, uuid);
         if (team != null) {
             team.members().stream()
-                    .map(member -> world.getPlayerByUUID(uuid))
+                    .map(world::getPlayerByUUID)
                     .filter(player -> player instanceof ServerPlayerEntity)
                     .map(player -> (ServerPlayerEntity) player)
                     .forEach(player -> sendToClient(packet, player));
