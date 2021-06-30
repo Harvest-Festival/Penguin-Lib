@@ -6,6 +6,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.BusBuilder;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -73,6 +74,7 @@ public class PenguinLib {
         LootTableMerger.LOOT_MODIFIER_SERIALIZERS.register(eventBus);
         PenguinRegistries.SERIALIZERS.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PenguinClientConfig.create());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PenguinConfig.create());
     }
 
     @SuppressWarnings("unchecked")
@@ -126,5 +128,17 @@ public class PenguinLib {
                     } catch (ClassNotFoundException ignored) {
                     }
                 }));
+    }
+
+    public static class PenguinConfig {
+        public static ForgeConfigSpec.BooleanValue enableTeamCommands;
+
+        PenguinConfig(ForgeConfigSpec.Builder builder) {
+            enableTeamCommands = builder.define("Enable Penguin Team Commands", true);
+        }
+
+        public static ForgeConfigSpec create() {
+            return new ForgeConfigSpec.Builder().configure(PenguinConfig::new).getValue();
+        }
     }
 }
