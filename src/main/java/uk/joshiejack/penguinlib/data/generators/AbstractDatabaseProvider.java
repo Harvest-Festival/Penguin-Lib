@@ -34,7 +34,8 @@ public abstract class AbstractDatabaseProvider implements IDataProvider {
 
     public void addEntry(String file, String headings, String line) {
         this.headings.put(file, headings);
-        this.data.get(file).add(line);
+        if (!this.data.get(file).contains(line))
+            this.data.get(file).add(line);
     }
 
     protected void addFurnaceFuel(Item item, int burnTime) {
