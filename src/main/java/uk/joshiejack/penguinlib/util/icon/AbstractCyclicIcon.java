@@ -1,11 +1,17 @@
 package uk.joshiejack.penguinlib.util.icon;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.renderer.ShadowRenderer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,16 +22,17 @@ public abstract class AbstractCyclicIcon<T> extends Icon {
     private long timer;
     private int id;
 
-    public AbstractCyclicIcon(List<T> list) {
-        this.id = random.nextInt(list.size());
-        this.object = list.get(id);
+    public AbstractCyclicIcon(List<T> icons) {
+        this.list = icons;
+        this.id = list.isEmpty() ? 0 : random.nextInt(list.size());
+        this.object = list.isEmpty() ? null : list.get(id);
         this.timer = System.currentTimeMillis();
-        this.list = list;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void render(Minecraft mc, MatrixStack matrix, int x, int y) {
+        if (object == null) return;
         if (System.currentTimeMillis() - timer > 1000) {
             id++;
 
@@ -55,6 +62,12 @@ public abstract class AbstractCyclicIcon<T> extends Icon {
                 ShadowRenderer.disable();
                 shadowed = false;
             }
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<ITextComponent> getTooltipLines(PlayerEntity player) {
+            return object.getTooltipLines(player, ITooltipFlag.TooltipFlags.NORMAL);
         }
     }
 }

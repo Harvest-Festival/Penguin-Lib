@@ -4,12 +4,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.renderer.ShadowRenderer;
+
+import java.util.List;
 
 public class ItemIcon extends Icon {
     public static final Icon EMPTY = new ItemIcon(ItemStack.EMPTY);
@@ -44,5 +49,11 @@ public class ItemIcon extends Icon {
             ShadowRenderer.disable();
             shadowed = false;
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public List<ITextComponent> getTooltipLines(PlayerEntity player) {
+        return stack.getTooltipLines(player, ITooltipFlag.TooltipFlags.NORMAL);
     }
 }

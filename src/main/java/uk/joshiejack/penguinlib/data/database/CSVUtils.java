@@ -1,6 +1,7 @@
 package uk.joshiejack.penguinlib.data.database;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -140,7 +141,7 @@ public class CSVUtils {
                 append = append.replace("\"", "\"\"");
             if (append.contains(","))
                 append = "\"" + append + "\"";
-            list.add(append);
+            list.add(append.contains("\n") ? StringEscapeUtils.escapeJava(append) : append);
         }
 
         return StringUtils.join(list, ',');

@@ -1,15 +1,22 @@
 package uk.joshiejack.penguinlib.util.icon;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextureIcon extends Icon {
+    private static final List<ITextComponent> EMPTY_LIST = new ArrayList<>();
     private final ResourceLocation texture;
     private final int xPos;
     private final int yPos;
@@ -52,5 +59,11 @@ public class TextureIcon extends Icon {
         mc.gui.setBlitOffset(0);
         mc.gui.blit(matrix, x, y, xPos, shadowed ? yPos + 16 : yPos, 16, 16);
         shadowed = false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public List<ITextComponent> getTooltipLines(PlayerEntity player) {
+        return EMPTY_LIST;
     }
 }

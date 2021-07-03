@@ -32,4 +32,5 @@ public class ItemListIcon extends AbstractCyclicIcon.ItemStack {
         pb.writeShort(list.size());
         list.forEach(pb::writeItem);
     }
+
 }

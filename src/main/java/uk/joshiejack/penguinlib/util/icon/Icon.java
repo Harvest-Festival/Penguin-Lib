@@ -5,13 +5,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -108,4 +112,19 @@ public abstract class Icon {
 
     @OnlyIn(Dist.CLIENT)
     public abstract void render(Minecraft mc, MatrixStack matrix, int x, int y);
+
+    @OnlyIn(Dist.CLIENT)
+    public void renderWithCount(Minecraft mc, MatrixStack matrix, int x, int y, int count) {
+        render(mc, matrix, x, y);
+        if (count != 1) {
+            MatrixStack matrixstack = new MatrixStack();
+            String s = String.valueOf(count);
+            matrixstack.translate(0.0D, 0.0D, mc.gui.getBlitOffset() + 200.0F);
+            IRenderTypeBuffer.Impl irendertypebuffer$impl = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuilder());
+            mc.font.drawInBatch(s, (float) (x + 19 - 2 - mc.font.width(s)), (float) (y + 6 + 3), 16777215, true, matrixstack.last().pose(), irendertypebuffer$impl, false, 0, 15728880);
+            irendertypebuffer$impl.endBatch();
+        }
+    }
+    @OnlyIn(Dist.CLIENT)
+    public abstract List<ITextComponent> getTooltipLines(PlayerEntity player);
 }

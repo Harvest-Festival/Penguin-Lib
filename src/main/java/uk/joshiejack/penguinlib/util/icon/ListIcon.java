@@ -5,7 +5,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.renderer.ShadowRenderer;
 
 import java.util.ArrayList;
@@ -46,5 +51,11 @@ public class ListIcon extends AbstractCyclicIcon<Icon> {
             ShadowRenderer.disable();
             shadowed = false;
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public List<ITextComponent> getTooltipLines(PlayerEntity player) {
+        return object.getTooltipLines(player);
     }
 }

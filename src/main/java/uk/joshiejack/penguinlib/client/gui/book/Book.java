@@ -26,7 +26,6 @@ import java.util.function.Consumer;
 @SuppressWarnings("ConstantConditions")
 public class Book extends AbstractContainerScreen<AbstractBookContainer> {
     private static final Object2ObjectMap<String, Book> BOOK_INSTANCES = new Object2ObjectOpenHashMap<>();
-    private final List<Runnable> futures = new ArrayList<>();
     private final List<Tab> tabs = new ArrayList<>();
     private final ResourceLocation backgroundL;
     private final ResourceLocation backgroundR;
@@ -73,17 +72,6 @@ public class Book extends AbstractContainerScreen<AbstractBookContainer> {
 
     public void bindLeftTexture() {
         minecraft.getTextureManager().bind(backgroundL);
-    }
-
-    public void addFuture(Runnable r) {
-        futures.add(r);
-    }
-
-    @Override
-    public void render(@Nonnull MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrix, mouseX, mouseY, partialTicks);
-        this.futures.forEach(Runnable::run);
-        this.futures.clear();
     }
 
     /**

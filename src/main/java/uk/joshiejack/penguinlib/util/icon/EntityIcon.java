@@ -1,16 +1,23 @@
 package uk.joshiejack.penguinlib.util.icon;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityIcon extends Icon {
     private final EntityType<?> entityType;
@@ -47,5 +54,13 @@ public class EntityIcon extends Icon {
         }
 
         InventoryScreen.renderEntityInInventory(x + 8, y + 15, scale, -65F, 0.0F, this.entity);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public List<ITextComponent> getTooltipLines(PlayerEntity player) {
+        List<ITextComponent> list = new ArrayList<>();
+        list.add(entityType.getDescription());
+        return list;
     }
 }

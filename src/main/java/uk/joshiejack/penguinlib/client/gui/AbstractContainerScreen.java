@@ -11,10 +11,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractContainerScreen <T extends Container> extends ContainerScreen<T> {
     protected final ResourceLocation background;
+    private final List<Runnable> futures = new ArrayList<>();
 
     //Allow for a null background, for special purposes
     public AbstractContainerScreen(T container, PlayerInventory inv, ITextComponent name, int width, int height) {
@@ -31,5 +34,16 @@ public abstract class AbstractContainerScreen <T extends Container> extends Cont
     @Override
     protected void renderBg(@Nonnull MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1F, 1F, 1F, 1F);
+    }
+
+    public void addFuture(Runnable r) {
+        futures.add(r);
+    }
+
+    @Override
+    public void render(@Nonnull MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrix, mouseX, mouseY, partialTicks);
+        this.futures.forEach(Runnable::run);
+        this.futures.clear();
     }
 }
