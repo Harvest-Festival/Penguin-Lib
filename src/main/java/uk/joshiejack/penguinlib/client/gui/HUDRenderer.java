@@ -37,6 +37,9 @@ public class HUDRenderer {
             String time = formatTime((int) TimeHelper.getTimeOfDay(mc.level.getDayTime()));
             return "(" + TimeHelper.shortName(TimeHelper.getWeekday(mc.level.getDayTime())) + ")" + "  " + time;
         }
+
+        public int getX() { return 0; }
+        public int getY() { return 0; }
     }
 
     private static String formatTime(int time) {
@@ -69,8 +72,8 @@ public class HUDRenderer {
                 MatrixStack matrix = event.getMatrixStack();
                 RenderSystem.enableBlend();
                 ResourceLocation texture = hud.getTexture(mc);
-                int x = 0;
-                int y = 0;
+                int x = hud.getX();
+                int y = hud.getY();
                 if (texture != null) {
                     RenderSystem.color4f(1F, 1F, 1F, 1F);
                     mc.getTextureManager().bind(texture);//inMine ? MINE_HUD : season.HUD);
