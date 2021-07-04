@@ -67,6 +67,14 @@ public class Row {
         return new ResourceLocation(get("script").toString().replace("/", "_")); //Convert to namesake
     }
 
+    public <E extends Enum<E>> E getAsEnum(Class<E> clazz) {
+        return getAsEnum(clazz, clazz.getSimpleName().toLowerCase(Locale.ROOT));
+    }
+
+    private <E extends Enum<E>> E getAsEnum(Class<E> clazz, String field) {
+        return Enum.valueOf(clazz, get(field).toString().toUpperCase(Locale.ROOT));
+    }
+
     public String id() {
         return get("id");
     }
