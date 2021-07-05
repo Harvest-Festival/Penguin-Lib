@@ -1,6 +1,8 @@
 package uk.joshiejack.penguinlib.data.database;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.item.ItemStack;
@@ -11,19 +13,16 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.joshiejack.penguinlib.PenguinLib;
-import uk.joshiejack.penguinlib.client.PenguinClientConfig;
 import uk.joshiejack.penguinlib.data.PenguinRegistries;
 import uk.joshiejack.penguinlib.events.DatabaseLoadedEvent;
 import uk.joshiejack.penguinlib.events.DatabasePopulateEvent;
@@ -42,7 +41,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
     public static final int pathSuffixLength = ".csv".length();
     private static final String directory = "database";
     private static final int dirLength = directory.length() + 1;
-    private final Map<String, String> tableData = new HashMap<>();
+    private final Multimap<String, String> tableData = HashMultimap.create();
 
     public static class Dummy extends SimplePenguinRecipe {
         public static final ResourceLocation ALL = new ResourceLocation(PenguinLib.MODID, "all");
@@ -74,7 +73,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
                 parseCSV(tables, INSTANCE.tableData, name, builder.toString());
             }
 
-            if (PenguinClientConfig.enableDatabaseDebugger.get())
+            if (PenguinLib.PenguinConfig.enableDatabaseDebugger.get())
                 print(tables);
             MinecraftForge.EVENT_BUS.post(new DatabasePopulateEvent(tables));
             MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
@@ -85,7 +84,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
         public void toNetwork(@Nonnull PacketBuffer packetbuffer, @Nonnull Dummy dummy) {
             int tableCount = INSTANCE.tableData.size();
             packetbuffer.writeShort(tableCount);
-            for (Map.Entry<String, String> entry: INSTANCE.tableData.entrySet()) {
+            for (Map.Entry<String, String> entry: INSTANCE.tableData.entries()) {
                 packetbuffer.writeUtf(entry.getKey());
                 int parts = (int) Math.ceil((double)entry.getValue().length() / (double) Short.MAX_VALUE);
                 packetbuffer.writeShort(parts);
@@ -134,11 +133,11 @@ public class Database extends ReloadListener<Map<String, Table>> {
         }
     }
 
-    private static void parseCSV(Map<String, Table> tables, Map<String, String> tableData, String name, String csv) {
+    private static void parseCSV(Map<String, Table> tables, Multimap<String, String> tableData, String name, String csv) {
         //Ignore any directories registered for this csv and just go with the name
         String file_name = new File(name).getName();
         name = (file_name.startsWith("$") ? file_name.replace("$", "") : file_name.contains("$") ? file_name.split("\\$")[1] : file_name).toLowerCase(Locale.ROOT); //Ignore anything before the dollar symbol
-        tableData.put(name, csv);
+        tableData.get(name).add(csv);
         String[] entries = csv.split("[\\r\\n]+");
         String[] labels = entries[0].split(",");
         Table table = createTable(tables, name, labels); //Get a table with this name if it already exists
@@ -188,7 +187,7 @@ public class Database extends ReloadListener<Map<String, Table>> {
 
     @Override
     protected void apply(@Nonnull Map<String, Table> tables, @Nonnull IResourceManager rm, @Nonnull IProfiler profiler) {
-        if (FMLEnvironment.dist == Dist.CLIENT && PenguinClientConfig.enableDatabaseDebugger.get())
+        if (PenguinLib.PenguinConfig.enableDatabaseDebugger.get())
             print(tables);
         MinecraftForge.EVENT_BUS.post(new DatabasePopulateEvent(tables));
         MinecraftForge.EVENT_BUS.post(new DatabaseLoadedEvent(tables));
