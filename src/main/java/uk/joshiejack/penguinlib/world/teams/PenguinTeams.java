@@ -138,6 +138,13 @@ public class PenguinTeams extends WorldSavedData {
         return getTeamForPlayer(player).getID();
     }
 
+    public static CompoundNBT getPenguinStatuses(PlayerEntity player) {
+        CompoundNBT data = getTeamForPlayer(player).getData();
+        if (!data.contains("PenguinStatuses"))
+            data.put("PenguinStatuses", new CompoundNBT());
+        return data.getCompound("PenguinStatuses");
+    }
+
     public static PenguinTeam getTeamFromContext(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
         PenguinTeams teams = getTeamsFromContext(ctx);
         return teams.getTeam(teams.memberOf.get(ctx.getSource().getPlayerOrException().getUUID()));

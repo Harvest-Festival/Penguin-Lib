@@ -54,4 +54,11 @@ public class PlayerHelper {
             return taken.intValue() == 0;
         });
     }
+
+    public static CompoundNBT getPenguinStatuses(PlayerEntity player) {
+        CompoundNBT data = player.getPersistentData();
+        if (!data.contains("PenguinStatuses"))
+            data.put("PenguinStatuses", new CompoundNBT());
+        return data.getCompound("PenguinStatuses");
+    }
 }
