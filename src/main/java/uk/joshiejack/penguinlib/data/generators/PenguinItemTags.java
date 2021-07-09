@@ -21,6 +21,7 @@ public final class PenguinItemTags extends ItemTagsProvider {
 
     @Override
     public void addTags() {
+        tag(PenguinTags.CLOCKS).add(Items.CLOCK);
         tag(PenguinTags.BREADS).add(Items.BREAD);
         Builder<Item> rawTag = tag(PenguinTags.RAW_FISHES);
         rawTag.add(Items.COD, Items.SALMON, Items.PUFFERFISH, Items.TROPICAL_FISH);

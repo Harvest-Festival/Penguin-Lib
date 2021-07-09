@@ -1,10 +1,13 @@
 package uk.joshiejack.penguinlib.client.gui;
 
+import com.google.common.collect.Streams;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -16,7 +19,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.client.PenguinClientConfig;
+import uk.joshiejack.penguinlib.util.PenguinTags;
 import uk.joshiejack.penguinlib.util.helpers.minecraft.TimeHelper;
+
+import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = PenguinLib.MODID)
@@ -53,30 +59,49 @@ public class HUDRenderer {
         }
     }
 
+    private static boolean hasClockInventory;
+
+    @SuppressWarnings("UnstableApiUsage")
+    private static boolean hasClockInInventory(PlayerEntity player) {
+        if (player.level.getDayTime() % 60 == 0) {
+            //TODO: Switch to Penguin-Lib 0.4
+            hasClockInventory = Streams.concat(player.inventory.items.stream(), player.inventory.offhand.stream(), player.inventory.armor.stream())
+                    .anyMatch(stack -> PenguinTags.CLOCKS.contains(stack.getItem()));
+        }
+
+        return hasClockInventory;
+    }
+
     @SubscribeEvent
     public static void onRenderOverlay(RenderGameOverlayEvent.Pre event) {
         if (RENDERERS.size() == 0) return;
         Minecraft mc = Minecraft.getInstance();
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             HUDRenderData hud = RENDERERS.get(mc.level.dimension());
-            if (hud != null && hud.isEnabled()) {
+            if (hud != null) {
                 MatrixStack matrix = event.getMatrixStack();
                 RenderSystem.enableBlend();
                 int x = 0;
                 int y = 0;
-                RenderSystem.color4f(1F, 1F, 1F, 1F);
-                mc.getTextureManager().bind(hud.getTexture(mc));//inMine ? MINE_HUD : season.HUD);
-                mc.gui.blit(matrix, x - 44, y - 35, 0, 0, 256, 110);
+                if (hud.isEnabled()) {
+                    RenderSystem.color4f(1F, 1F, 1F, 1F);
+                    mc.getTextureManager().bind(hud.getTexture(mc));
+                    mc.gui.blit(matrix, x - 44, y - 35, 0, 0, 256, 110);
 
-                //Enlarge the Day
-                matrix.pushPose();
-                matrix.scale(1.4F, 1.4F, 1.4F);
-                ITextComponent header = hud.getHeader(mc);
-                mc.font.drawShadow(matrix, header, (x / 1.4F) + 30, (y / 1.4F) + 7, 0xFFFFFFFF);
-                matrix.popPose();
+                    //Enlarge the Day
+                    matrix.pushPose();
+                    matrix.scale(1.4F, 1.4F, 1.4F);
+                    ITextComponent header = hud.getHeader(mc);
+                    mc.font.drawShadow(matrix, header, (x / 1.4F) + 30, (y / 1.4F) + 7, 0xFFFFFFFF);
+                    matrix.popPose();
+                }
 
                 //Draw the time
-                mc.font.drawShadow(matrix, hud.getFooter(mc), x + 42, y + 23, 0xFFFFFFFF);
+                if (PenguinClientConfig.displayClockInHUDs.get()) {
+                    if (!PenguinClientConfig.requireClockItemForTime.get() || (PenguinClientConfig.requireClockItemForTime.get() && hasClockInInventory(Objects.requireNonNull(mc.player))))
+                        mc.font.drawShadow(matrix, hud.getFooter(mc), x + 42, y + 23, 0xFFFFFFFF);
+                }
+
                 RenderSystem.disableBlend();
             }
         }
