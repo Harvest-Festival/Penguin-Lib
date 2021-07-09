@@ -2,6 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "G G",
+    "G G",
     " G "
   ],
   "key": {
@@ -11,6 +12,6 @@
   },
   "result": {
     "item": "penguinlib:glass",
-    "count": 4
+    "count": 6
   }
 }

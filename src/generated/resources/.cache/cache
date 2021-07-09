@@ -37,7 +37,7 @@ aff4c90935692a3e07d4db6c1813e4720ff0925b data/penguinlib/advancements/recipes/pe
 4f37b12188b6ec0ad0df7e23bc4f2d00658c3109 data/penguinlib/database/furnace_fuels.csv
 e7b9033c7e850478f41e4f888836064aa80b63d8 data/penguinlib/database/time_unit.csv
 95b2d2ac0017ede62a8d428c74087c0955c36ae0 data/penguinlib/recipes/deep_bowl.json
-55f9ca596470723cdd32e84d92f4a1ba1e0d74a6 data/penguinlib/recipes/glass.json
+b5b7805b031e14986e9b88ecb2b4ce2f3b6ca1e7 data/penguinlib/recipes/glass.json
 c00d36f276461a92f107dfe84c379b1d091a2f93 data/penguinlib/recipes/jam_jar.json
 c9c6caa3ff9d0bad028f8bdfb44e5b2141662470 data/penguinlib/recipes/mug.json
 3d36d7ec86f8c94316caa064c6641ec0db5a4d0a data/penguinlib/recipes/pickling_jar.json
