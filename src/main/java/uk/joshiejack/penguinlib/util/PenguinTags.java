@@ -31,9 +31,14 @@ public class PenguinTags {
     public static final ITag.INamedTag<Item> WATERING_CANS = forgeTag("tools/watering_can");
     //######################################### Hammer AOE ######################################
     public static final ITag.INamedTag<Block> SMASHABLE = penguinTag("smashable");
+    public static final ITag.INamedTag<Item> CLOCKS = penguinItemTag("clocks");
 
     public static ITag.INamedTag<Block> penguinTag(@Nonnull String name) {
         return BlockTags.createOptional(new ResourceLocation(PenguinLib.MODID,  name));
+    }
+
+    public static ITag.INamedTag<Item> penguinItemTag(@Nonnull String name) {
+        return ItemTags.createOptional(new ResourceLocation(PenguinLib.MODID,  name));
     }
 
     public static ITag.INamedTag<Item> forgeTag(@Nonnull String name) {
