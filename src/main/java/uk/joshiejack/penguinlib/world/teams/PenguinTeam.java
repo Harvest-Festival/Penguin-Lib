@@ -115,7 +115,7 @@ public class PenguinTeam implements INBTSerializable<CompoundNBT> {
     public CompoundNBT serializeNBT() {
         CompoundNBT compound = new CompoundNBT();
         compound.putString("UUID", teamUUID.toString());
-        compound.putString("Name", name);
+        compound.putString("Name", name == null ? teamUUID.toString() : name);
         compound.put("Data", data);
         ListNBT list = new ListNBT();
         members.forEach(uuid -> list.add(StringNBT.valueOf(uuid.toString())));
