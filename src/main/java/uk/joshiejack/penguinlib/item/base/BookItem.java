@@ -19,39 +19,23 @@ import java.util.function.Supplier;
 
 public class BookItem extends Item {
     private final Supplier<IContainerProvider> provider;
-    private final Supplier<ContainerType<?>> container;
 
-    public BookItem(Properties properties, Supplier<ContainerType<?>> container) {
-        super(properties);
-        this.container = container;
-        this.provider = null;
+    public BookItem(Properties properties, Supplier<IContainerProvider> provider) {
+        this(properties, provider, false);
     }
 
+    @Deprecated //TODO: Remove in 0.6+
     public BookItem(Properties properties, Supplier<IContainerProvider> provider, boolean temporary) {
         super(properties);
-        this.container = null;
         this.provider = provider;
     }
 
     @Nonnull
     @Override
     public ActionResult<ItemStack> use(@Nonnull World world, @Nonnull PlayerEntity player, @Nonnull Hand hand) {
-        if (container != null) return useLegacy(world, player, hand);
         if (!world.isClientSide) {
             NetworkHooks.openGui((ServerPlayerEntity) player,
                     new SimpleNamedContainerProvider(provider.get(),
-                            new TranslationTextComponent(getDescriptionId())));
-        }
-
-        return ActionResult.success(player.getItemInHand(hand));
-    }
-
-    @Nonnull
-    @Deprecated
-    public ActionResult<ItemStack> useLegacy(@Nonnull World world, @Nonnull PlayerEntity player, @Nonnull Hand hand) {
-        if (!world.isClientSide) {
-            NetworkHooks.openGui((ServerPlayerEntity) player,
-                    new SimpleNamedContainerProvider((id, inv, p) -> container.get().create(id, inv),
                             new TranslationTextComponent(getDescriptionId())));
         }
 

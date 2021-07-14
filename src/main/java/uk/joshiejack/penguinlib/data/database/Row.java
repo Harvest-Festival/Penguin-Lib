@@ -85,14 +85,6 @@ public class Row {
         return ItemStack.EMPTY; //TODO: re-enable item stacks where applicable
     }
 
-    @Deprecated
-    public Ingredient holder() {
-        return Ingredient.EMPTY;
-        //TODO:
-        //if (isEmpty("item")) return Ingredient.EMPTY;
-        //return Holder.getFromString(get("item"));
-    }
-
     public EntityType<?> entity() {
         return entity("entity");
     }

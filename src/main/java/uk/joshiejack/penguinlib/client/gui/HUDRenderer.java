@@ -33,9 +33,7 @@ public class HUDRenderer {
     public static Object2ObjectMap<RegistryKey<World>, HUDRenderData> RENDERERS = new Object2ObjectOpenHashMap<>();
 
     public abstract static class HUDRenderData {
-        @Deprecated
-        public boolean isEnabled() { return true; }
-        public boolean isEnabled(Minecraft mc) { return isEnabled(); }
+        public boolean isEnabled(Minecraft mc) { return true; }
 
         @Nullable
         public ResourceLocation getTexture(Minecraft mc) { return null; }
