@@ -9,17 +9,22 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.World;
 import uk.joshiejack.penguinlib.client.PenguinClient;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class AbstractItemTileEntityRenderer<T extends TileEntity> extends TileEntityRenderer<T> {
     private static final Supplier<ItemStack> STICK = () -> new ItemStack(Items.STICK);
+    private static Consumer<MatrixStack> DEFAULT = (matrixStack -> matrixStack.scale(0.5F, 0.5F, 0.5F));
     private static ItemStack stack;
 
     public AbstractItemTileEntityRenderer(TileEntityRendererDispatcher dispatcher) {
@@ -55,6 +60,27 @@ public abstract class AbstractItemTileEntityRenderer<T extends TileEntity> exten
         matrix.popPose();
         RenderHelper.turnBackOn();
         matrix.popPose();
+        matrix.popPose();
+    }
+
+    protected void renderItem(Minecraft mc, ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+        renderItem(mc, stack, matrix, buffer, combinedLightIn, combinedOverlayIn, DEFAULT);
+    }
+
+    protected void renderItem(Minecraft mc, ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn, Consumer<MatrixStack> transforms) {
+        matrix.pushPose();
+        ItemRenderer itemRenderer = mc.getItemRenderer();
+        if (!stack.isEmpty()) {
+            matrix.translate(0.5F, 1F, 0.5F);
+            matrix.pushPose();
+            transforms.accept(matrix);
+            RenderHelper.setupFor3DItems();
+            itemRenderer.render(stack, ItemCameraTransforms.TransformType.FIXED, true, matrix, buffer,
+                    combinedLightIn, combinedOverlayIn, itemRenderer.getModel(stack, mc.level, null));
+            RenderHelper.turnOff();
+            matrix.popPose();
+        }
+
         matrix.popPose();
     }
 
