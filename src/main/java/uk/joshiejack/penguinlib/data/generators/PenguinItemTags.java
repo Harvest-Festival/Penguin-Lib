@@ -22,7 +22,7 @@ public final class PenguinItemTags extends ItemTagsProvider {
     @Override
     public void addTags() {
         tag(PenguinTags.CLOCKS).add(Items.CLOCK);
-        tag(PenguinTags.BREADS).add(Items.BREAD);
+        tag(PenguinTags.BREAD).add(Items.BREAD);
         Builder<Item> rawTag = tag(PenguinTags.RAW_FISHES);
         rawTag.add(Items.COD, Items.SALMON, Items.PUFFERFISH, Items.TROPICAL_FISH);
         tag(PenguinTags.CROPS_APPLE).add(Items.APPLE);
@@ -32,7 +32,6 @@ public final class PenguinItemTags extends ItemTagsProvider {
         tag(PenguinTags.FUNGI).add(Items.WARPED_FUNGUS, Items.CRIMSON_FUNGUS);
 
         tag(PenguinTags.HAMMERS);
-        tag(PenguinTags.SCYTHES);
         tag(PenguinTags.SICKLES);
         tag(PenguinTags.WATERING_CANS);
         Builder<Item> swords = tag(PenguinTags.SWORDS);
@@ -61,6 +60,6 @@ public final class PenguinItemTags extends ItemTagsProvider {
                 .forEach(fishing_rods::add);
 
         tag(PenguinTags.TOOLS).addTags(Tags.Items.SHEARS, PenguinTags.PICKAXES, PenguinTags.AXES, PenguinTags.SWORDS, PenguinTags.HAMMERS,
-                PenguinTags.SHOVELS, PenguinTags.HOES, PenguinTags.SHOVELS, PenguinTags.SCYTHES, PenguinTags.FISHING_RODS, PenguinTags.WATERING_CANS);
+                PenguinTags.SHOVELS, PenguinTags.HOES, PenguinTags.SHOVELS, PenguinTags.FISHING_RODS, PenguinTags.WATERING_CANS);
     }
 }

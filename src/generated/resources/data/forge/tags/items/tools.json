@@ -2,15 +2,14 @@
   "replace": false,
   "values": [
     "#forge:shears",
-    "#forge:tools/pickaxe",
-    "#forge:tools/axe",
-    "#forge:tools/sword",
-    "#forge:tools/hammer",
-    "#forge:tools/shovel",
-    "#forge:tools/hoe",
-    "#forge:tools/shovel",
-    "#forge:tools/scythe",
-    "#forge:tools/fishing_rod",
-    "#forge:tools/watering_can"
+    "#forge:tools/pickaxes",
+    "#forge:tools/axes",
+    "#forge:tools/swords",
+    "#forge:tools/hammers",
+    "#forge:tools/shovels",
+    "#forge:tools/hoes",
+    "#forge:tools/shovels",
+    "#forge:tools/fishing_rods",
+    "#forge:tools/watering_cans"
   ]
 }

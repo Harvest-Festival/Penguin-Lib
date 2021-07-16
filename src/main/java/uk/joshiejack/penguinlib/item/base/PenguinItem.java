@@ -32,6 +32,10 @@ public class PenguinItem extends Item {
         return stack.getItem().isEdible() ? useDuration : 0;
     }
 
+    public ItemStack getLeftovers() {
+        return result.get();
+    }
+
     @Nonnull
     @Override
     public UseAction getUseAnimation(@Nonnull ItemStack stack) {
