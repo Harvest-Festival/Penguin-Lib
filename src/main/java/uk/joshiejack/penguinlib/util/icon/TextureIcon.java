@@ -1,6 +1,5 @@
 package uk.joshiejack.penguinlib.util.icon;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;

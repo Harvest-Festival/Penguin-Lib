@@ -5,7 +5,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.util.stream.Stream;

@@ -14,8 +14,6 @@ import uk.joshiejack.penguinlib.note.type.NoteType;
 import uk.joshiejack.penguinlib.util.icon.*;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 

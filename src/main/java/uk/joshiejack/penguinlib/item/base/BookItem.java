@@ -2,7 +2,6 @@ package uk.joshiejack.penguinlib.item.base;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
@@ -12,7 +11,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
-import uk.joshiejack.penguinlib.inventory.AbstractBookContainer;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;

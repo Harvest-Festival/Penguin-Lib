@@ -7,7 +7,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.AbstractContainerScreen;
-import uk.joshiejack.penguinlib.client.gui.book.Book;
 
 import javax.annotation.Nonnull;
 

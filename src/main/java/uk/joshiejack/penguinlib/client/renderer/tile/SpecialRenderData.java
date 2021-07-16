@@ -19,7 +19,6 @@ public class SpecialRenderData {
         offset1[last] = 0.5F - world.random.nextFloat();
         offset2[last] = world.random.nextFloat() / 1.75F;
         heightOffset[last] = 0.5F + world.random.nextFloat();
-        //TODO world.markBlockRangeForRenderUpdate(pos, pos);
     }
 
     private float clampOffset1(float f) {

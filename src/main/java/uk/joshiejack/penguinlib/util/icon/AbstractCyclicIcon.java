@@ -1,8 +1,6 @@
 package uk.joshiejack.penguinlib.util.icon;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,7 +9,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.renderer.ShadowRenderer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

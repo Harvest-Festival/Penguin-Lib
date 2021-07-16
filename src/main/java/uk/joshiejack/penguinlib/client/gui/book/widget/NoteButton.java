@@ -7,6 +7,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.Book;
+import uk.joshiejack.penguinlib.client.gui.widget.AbstractButton;
 import uk.joshiejack.penguinlib.note.Note;
 import uk.joshiejack.penguinlib.util.helpers.StringHelper;
 

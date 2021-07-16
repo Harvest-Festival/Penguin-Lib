@@ -9,17 +9,14 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
 import uk.joshiejack.penguinlib.client.PenguinClient;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class AbstractItemTileEntityRenderer<T extends TileEntity> extends TileEntityRenderer<T> {

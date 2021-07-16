@@ -5,9 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.Potion;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
@@ -16,7 +14,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import uk.joshiejack.penguinlib.PenguinLib;
 import uk.joshiejack.penguinlib.util.Patterns;
-import uk.joshiejack.penguinlib.util.PenguinTags;
 
 import java.util.Arrays;
 import java.util.Locale;

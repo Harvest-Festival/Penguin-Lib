@@ -1,21 +1,12 @@
 package uk.joshiejack.penguinlib.world.teams;
 
-import com.google.common.collect.Sets;
 import joptsimple.internal.Strings;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.common.util.INBTSerializable;
 import uk.joshiejack.penguinlib.events.TeamChangedOwnerEvent;
 import uk.joshiejack.penguinlib.network.PenguinNetwork;
@@ -23,7 +14,6 @@ import uk.joshiejack.penguinlib.network.packet.SyncTeamDataPacket;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 

@@ -6,12 +6,13 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import uk.joshiejack.penguinlib.client.gui.book.Book;
+import uk.joshiejack.penguinlib.client.gui.widget.AbstractButton;
 import uk.joshiejack.penguinlib.util.icon.Icon;
 
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class TabButton extends AbstractButton {
+public abstract class TabButton extends AbstractButton<Book> {
     protected final boolean isSelected;
     protected final Icon icon;
 
@@ -28,7 +29,7 @@ public abstract class TabButton extends AbstractButton {
 
         @Override
         protected void renderButton(@Nonnull MatrixStack matrix, int mouseX, int mouseY, float partialTicks, boolean hovered) {
-            book.bindLeftTexture();
+            screen.bindLeftTexture();
             int yPos = 32 * (isSelected ? 1 : hovered ? 2: 0);
             blit(matrix, x, y, 26, yPos, width, height);
             icon.render(Minecraft.getInstance(), matrix, x + 10, y + 8);
@@ -42,7 +43,7 @@ public abstract class TabButton extends AbstractButton {
 
         @Override
         protected void renderButton(@Nonnull MatrixStack matrix, int mouseX, int mouseY, float partialTicks, boolean hovered) {
-            book.bindLeftTexture();
+            screen.bindLeftTexture();
             int yPos = 32 * (isSelected ? 1 : hovered ? 2: 0);
             blit(matrix, x, y, 0, yPos, width, height);
             icon.render(Minecraft.getInstance(), matrix, x, y + 8);

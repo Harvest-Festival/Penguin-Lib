@@ -1,7 +1,6 @@
 package uk.joshiejack.penguinlib.client;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import uk.joshiejack.penguinlib.PenguinLib;
 
 public class PenguinClientConfig {
     public static ForgeConfigSpec.EnumValue<ClockType> clockType;

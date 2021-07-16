@@ -10,8 +10,6 @@ import uk.joshiejack.penguinlib.util.helpers.StringHelper;
 import uk.joshiejack.penguinlib.world.teams.PenguinTeam;
 import uk.joshiejack.penguinlib.world.teams.PenguinTeams;
 
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public class JoinTeamCommand {
