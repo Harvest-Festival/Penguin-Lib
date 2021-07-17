@@ -2,11 +2,9 @@ package uk.joshiejack.penguinlib.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.*;
 import net.minecraft.util.ResourceLocation;
 import uk.joshiejack.penguinlib.PenguinLib;
 
@@ -57,6 +55,10 @@ public class PenguinTags {
 
     public static ITag.INamedTag<EntityType<?>> forgeEntityTag(@Nonnull String name) {
         return EntityTypeTags.createOptional(new ResourceLocation("forge",  name));
+    }
+
+    public static ITag.INamedTag<Fluid> forgeFluidTag(@Nonnull String name) {
+        return FluidTags.createOptional(new ResourceLocation("forge",  name));
     }
 
     @Deprecated

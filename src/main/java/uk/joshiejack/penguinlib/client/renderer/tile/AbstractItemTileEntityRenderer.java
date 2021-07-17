@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
@@ -60,25 +61,17 @@ public abstract class AbstractItemTileEntityRenderer<T extends TileEntity> exten
         matrix.popPose();
     }
 
-    protected void renderItem(Minecraft mc, ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-        renderItem(mc, stack, matrix, buffer, combinedLightIn, combinedOverlayIn, DEFAULT);
+    protected void renderItem(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn) {
+        renderItem(stack, matrix, buffer, combinedLightIn, DEFAULT);
     }
 
-    protected void renderItem(Minecraft mc, ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn, Consumer<MatrixStack> transforms) {
-        matrix.pushPose();
-        ItemRenderer itemRenderer = mc.getItemRenderer();
+    protected void renderItem(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn, Consumer<MatrixStack> transforms) {
         if (!stack.isEmpty()) {
-            matrix.translate(0.5F, 1F, 0.5F);
             matrix.pushPose();
             transforms.accept(matrix);
-            RenderHelper.setupFor3DItems();
-            itemRenderer.render(stack, ItemCameraTransforms.TransformType.FIXED, true, matrix, buffer,
-                    combinedLightIn, combinedOverlayIn, itemRenderer.getModel(stack, mc.level, null));
-            RenderHelper.turnOff();
+            Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, OverlayTexture.NO_OVERLAY, matrix, buffer);
             matrix.popPose();
         }
-
-        matrix.popPose();
     }
 
     protected double getYOffset() {
