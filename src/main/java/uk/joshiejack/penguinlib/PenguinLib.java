@@ -66,7 +66,7 @@ public class PenguinLib {
         eventBus.addListener(this::setup);
         //Custom stuff needs to happen, before the registry loads
         Map<Class<?>, BiConsumer<Class<?>, String>> processors = new HashMap<>();
-        processors.put(CustomObject.Data.class,(Class<?> data, String string) ->
+        processors.put(CustomObject.Data.class, (Class<?> data, String string) ->
                 CustomObject.TYPE_REGISTRY.put(string, (CustomObject.Data) Objects.requireNonNull(ReflectionHelper.newInstance(data))));
         registerPenguinLoaderData(processors);
         MinecraftForge.EVENT_BUS.register(this);
@@ -87,7 +87,14 @@ public class PenguinLib {
         registerPenguinLoaderData(processors); //Process them and load them
         plugins.stream()
                 .filter(pair -> ModList.get().isLoaded(pair.getKey()))
-                .forEach(pair -> Objects.requireNonNull(ReflectionHelper.newInstance(pair.getValue())).setup());
+                .forEach(pair -> {
+                    try {
+                        Objects.requireNonNull(ReflectionHelper.newInstance(pair.getValue())).setup();
+                    } catch (Exception ex) {
+                        PenguinLib.LOGGER.error(String.format("Penguin-Lib failed to load a plugin for the mod %s.", pair.getKey()));
+                        ex.printStackTrace();
+                    }
+                });
         plugins.clear(); //Kill them off
     }
 
@@ -110,7 +117,7 @@ public class PenguinLib {
 
     @SuppressWarnings("unchecked")
     private void registerPenguinLoaderData(Map<Class<?>, BiConsumer<Class<?>, String>> processors) {
-         ModList.get().getAllScanData().stream()
+        ModList.get().getAllScanData().stream()
                 .map(ModFileScanData::getAnnotations)
                 .flatMap(Collection::stream) //Either of the penguin annotation or the packet annotation is ok
                 .filter(a -> LOADER.equals(a.getAnnotationType()) || PACKET.equals(a.getAnnotationType()))//, i trust that i will use the packet one only on packets ;)
