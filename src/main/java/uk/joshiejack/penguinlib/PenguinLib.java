@@ -87,7 +87,14 @@ public class PenguinLib {
         registerPenguinLoaderData(processors); //Process them and load them
         plugins.stream()
                 .filter(pair -> ModList.get().isLoaded(pair.getKey()))
-                .forEach(pair -> Objects.requireNonNull(ReflectionHelper.newInstance(pair.getValue())).setup());
+                .forEach(pair -> {
+                    try {
+                        Objects.requireNonNull(ReflectionHelper.newInstance(pair.getValue())).setup();
+                    } catch (Exception ex) {
+                        PenguinLib.LOGGER.error(String.format("Penguin-Lib failed to load a plugin for the mod %s.", pair.getKey()));
+                        ex.printStackTrace();
+                    }
+                });
         plugins.clear(); //Kill them off
     }
 
