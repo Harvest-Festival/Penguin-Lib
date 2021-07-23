@@ -47,6 +47,8 @@ public class HUDRenderer {
 
         public int getX() { return 0; }
         public int getY() { return 0; }
+        public int getClockX() { return 42; }
+        public int getClockY() { return 23; }
     }
 
     private static String formatTime(int time) {
@@ -73,7 +75,9 @@ public class HUDRenderer {
 
     private static boolean hasClockInInventory(PlayerEntity player) {
         if (player.level.getDayTime() % 60 == 0)
-            hasClockInventory = PlayerHelper.hasInInventory(player, Ingredient.of(PenguinTags.CLOCKS), 1);
+            try {
+                hasClockInventory = PlayerHelper.hasInInventory(player, PenguinTags.CLOCKS, 1);
+            } catch (Exception e) { hasClockInventory = false; }
         return hasClockInventory;
     }
 
@@ -107,7 +111,7 @@ public class HUDRenderer {
                 //Draw the time
                 if (PenguinClientConfig.displayClockInHUDs.get()) {
                     if (!PenguinClientConfig.requireClockItemForTime.get() || (PenguinClientConfig.requireClockItemForTime.get() && hasClockInInventory(Objects.requireNonNull(mc.player))))
-                        mc.font.drawShadow(matrix, hud.getFooter(mc), x + 42, y + 23, 0xFFFFFFFF);
+                        mc.font.drawShadow(matrix, hud.getFooter(mc), x + hud.getClockX(), y + hud.getClockY(), 0xFFFFFFFF);
                 }
                 RenderSystem.disableBlend();
             }

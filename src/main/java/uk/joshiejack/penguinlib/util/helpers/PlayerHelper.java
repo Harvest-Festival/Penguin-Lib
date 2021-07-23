@@ -2,9 +2,11 @@ package uk.joshiejack.penguinlib.util.helpers;
 
 import com.google.common.collect.Streams;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.ITag;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.mutable.MutableInt;
 
@@ -40,6 +42,10 @@ public class PlayerHelper {
 
     public static boolean hasInInventory(PlayerEntity player, Ingredient ingredient, int amount) {
         return getInventoryStream(player).mapToInt(stack -> ingredient.test(stack) ? stack.getCount() : 0).sum() >= amount;
+    }
+
+    public static boolean hasInInventory(PlayerEntity player, ITag.INamedTag<Item> tag, int amount) {
+        return getInventoryStream(player).mapToInt(stack -> stack.getItem().is(tag) ? stack.getCount() : 0).sum() >= amount;
     }
     
     public static boolean takeFromInventory(PlayerEntity player, Ingredient ingredient, int amount) {
