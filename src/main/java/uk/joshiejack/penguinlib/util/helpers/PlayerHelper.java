@@ -2,11 +2,15 @@ package uk.joshiejack.penguinlib.util.helpers;
 
 import com.google.common.collect.Streams;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.ITag;
 import org.apache.commons.lang3.mutable.MutableInt;
 
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class PlayerHelper {
@@ -37,14 +41,30 @@ public class PlayerHelper {
         return Streams.concat(player.inventory.items.stream(), player.inventory.armor.stream(), player.inventory.offhand.stream());
     }
 
-    public static boolean hasInInventory(PlayerEntity player, Ingredient ingredient, int amount) {
-        return getInventoryStream(player).mapToInt(stack -> ingredient.test(stack) ? stack.getCount() : 0).sum() >= amount;
+    public static boolean hasInInventory(PlayerEntity player, Item item, int amount) {
+        return hasInInventory(player, (stack) -> stack.getItem() == item, amount);
     }
-    
-    public static boolean takeFromInventory(PlayerEntity player, Ingredient ingredient, int amount) {
+
+    public static boolean hasInInventory(PlayerEntity player, ITag.INamedTag<Item> tag, int amount) {
+        return hasInInventory(player, (stack) -> stack.getItem().is(tag), amount);
+    }
+
+    public static boolean hasInInventory(PlayerEntity player, Predicate<ItemStack> predicate, int amount) {
+        return getInventoryStream(player).mapToInt(stack -> predicate.test(stack) ? stack.getCount() : 0).sum() >= amount;
+    }
+
+    public static boolean takeFromInventory(PlayerEntity player, Item item, int amount) {
+        return takeFromInventory(player, (stack) -> stack.getItem() == item, amount);
+    }
+
+    public static boolean takeFromInventory(PlayerEntity player, ITag.INamedTag<Item> tag, int amount) {
+        return takeFromInventory(player, (stack) -> stack.getItem().is(tag), amount);
+    }
+
+    public static boolean takeFromInventory(PlayerEntity player, Predicate<ItemStack> predicate, int amount) {
         MutableInt taken = new MutableInt(amount);
         return getInventoryStream(player).anyMatch(stack -> {
-            if (ingredient.test(stack)) {
+            if (predicate.test(stack)) {
                 int take = Math.min(stack.getCount(), taken.intValue());
                 stack.shrink(take);
                 taken.subtract(take);
